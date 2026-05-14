@@ -5,7 +5,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { BlogCard } from "@/components/cards"
 import { Button } from "@/components/ui/button"
-import { blogPosts, categories } from "@/lib/data"
+import { client } from "@/sanity/lib/client"
 
 export const metadata: Metadata = {
   title: "Blog | VelvetNest - Fashion, Home & Lifestyle",
@@ -15,10 +15,22 @@ export const metadata: Metadata = {
     description: "Explore our latest articles on fashion, home decor, beauty, self-care, and lifestyle.",
   },
 }
+async function getPosts() {
+  const query = `*[_type == "post"] | order(_createdAt desc){
+    _id,
+    title,
+    slug,
+    mainImage,
+    excerpt,
+    publishedAt
+  }`
 
-export default function BlogPage() {
-  const featuredPost = blogPosts.find((post) => post.featured)
-  const remainingPosts = blogPosts.filter((post) => post.id !== featuredPost?.id)
+  return await client.fetch(query)
+}
+export default async function BlogPage() {
+  const posts = await getPosts()
+  const featuredPost = posts[0]
+const remainingPosts = posts.slice(1)
 
   return (
     <div className="min-h-screen">
@@ -51,7 +63,7 @@ export default function BlogPage() {
               >
                 All Posts
               </Link>
-              {categories.map((category) => (
+              {[]?.map((category) => (
                 <Link
                   key={category.slug}
                   href={`/blog?category=${category.slug}`}
@@ -123,7 +135,7 @@ export default function BlogPage() {
                   key={post.id}
                   title={post.title}
                   excerpt={post.excerpt}
-                  image={post.image}
+                  image={post.mainImage}
                   category={post.category}
                   date={post.date}
                   slug={post.slug}
