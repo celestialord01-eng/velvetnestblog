@@ -63,15 +63,6 @@ const remainingPosts = posts.slice(1)
               >
                 All Posts
               </Link>
-              {[]?.map((category) => (
-                <Link
-                  key={category.slug}
-                  href={`/blog?category=${category.slug}`}
-                  className="rounded-full border border-border px-4 py-2 text-sm font-medium transition-colors hover:border-primary hover:bg-secondary"
-                >
-                  {category.name}
-                </Link>
-              ))}
             </div>
           </div>
         </section>
@@ -130,7 +121,7 @@ const remainingPosts = posts.slice(1)
               Latest Articles
             </h2>
             <div className="masonry-grid mt-12">
-              {remainingPosts.map((post) => (
+              {remainingPosts.map((post: any) => (
                 <BlogCard
                   key={post.id}
                   title={post.title}
