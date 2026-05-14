@@ -18,9 +18,7 @@ export default function HomePage() {
         <section className="relative overflow-hidden bg-secondary/30">
           <div className="mx-auto max-w-7xl px-4 py-16 md:py-24">
             <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
-              <div className="animate-fade-up space-y-6 text-center lg:text-left">
-                <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                  Welcome to VelvetNest
+              <div className="animate-fade-
                 </p>
                 <h1 className="text-4xl font-semibold leading-tight tracking-tight md:text-5xl lg:text-6xl">
                   <span className="block">Curated Style.</span>
@@ -68,10 +66,7 @@ export default function HomePage() {
         </section>
 
         {/* Categories Section */}
-        <section className="mx-auto max-w-7xl px-4 py-16 md:py-24">
-          <div className="text-center">
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              Browse By Category
+        <section className="m
             </p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
               Find Your Inspiration
