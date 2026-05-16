@@ -184,3 +184,41 @@ export const categories = [
     count: 12,
   },
 ]
+export const shopFavorites = [
+  {
+    id: 1,
+    title: "The Perfect Trench Coat",
+    price: "$128.00",
+    image:
+      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=80",
+    link: "https://amazon.com",
+    category: "fashion",
+  },
+  {
+    id: 2,
+    title: "Bouclé Accent Chair",
+    price: "$349.00",
+    image:
+      "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80",
+    link: "https://amazon.com",
+    category: "home",
+  },
+  {
+    id: 3,
+    title: "Charlotte Tilbury Pillow Talk Set",
+    price: "$75.00",
+    image:
+      "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=800&q=80",
+    link: "https://amazon.com",
+    category: "beauty",
+  },
+  {
+    id: 4,
+    title: "Cashmere V-Neck Sweater",
+    price: "$168.00",
+    image:
+      "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&q=80",
+    link: "https://amazon.com",
+    category: "fashion",
+  },
+]
