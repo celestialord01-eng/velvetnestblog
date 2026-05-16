@@ -8,6 +8,7 @@ export default {
       title: 'Title',
       type: 'string',
     },
+
     {
       name: 'slug',
       title: 'Slug',
@@ -16,16 +17,33 @@ export default {
         source: 'title',
       },
     },
+
+    {
+      name: 'category',
+      title: 'Category',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Fashion', value: 'fashion' },
+          { title: 'Outfit Ideas', value: 'outfit-ideas' },
+          { title: 'Home Decor', value: 'home-decor' },
+          { title: 'Beauty', value: 'beauty' },
+          { title: 'Self Care', value: 'self-care' },
+        ],
+      },
+    },
+
     {
       name: 'mainImage',
       title: 'Main image',
       type: 'image',
     },
+
     {
       name: 'body',
       title: 'Body',
       type: 'array',
-      of: [{type: 'block'}],
+      of: [{ type: 'block' }],
     },
   ],
 }
