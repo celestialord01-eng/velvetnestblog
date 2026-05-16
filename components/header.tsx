@@ -28,13 +28,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      {/* Top bar */}
-      <div className="hidden border-b border-border bg-secondary/50 py-2 text-center text-sm tracking-wide md:block">
-        <span className="text-muted-foreground">
-          Free shipping on orders over $50 | Shop our latest Amazon finds
-        </span>
-      </div>
-
+      
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex h-16 items-center justify-between md:h-20">
           {/* Mobile menu button */}
