@@ -1,16 +1,19 @@
-        import type { Metadata } from "next"
+import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, Clock, Calendar } from "lucide-react"
+import { PortableText } from "@portabletext/react"
 
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { BlogCard, ProductCard } from "@/components/cards"
 
-import { blogPosts, amazonFinds } from "@/lib/data"
+import { amazonFinds } from "@/lib/data"
 
 import ShareButtons from "./ShareButtons"
+
+import { client } from "@/sanity/lib/client"
 
 interface BlogPostPageProps {
   params: {
@@ -18,18 +21,42 @@ interface BlogPostPageProps {
   }
 }
 
-export async function generateStaticParams() {
-  return blogPosts.map((post) => ({
-    slug: post.slug,
-  }))
+async function getPost(slug: string) {
+  const query = `*[_type == "post" && slug.current == $slug][0]{
+    _id,
+    title,
+    excerpt,
+    publishedAt,
+    category,
+    body,
+    "slug": slug.current,
+    "image": mainImage.asset->url
+  }`
+
+  return await client.fetch(query, { slug })
+}
+
+async function getRelatedPosts(category: string, currentId: string) {
+  const query = `*[_type == "post" && category == $category && _id != $currentId] | order(_createdAt desc)[0...3]{
+    _id,
+    title,
+    excerpt,
+    publishedAt,
+    category,
+    "slug": slug.current,
+    "image": mainImage.asset->url
+  }`
+
+  return await client.fetch(query, {
+    category,
+    currentId,
+  })
 }
 
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
-  const { slug } = params
-
-  const post = blogPosts.find((p) => p.slug === slug)
+  const post = await getPost(params.slug)
 
   if (!post) {
     return {
@@ -44,13 +71,6 @@ export async function generateMetadata({
       title: post.title,
       description: post.excerpt,
       type: "article",
-      publishedTime: post.date,
-      images: [post.image],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
       images: [post.image],
     },
   }
@@ -59,26 +79,25 @@ export async function generateMetadata({
 export default async function BlogPostPage({
   params,
 }: BlogPostPageProps) {
-  const { slug } = params
-
-  const post = blogPosts.find((p) => p.slug === slug)
+  const post = await getPost(params.slug)
 
   if (!post) {
     notFound()
   }
 
-  const relatedPosts = blogPosts
-    .filter((p) => p.category === post.category && p.id !== post.id)
-    .slice(0, 3)
+  const relatedPosts = await getRelatedPosts(
+    post.category,
+    post._id
+  )
 
   const relatedProducts = amazonFinds
     .filter((p) =>
-      post.category === "Fashion"
-        ? p.category === "Fashion"
-        : post.category === "Home Decor"
-        ? p.category === "Home"
-        : post.category === "Beauty"
-        ? p.category === "Beauty"
+      post.category === "fashion"
+        ? p.category === "fashion"
+        : post.category === "home-decor"
+        ? p.category === "home"
+        : post.category === "beauty"
+        ? p.category === "beauty"
         : true
     )
     .slice(0, 4)
@@ -115,7 +134,7 @@ export default async function BlogPostPage({
             <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                {post.date}
+                {new Date(post.publishedAt).toDateString()}
               </div>
 
               <div className="flex items-center gap-2">
@@ -140,31 +159,7 @@ export default async function BlogPostPage({
             <ShareButtons post={post} />
 
             <div className="prose prose-lg max-w-none">
-              <p>{post.excerpt}</p>
-
-              <p>
-                Creating a wardrobe that stands the test of time is about
-                investing in versatile pieces that work across seasons and
-                trends.
-              </p>
-
-              <h2>Timeless Style Essentials</h2>
-
-              <p>
-                Focus on quality basics, neutral palettes, and classic
-                silhouettes that can be styled in multiple ways.
-              </p>
-
-              <blockquote>
-                <p>
-                  "Style is a way to say who you are without having to speak."
-                </p>
-              </blockquote>
-
-              <p>
-                Build slowly, buy intentionally, and prioritize confidence over
-                trends.
-              </p>
+              <PortableText value={post.body} />
             </div>
 
             <div className="mt-12">
@@ -205,14 +200,16 @@ export default async function BlogPostPage({
               </h2>
 
               <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {relatedPosts.map((relatedPost) => (
+                {relatedPosts.map((relatedPost: any) => (
                   <BlogCard
-                    key={relatedPost.id}
+                    key={relatedPost._id}
                     title={relatedPost.title}
                     excerpt={relatedPost.excerpt}
                     image={relatedPost.image}
                     category={relatedPost.category}
-                    date={relatedPost.date}
+                    date={new Date(
+                      relatedPost.publishedAt
+                    ).toDateString()}
                     slug={relatedPost.slug}
                   />
                 ))}
@@ -225,4 +222,4 @@ export default async function BlogPostPage({
       <Footer />
     </div>
   )
-           }
+                             }
