@@ -237,9 +237,9 @@ export default function AboutPage() {
                   <Link href="/contact">Get in Touch</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">
-                  <a href="mailto:hello@velvetnest.com">
+                  <a href="mailto:velvetnest.contact@gmail.com">
                     <Mail className="mr-2 h-4 w-4" />
-                    hello@velvetnest.com
+                    velvetnest.contact@gmail.com
                   </a>
                 </Button>
               </div>
