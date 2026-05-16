@@ -1,5 +1,5 @@
 "use client"
-
+import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 import { Search, Menu, X, Instagram, Youtube } from "lucide-react"
@@ -46,9 +46,18 @@ export function Header() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
-              VelvetNest
-            </h1>
+            <div className="flex items-center gap-2">
+  <Image
+    src="/logo.png"
+    alt="VelvetNest Logo"
+    width={40}
+    height={40}
+  />
+
+  <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
+    VelvetNest
+  </h1>
+</div>
           </Link>
 
           {/* Desktop navigation */}
