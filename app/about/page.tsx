@@ -81,7 +81,7 @@ export default function AboutPage() {
                 <div className="relative">
                   <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
                     <Image
-                      src="/about-image.jpg"
+                      src="/about-image.webp"
                       alt="About VelvetNest"
                       fill
                       className="object-cover"
