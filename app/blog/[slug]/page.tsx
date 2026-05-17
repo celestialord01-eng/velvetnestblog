@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+  import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -16,9 +16,9 @@ import ShareButtons from "./ShareButtons"
 import { client } from "@/sanity/lib/client"
 
 interface BlogPostPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 async function getPost(slug: string) {
@@ -27,24 +27,31 @@ async function getPost(slug: string) {
     title,
     excerpt,
     publishedAt,
-    category,
     body,
     "slug": slug.current,
-    "image": mainImage.asset->url
+    "image": mainImage.asset->url,
+    "category": categories[0]->title
   }`
 
   return await client.fetch(query, { slug })
 }
 
-async function getRelatedPosts(category: string, currentId: string) {
-  const query = `*[_type == "post" && category == $category && _id != $currentId] | order(_createdAt desc)[0...3]{
+async function getRelatedPosts(
+  category: string,
+  currentId: string
+) {
+  const query = `*[
+    _type == "post" &&
+    categories[0]->title == $category &&
+    _id != $currentId
+  ] | order(_createdAt desc)[0...3]{
     _id,
     title,
     excerpt,
     publishedAt,
-    category,
     "slug": slug.current,
-    "image": mainImage.asset->url
+    "image": mainImage.asset->url,
+    "category": categories[0]->title
   }`
 
   return await client.fetch(query, {
@@ -56,7 +63,9 @@ async function getRelatedPosts(category: string, currentId: string) {
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
-  const post = await getPost(params.slug)
+  const { slug } = await params
+
+  const post = await getPost(slug)
 
   if (!post) {
     return {
@@ -79,7 +88,9 @@ export async function generateMetadata({
 export default async function BlogPostPage({
   params,
 }: BlogPostPageProps) {
-  const post = await getPost(params.slug)
+  const { slug } = await params
+
+  const post = await getPost(slug)
 
   if (!post) {
     notFound()
@@ -92,11 +103,11 @@ export default async function BlogPostPage({
 
   const relatedProducts = amazonFinds
     .filter((p) =>
-      post.category === "fashion"
+      post.category === "Fashion"
         ? p.category === "fashion"
-        : post.category === "home-decor"
+        : post.category === "Home Decor"
         ? p.category === "home"
-        : post.category === "beauty"
+        : post.category === "Beauty"
         ? p.category === "beauty"
         : true
     )
@@ -134,7 +145,9 @@ export default async function BlogPostPage({
             <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                {new Date(post.publishedAt).toDateString()}
+                {post.publishedAt
+                  ? new Date(post.publishedAt).toDateString()
+                  : "No date"}
               </div>
 
               <div className="flex items-center gap-2">
@@ -207,9 +220,13 @@ export default async function BlogPostPage({
                     excerpt={relatedPost.excerpt}
                     image={relatedPost.image}
                     category={relatedPost.category}
-                    date={new Date(
+                    date={
                       relatedPost.publishedAt
-                    ).toDateString()}
+                        ? new Date(
+                            relatedPost.publishedAt
+                          ).toDateString()
+                        : "No date"
+                    }
                     slug={relatedPost.slug}
                   />
                 ))}
@@ -222,4 +239,4 @@ export default async function BlogPostPage({
       <Footer />
     </div>
   )
-                             }
+}
