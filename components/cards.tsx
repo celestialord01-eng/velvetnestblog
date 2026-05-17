@@ -1,5 +1,5 @@
 "use client"
-
+import { urlFor } from "@/sanity/lib/image"
 import Image from "next/image"
 import Link from "next/link"
 import { ExternalLink } from "lucide-react"
