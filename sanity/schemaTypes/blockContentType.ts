@@ -12,7 +12,7 @@ import {ImageIcon} from '@sanity/icons'
  *  }
  */
 
-export const blockContentType = defineType({
+export const defineType({
   title: 'Block Content',
   name: 'blockContent',
   type: 'array',
