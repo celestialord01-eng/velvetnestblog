@@ -1,5 +1,5 @@
 "use client"
-import { urlFor } from "@/sanity/lib/image"
+
 import Image from "next/image"
 import Link from "next/link"
 import { ExternalLink } from "lucide-react"
@@ -29,15 +29,16 @@ export function BlogCard({
         <div className="relative overflow-hidden rounded-lg bg-card">
           <div className={`relative ${featured ? "aspect-[3/4]" : "aspect-[4/5]"}`}>
             <Image
-              src={urlFor(image).width(800).url()}
+              src={image}
               alt={title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
+
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
           </div>
-          
+
           {/* Category badge */}
           <div className="absolute left-3 top-3">
             <span className="rounded-full bg-card/90 px-3 py-1 text-xs font-medium uppercase tracking-wider backdrop-blur-sm">
@@ -51,8 +52,11 @@ export function BlogCard({
             aria-label="Save to Pinterest"
             onClick={(e) => {
               e.preventDefault()
+
               window.open(
-                `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.origin + "/blog/" + slug)}&media=${encodeURIComponent(image)}&description=${encodeURIComponent(title)}`,
+                `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(
+                  window.location.origin + "/blog/" + slug
+                )}&media=${encodeURIComponent(image)}&description=${encodeURIComponent(title)}`,
                 "_blank",
                 "width=750,height=600"
               )
@@ -68,9 +72,11 @@ export function BlogCard({
           <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             {date}
           </p>
+
           <h3 className="text-lg font-semibold leading-tight transition-colors group-hover:text-accent">
             {title}
           </h3>
+
           <p className="line-clamp-2 text-sm text-muted-foreground">
             {excerpt}
           </p>
@@ -109,14 +115,13 @@ export function ProductCard({
           <div className="relative aspect-square">
             <Image
               src={image}
-              
               alt={title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
             />
           </div>
-          
+
           {/* Category badge */}
           <div className="absolute left-3 top-3">
             <span className="rounded-full bg-card/90 px-3 py-1 text-xs font-medium uppercase tracking-wider backdrop-blur-sm">
@@ -136,8 +141,10 @@ export function ProductCard({
           <h3 className="line-clamp-2 text-sm font-medium leading-tight transition-colors group-hover:text-accent">
             {title}
           </h3>
+
           <div className="flex items-center gap-2">
             <span className="font-semibold">{price}</span>
+
             {originalPrice && (
               <span className="text-sm text-muted-foreground line-through">
                 {originalPrice}
@@ -148,4 +155,4 @@ export function ProductCard({
       </a>
     </article>
   )
-}
+            }
