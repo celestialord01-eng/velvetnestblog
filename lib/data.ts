@@ -1,4 +1,4 @@
-    // Sample data for VelvetNest lifestyle blog
+// Sample data for VelvetNest lifestyle blog
 
 export const blogPosts = [
   {
@@ -7,98 +7,101 @@ export const blogPosts = [
     excerpt:
       "Build a capsule wardrobe with these essential pieces that never go out of style. From the perfect white button-down to classic ballet flats.",
     image:
-      "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=800&q=80",
+      "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop",
     category: "fashion",
     date: "May 12, 2026",
     slug: "timeless-wardrobe-staples",
     featured: true,
     content: `
-      <p>Creating a timeless wardrobe doesn't mean sacrificing style—it means investing in pieces that work harder for you. These ten essentials form the foundation of any well-curated closet.</p>
-      <h2>1. The Perfect White Button-Down</h2>
-      <p>A crisp white shirt is the ultimate chameleon piece. Tuck it into high-waisted trousers for the office, tie it at the waist with jeans for weekend brunch, or layer it under a cashmere sweater for effortless polish.</p>
-      <h2>2. Classic Straight-Leg Jeans</h2>
-      <p>Forget the trend cycle—a well-fitting pair of straight-leg jeans in a medium wash will serve you for years. Look for quality denim with just a touch of stretch for comfort.</p>
+      <p>Creating a timeless wardrobe doesn't mean sacrificing style—it means investing in pieces that work harder for you.</p>
     `,
   },
+
   {
     id: 2,
     title: "Creating a Cozy Reading Nook: A Complete Guide",
     excerpt:
       "Transform any corner into your personal sanctuary with plush textures, warm lighting, and thoughtful design elements.",
     image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
     category: "home-decor",
     date: "May 10, 2026",
     slug: "cozy-reading-nook-guide",
     featured: false,
   },
+
   {
     id: 3,
     title: "My Morning Skincare Routine for Glowing Skin",
     excerpt:
-      "A step-by-step guide to the products and techniques that transformed my complexion. Plus my holy grail products.",
+      "A step-by-step guide to the products and techniques that transformed my complexion.",
     image:
-      "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&q=80",
+      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop",
     category: "beauty",
     date: "May 8, 2026",
     slug: "morning-skincare-routine",
     featured: true,
   },
+
   {
     id: 4,
     title: "Elevated Outfit Ideas for Spring 2026",
     excerpt:
-      "Fresh spring styling inspiration featuring trending colors, textures, and silhouettes you'll want to recreate.",
+      "Fresh spring styling inspiration featuring trending colors, textures, and silhouettes.",
     image:
-      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&q=80",
+      "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=1200&auto=format&fit=crop",
     category: "outfit-ideas",
     date: "May 6, 2026",
     slug: "spring-outfit-ideas",
     featured: false,
   },
+
   {
     id: 5,
     title: "Sunday Reset: My Self-Care Rituals",
     excerpt:
-      "How I prepare for the week ahead with intentional practices for mind, body, and soul. Your guide to a restorative Sunday.",
+      "How I prepare for the week ahead with intentional practices for mind, body, and soul.",
     image:
-      "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80",
+      "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1200&auto=format&fit=crop",
     category: "self-care",
     date: "May 4, 2026",
     slug: "sunday-reset-self-care",
     featured: false,
   },
+
   {
     id: 6,
     title: "Neutral Living Room Makeover on a Budget",
     excerpt:
-      "How I transformed my living space with affordable finds and clever styling tricks. Before and after included!",
+      "How I transformed my living space with affordable finds and clever styling tricks.",
     image:
-      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80",
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
     category: "home-decor",
     date: "May 2, 2026",
     slug: "neutral-living-room-makeover",
     featured: true,
   },
+
   {
     id: 7,
     title: "The Art of French Girl Style",
     excerpt:
-      "Effortless, chic, and timeless—learn the secrets behind that coveted Parisian aesthetic and how to achieve it.",
+      "Effortless, chic, and timeless—learn the secrets behind that coveted Parisian aesthetic.",
     image:
-      "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=80",
+      "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200&auto=format&fit=crop",
     category: "fashion",
     date: "April 30, 2026",
     slug: "french-girl-style",
     featured: false,
   },
+
   {
     id: 8,
     title: "Best Clean Beauty Products of 2026",
     excerpt:
       "My curated selection of non-toxic, sustainable beauty products that actually deliver results.",
     image:
-      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=80",
+      "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?q=80&w=1200&auto=format&fit=crop",
     category: "beauty",
     date: "April 28, 2026",
     slug: "clean-beauty-products",
@@ -109,39 +112,42 @@ export const blogPosts = [
 export const amazonFinds = [
   {
     id: 1,
-    title: "Chunky Knit Throw Blanket - Perfect for Cozy Nights",
+    title: "Chunky Knit Throw Blanket",
     price: "$45.99",
     originalPrice: "$59.99",
     image:
-      "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80",
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
     link: "https://amazon.com",
     category: "home",
   },
+
   {
     id: 2,
     title: "Gold Minimalist Hoop Earrings Set",
     price: "$18.99",
     image:
-      "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=800&q=80",
+      "https://images.unsplash.com/photo-1617038220319-276d3cfab638?q=80&w=1200&auto=format&fit=crop",
     link: "https://amazon.com",
     category: "fashion",
   },
+
   {
     id: 3,
-    title: "Ceramic Vase Set - Modern Boho Decor",
+    title: "Ceramic Vase Set",
     price: "$32.99",
     originalPrice: "$42.99",
     image:
-      "https://images.unsplash.com/photo-1612620743150-fcea8ec5442a?w=800&q=80",
+      "https://images.unsplash.com/photo-1517705008128-361805f42e86?q=80&w=1200&auto=format&fit=crop",
     link: "https://amazon.com",
     category: "home",
   },
+
   {
     id: 4,
-    title: "Silk Hair Scrunchies - 6 Pack Neutral Colors",
+    title: "Silk Hair Scrunchies",
     price: "$14.99",
     image:
-      "https://images.unsplash.com/photo-1522338242042-2d1c22ed1641?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=1200&auto=format&fit=crop",
     link: "https://amazon.com",
     category: "beauty",
   },
@@ -152,72 +158,80 @@ export const categories = [
     name: "Fashion",
     slug: "fashion",
     image:
-      "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80",
+      "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop",
     count: 24,
   },
+
   {
     name: "Outfit Ideas",
     slug: "outfit-ideas",
     image:
-      "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80",
+      "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=1200&auto=format&fit=crop",
     count: 18,
   },
+
   {
     name: "Home Decor",
     slug: "home-decor",
     image:
-      "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&q=80",
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
     count: 31,
   },
+
   {
     name: "Beauty",
     slug: "beauty",
     image:
-      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&q=80",
+      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop",
     count: 15,
   },
+
   {
     name: "Self Care",
     slug: "self-care",
     image:
-      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=800&q=80",
+      "https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1200&auto=format&fit=crop",
     count: 12,
   },
 ]
+
 export const shopFavorites = [
   {
     id: 1,
     title: "The Perfect Trench Coat",
     price: "$128.00",
     image:
-      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=80",
+      "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200&auto=format&fit=crop",
     link: "https://amazon.com",
     category: "fashion",
   },
+
   {
     id: 2,
     title: "Bouclé Accent Chair",
     price: "$349.00",
     image:
-      "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=800&q=80",
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
     link: "https://amazon.com",
     category: "home",
   },
+
   {
     id: 3,
     title: "Charlotte Tilbury Pillow Talk Set",
     price: "$75.00",
     image:
-      "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=800&q=80",
+      "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?q=80&w=1200&auto=format&fit=crop",
     link: "https://amazon.com",
     category: "beauty",
   },
+
   {
     id: 4,
     title: "Cashmere V-Neck Sweater",
     price: "$168.00",
     image:
-      "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&q=80",
+      "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop",
     link: "https://amazon.com",
     category: "fashion",
   },
