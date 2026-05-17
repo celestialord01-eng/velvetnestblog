@@ -27,7 +27,7 @@ async function getPost(slug: string) {
     publishedAt,
     body,
     "slug": slug.current,
-    "image": mainImage.asset->url,
+    mainImage,
     "category": categories[0]->title
   }`
 
@@ -48,7 +48,7 @@ async function getRelatedPosts(
     excerpt,
     publishedAt,
     "slug": slug.current,
-    "image": mainImage.asset->url,
+    mainImage,
     "category": categories[0]->title
   }`
 
