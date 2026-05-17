@@ -7,7 +7,7 @@ import { BlogCard, ProductCard } from "@/components/cards"
 import { NewsletterPopup } from "@/components/newsletter-popup"
 import { Button } from "@/components/ui/button"
 import { blogPosts, amazonFinds, categories, shopFavorites } from "@/lib/data"
-
+import { urlFor } from "@/sanity/lib/image"
 export default function HomePage() {
   return (
     <div className="min-h-screen">
