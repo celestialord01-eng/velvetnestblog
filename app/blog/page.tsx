@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+        import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -8,6 +8,7 @@ import { BlogCard } from "@/components/cards"
 import { Button } from "@/components/ui/button"
 
 import { client } from "@/sanity/lib/client"
+import { urlFor } from "@/sanity/lib/image"
 
 export const metadata: Metadata = {
   title: "Blog | VelvetNest - Fashion, Home & Lifestyle",
@@ -144,7 +145,14 @@ export default async function BlogPage({
               <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
                   <Image
-                    src={featuredPost.image}
+                    src={
+                      featuredPost.mainImage
+                        ? urlFor(featuredPost.mainImage)
+                            .width(1200)
+                            .height(800)
+                            .url()
+                        : "/placeholder.jpg"
+                    }
                     alt={featuredPost.title}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -200,7 +208,7 @@ export default async function BlogPage({
                   key={post._id}
                   title={post.title}
                   excerpt={post.excerpt}
-                  image={post.image}
+                  image={post.mainImage}
                   category={post.category}
                   date={
                     post.publishedAt
@@ -251,4 +259,4 @@ export default async function BlogPage({
       <Footer />
     </div>
   )
-            }
+}
