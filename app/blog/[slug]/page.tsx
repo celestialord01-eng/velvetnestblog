@@ -1,4 +1,4 @@
-  import type { Metadata } from "next"
+    import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -85,6 +85,105 @@ export async function generateMetadata({
   }
 }
 
+const portableTextComponents = {
+  types: {
+    image: ({ value }: any) => (
+      <div className="my-10 overflow-hidden rounded-2xl">
+        <Image
+          src={value.asset.url}
+          alt={value.alt || "Blog image"}
+          width={1200}
+          height={800}
+          className="h-auto w-full rounded-2xl object-cover"
+        />
+      </div>
+    ),
+  },
+
+  block: {
+    h1: ({ children }: any) => (
+      <h1 className="mt-12 mb-6 text-4xl font-bold tracking-tight">
+        {children}
+      </h1>
+    ),
+
+    h2: ({ children }: any) => (
+      <h2 className="mt-12 mb-6 text-3xl font-semibold tracking-tight">
+        {children}
+      </h2>
+    ),
+
+    h3: ({ children }: any) => (
+      <h3 className="mt-10 mb-4 text-2xl font-semibold">
+        {children}
+      </h3>
+    ),
+
+    normal: ({ children }: any) => (
+      <p className="mb-6 text-lg leading-8 text-muted-foreground">
+        {children}
+      </p>
+    ),
+
+    blockquote: ({ children }: any) => (
+      <blockquote className="my-8 border-l-4 border-primary pl-6 italic text-muted-foreground">
+        {children}
+      </blockquote>
+    ),
+  },
+
+  list: {
+    bullet: ({ children }: any) => (
+      <ul className="mb-6 ml-6 list-disc space-y-3">
+        {children}
+      </ul>
+    ),
+
+    number: ({ children }: any) => (
+      <ol className="mb-6 ml-6 list-decimal space-y-3">
+        {children}
+      </ol>
+    ),
+  },
+
+  listItem: {
+    bullet: ({ children }: any) => (
+      <li className="text-lg leading-8 text-muted-foreground">
+        {children}
+      </li>
+    ),
+
+    number: ({ children }: any) => (
+      <li className="text-lg leading-8 text-muted-foreground">
+        {children}
+      </li>
+    ),
+  },
+
+  marks: {
+    strong: ({ children }: any) => (
+      <strong className="font-semibold text-foreground">
+        {children}
+      </strong>
+    ),
+
+    em: ({ children }: any) => (
+      <em className="italic">{children}</em>
+    ),
+
+    link: ({ children, value }: any) => (
+      <a
+        href={value.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-medium text-primary underline underline-offset-4"
+      >
+        {children}
+      </a>
+    ),
+  },
+}
+
 export default async function BlogPostPage({
   params,
 }: BlogPostPageProps) {
@@ -114,7 +213,7 @@ export default async function BlogPostPage({
     .slice(0, 4)
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <main>
@@ -129,12 +228,12 @@ export default async function BlogPostPage({
             </Link>
 
             <div className="mt-8">
-              <span className="rounded-full border border-border bg-secondary px-3 py-1 text-xs font-medium uppercase tracking-wider">
+              <span className="rounded-full border border-border bg-secondary px-4 py-1 text-xs font-medium uppercase tracking-wider">
                 {post.category}
               </span>
             </div>
 
-            <h1 className="mt-6 text-4xl font-semibold leading-tight tracking-tight md:text-5xl lg:text-6xl">
+            <h1 className="mt-6 text-4xl font-bold leading-tight tracking-tight md:text-5xl lg:text-6xl">
               {post.title}
             </h1>
 
@@ -157,7 +256,7 @@ export default async function BlogPostPage({
             </div>
           </header>
 
-          <div className="relative mx-auto aspect-[21/9] max-w-6xl overflow-hidden">
+          <div className="relative mx-auto aspect-[21/9] max-w-6xl overflow-hidden rounded-3xl">
             <Image
               src={post.image}
               alt={post.title}
@@ -171,11 +270,14 @@ export default async function BlogPostPage({
           <div className="mx-auto max-w-3xl px-4 py-12 md:py-16">
             <ShareButtons post={post} />
 
-            <div className="prose prose-lg max-w-none">
-              <PortableText value={post.body} />
+            <div className="mt-12">
+              <PortableText
+                value={post.body}
+                components={portableTextComponents}
+              />
             </div>
 
-            <div className="mt-12">
+            <div className="mt-16">
               <ShareButtons post={post} />
             </div>
           </div>
@@ -239,4 +341,4 @@ export default async function BlogPostPage({
       <Footer />
     </div>
   )
-}
+            }
