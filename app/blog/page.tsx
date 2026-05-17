@@ -26,7 +26,7 @@ async function getPosts(category?: string) {
         excerpt,
         publishedAt,
         "slug": slug.current,
-        "image": mainImage.asset->url,
+        mainImage,
         "category": categories[0]->title
       }`
     : `*[_type == "post"] | order(_createdAt desc){
@@ -35,7 +35,7 @@ async function getPosts(category?: string) {
         excerpt,
         publishedAt,
         "slug": slug.current,
-        "image": mainImage.asset->url,
+        mainImage,
         "category": categories[0]->title
       }`
 
