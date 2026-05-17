@@ -29,7 +29,7 @@ export function BlogCard({
         <div className="relative overflow-hidden rounded-lg bg-card">
           <div className={`relative ${featured ? "aspect-[3/4]" : "aspect-[4/5]"}`}>
             <Image
-              src={image}
+              src={urlFor(image).width(800).url()}
               alt={title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -108,7 +108,8 @@ export function ProductCard({
         <div className="relative overflow-hidden rounded-lg bg-card">
           <div className="relative aspect-square">
             <Image
-              src={image}
+              src={urlFor(image).width(800).url()}
+              
               alt={title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
