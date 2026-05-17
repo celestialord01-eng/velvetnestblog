@@ -8,12 +8,10 @@ import { PortableText } from "@portabletext/react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { BlogCard, ProductCard } from "@/components/cards"
-
 import { amazonFinds } from "@/lib/data"
-
 import ShareButtons from "./ShareButtons"
-
 import { client } from "@/sanity/lib/client"
+import { urlFor } from "@/sanity/lib/image"
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -86,20 +84,20 @@ export async function generateMetadata({
 }
 
 const portableTextComponents = {
-  types: {
-    image: ({ value }: any) => (
-      <div className="my-10 overflow-hidden rounded-2xl">
-        <Image
-          src={value.asset.url}
-          alt={value.alt || "Blog image"}
-          width={1200}
-          height={800}
-          className="h-auto w-full rounded-2xl object-cover"
-        />
-      </div>
-    ),
-  },
-
+  
+types: {
+  image: ({ value }: any) => (
+    <div className="my-10 overflow-hidden rounded-2xl">
+      <Image
+        src={urlFor(value).width(1200).url()}
+        alt={value.alt || "Blog image"}
+        width={1200}
+        height={800}
+        className="h-auto w-full rounded-2xl object-cover"
+      />
+    </div>
+  ),
+},
   block: {
     h1: ({ children }: any) => (
       <h1 className="mt-12 mb-6 text-4xl font-bold tracking-tight">
