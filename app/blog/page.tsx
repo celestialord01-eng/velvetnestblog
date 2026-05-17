@@ -1,39 +1,59 @@
-          import type { Metadata } from "next"
+import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
+
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { BlogCard } from "@/components/cards"
 import { Button } from "@/components/ui/button"
+
 import { client } from "@/sanity/lib/client"
 
 export const metadata: Metadata = {
   title: "Blog | VelvetNest - Fashion, Home & Lifestyle",
   description:
-    "Explore our latest articles on fashion, home decor, beauty, self-care, and lifestyle. Find inspiration for your everyday life.",
-  openGraph: {
-    title: "Blog | VelvetNest",
-    description:
-      "Explore our latest articles on fashion, home decor, beauty, self-care, and lifestyle.",
-  },
+    "Explore our latest articles on fashion, home decor, beauty, self-care, and lifestyle.",
 }
 
-async function getPosts() {
-  const query = `*[_type == "post"] | order(_createdAt desc){
-    _id,
-    title,
-    "slug": slug.current,
-    "image": mainImage.asset->url,
-    excerpt,
-    publishedAt,
-    category
-  }`
+async function getPosts(category?: string) {
+  const query = category
+    ? `*[
+        _type == "post" &&
+        categories[0]->slug.current == $category
+      ] | order(_createdAt desc){
+        _id,
+        title,
+        excerpt,
+        publishedAt,
+        "slug": slug.current,
+        "image": mainImage.asset->url,
+        "category": categories[0]->title
+      }`
+    : `*[_type == "post"] | order(_createdAt desc){
+        _id,
+        title,
+        excerpt,
+        publishedAt,
+        "slug": slug.current,
+        "image": mainImage.asset->url,
+        "category": categories[0]->title
+      }`
 
-  return await client.fetch(query)
+  return await client.fetch(query, { category })
 }
 
-export default async function BlogPage() {
-  const posts = await getPosts()
+interface BlogPageProps {
+  searchParams: Promise<{
+    category?: string
+  }>
+}
+
+export default async function BlogPage({
+  searchParams,
+}: BlogPageProps) {
+  const { category } = await searchParams
+
+  const posts = await getPosts(category)
 
   const featuredPost = posts[0]
   const remainingPosts = posts.slice(1)
@@ -56,8 +76,7 @@ export default async function BlogPage() {
 
             <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
               Discover curated fashion inspiration, cozy home decor ideas,
-              beauty tips, and lifestyle wisdom to help you live your most
-              beautiful life.
+              beauty tips, and lifestyle wisdom.
             </p>
           </div>
         </section>
@@ -68,42 +87,42 @@ export default async function BlogPage() {
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/blog"
-                className="rounded-full border border-primary bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors"
+                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-secondary"
               >
                 All Posts
               </Link>
 
               <Link
                 href="/blog?category=fashion"
-                className="rounded-full border px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary"
+                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-secondary"
               >
                 Fashion
               </Link>
 
               <Link
                 href="/blog?category=beauty"
-                className="rounded-full border px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary"
+                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-secondary"
               >
                 Beauty
               </Link>
 
               <Link
                 href="/blog?category=home-decor"
-                className="rounded-full border px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary"
+                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-secondary"
               >
                 Home Decor
               </Link>
 
               <Link
                 href="/blog?category=outfit-ideas"
-                className="rounded-full border px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary"
+                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-secondary"
               >
                 Outfit Ideas
               </Link>
 
               <Link
                 href="/blog?category=self-care"
-                className="rounded-full border px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary"
+                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-secondary"
               >
                 Self Care
               </Link>
@@ -142,7 +161,11 @@ export default async function BlogPage() {
 
                 <div className="flex flex-col justify-center">
                   <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
-                    {new Date(featuredPost.publishedAt).toDateString()}
+                    {featuredPost.publishedAt
+                      ? new Date(
+                          featuredPost.publishedAt
+                        ).toDateString()
+                      : "No date"}
                   </p>
 
                   <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight transition-colors group-hover:text-accent md:text-4xl">
@@ -156,20 +179,6 @@ export default async function BlogPage() {
                   <div className="mt-6">
                     <span className="inline-flex items-center gap-2 border-b border-foreground pb-1 font-medium transition-colors group-hover:border-accent group-hover:text-accent">
                       Read Article
-
-                      <svg
-                        className="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
                     </span>
                   </div>
                 </div>
@@ -193,7 +202,11 @@ export default async function BlogPage() {
                   excerpt={post.excerpt}
                   image={post.image}
                   category={post.category}
-                  date={new Date(post.publishedAt).toDateString()}
+                  date={
+                    post.publishedAt
+                      ? new Date(post.publishedAt).toDateString()
+                      : "No date"
+                  }
                   slug={post.slug}
                 />
               ))}
@@ -207,7 +220,7 @@ export default async function BlogPage() {
           </div>
         </section>
 
-        {/* Newsletter CTA */}
+        {/* Newsletter */}
         <section className="bg-primary py-16 text-primary-foreground md:py-20">
           <div className="mx-auto max-w-7xl px-4 text-center">
             <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
@@ -215,8 +228,8 @@ export default async function BlogPage() {
             </h2>
 
             <p className="mx-auto mt-4 max-w-md text-primary-foreground/80">
-              Subscribe to get the latest articles, styling tips, and exclusive
-              finds delivered straight to your inbox.
+              Subscribe to get the latest articles and inspiration delivered
+              straight to your inbox.
             </p>
 
             <form className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
@@ -238,4 +251,4 @@ export default async function BlogPage() {
       <Footer />
     </div>
   )
-}
+            }
