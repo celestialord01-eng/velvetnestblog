@@ -108,7 +108,7 @@ export function ProductCard({
         <div className="relative overflow-hidden rounded-lg bg-card">
           <div className="relative aspect-square">
             <Image
-              src={urlFor(image).width(800).url()}
+              src={image}
               
               alt={title}
               fill
