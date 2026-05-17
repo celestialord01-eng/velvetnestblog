@@ -256,13 +256,11 @@ export default async function BlogPostPage({
 
           <div className="relative mx-auto aspect-[21/9] max-w-6xl overflow-hidden rounded-3xl">
             <Image
-              src={post.image}
-              alt={post.title}
-              fill
-              className="object-cover"
-              priority
-              sizes="100vw"
-            />
+  src={urlFor(post.mainImage).width(1200).url()}
+  alt={post.title}
+  width={1200}
+  height={800}
+/>
           </div>
 
           <div className="mx-auto max-w-3xl px-4 py-12 md:py-16">
