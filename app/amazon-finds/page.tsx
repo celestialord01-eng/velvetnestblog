@@ -162,12 +162,11 @@ export default async function AmazonFindsPage() {
                   price={product.price}
                   originalPrice={product.originalPrice}
                   image={
-                    product.productImage
-                      ? urlFor(product.productImage)
-                          .width(1000)
-                          .url()
-                      : "/placeholder.jpg"
+  product.productImage?.asset
+    ? urlFor(product.productImage).width(1000).url()
+    : "/placeholder.jpg"
                   }
+                    
                   link={product.affiliateLink}
                   category={product.category || "Amazon Find"}
                 />
