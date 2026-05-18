@@ -33,7 +33,7 @@ export default async function AmazonFindsPage() {
       price,
       originalPrice,
       affiliateLink,
-      productImage,
+      image,
       featured,
       "category": category->title
     }
@@ -46,7 +46,7 @@ export default async function AmazonFindsPage() {
       title,
       price,
       affiliateLink,
-      productImage,
+      image,
       "category": category->title
     }
   `)
@@ -60,7 +60,7 @@ export default async function AmazonFindsPage() {
         <section className="relative overflow-hidden bg-secondary/30 py-16 md:py-24">
           <div className="mx-auto max-w-7xl px-4">
             <div className="grid items-center gap-12 lg:grid-cols-2">
-              
+
               {/* LEFT */}
               <div className="text-center lg:text-left">
                 <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
@@ -94,19 +94,19 @@ export default async function AmazonFindsPage() {
                   {amazonFinds.slice(0, 4).map((item: any) => (
                     <div
                       key={item._id}
-                      className="relative aspect-[3/4] overflow-hidden rounded-xl"
+                      className="relative aspect-[3/4] overflow-hidden rounded-xl bg-card"
                     >
-                      {item.productImage?.asset && (
-  <Image
-    src={urlFor(item.productImage)
-      .width(600)
-      .url()}
-    alt={item.title}
-    fill
-    className="object-cover"
-    sizes="25vw"
-  />
-)}
+                      {item.image?.asset && (
+                        <Image
+                          src={urlFor(item.image)
+                            .width(600)
+                            .url()}
+                          alt={item.title}
+                          fill
+                          className="object-cover"
+                          sizes="25vw"
+                        />
+                      )}
                     </div>
                   ))}
 
@@ -121,8 +121,8 @@ export default async function AmazonFindsPage() {
         <section className="border-b border-border bg-muted/50 py-4">
           <div className="mx-auto max-w-7xl px-4 text-center">
             <p className="text-sm text-muted-foreground">
-              <span className="font-medium">Disclosure:</span>
-              {" "}This page contains affiliate links. I may earn a small
+              <span className="font-medium">Disclosure:</span>{" "}
+              This page contains affiliate links. I may earn a small
               commission if you purchase through these links.
             </p>
           </div>
@@ -163,11 +163,10 @@ export default async function AmazonFindsPage() {
                   price={product.price}
                   originalPrice={product.originalPrice}
                   image={
-  product.productImage?.asset
-    ? urlFor(product.productImage).width(1000).url()
-    : "/placeholder.jpg"
+                    product.image?.asset
+                      ? urlFor(product.image).width(1000).url()
+                      : "/placeholder.jpg"
                   }
-                    
                   link={product.affiliateLink}
                   category={product.category || "Amazon Find"}
                 />
@@ -215,14 +214,15 @@ export default async function AmazonFindsPage() {
                 >
                   <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-card">
 
-                    {item.productImage && (
+                    {item.image?.asset && (
                       <Image
-                        src={urlFor(item.productImage)
+                        src={urlFor(item.image)
                           .width(1000)
                           .url()}
                         alt={item.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="25vw"
                       />
                     )}
 
@@ -296,7 +296,5 @@ export default async function AmazonFindsPage() {
       <Footer />
     </div>
   )
-}
-        
-          
+            }
   
