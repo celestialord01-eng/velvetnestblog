@@ -333,8 +333,8 @@ export default async function HomePage() {
                 price={product.price}
                 originalPrice={product.originalPrice}
                 image={
-                  product.productImage
-                    ? urlFor(product.productImage).width(1000).url()
+                  product.image
+                    ? urlFor(product.image).width(1000).url()
                     : "/placeholder.jpg"
                 }
                 link={product.affiliateLink}
