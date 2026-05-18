@@ -79,15 +79,21 @@ export default function AboutPage() {
               </div>
               <div className="order-1 lg:order-2">
                 <div className="relative">
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
-                    <Image
-                      src="/about-image.webp"
-                      alt="About VelvetNest"
-                      fill
-                      className="object-cover"
-                      priority
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
+                  <div className="group overflow-hidden rounded-2xl">
+                    <div className="relative aspect-[4/5] bg-card">
+                      <Image
+                        src="/about-image.webp"
+                        alt="About VelvetNest"
+                        fill
+                        className="
+                          object-cover
+                          transition-transform duration-500 ease-out
+                          group-hover:scale-110
+                        "
+                        priority
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                      />
+                    </div>
                   </div>
                   {/* Decorative element */}
                   <div className="absolute -bottom-4 -left-4 -z-10 h-full w-full rounded-2xl border-2 border-accent/30" />
@@ -158,60 +164,78 @@ export default function AboutPage() {
             </h2>
             <div className="mt-12 grid gap-6 md:grid-cols-3">
               <Link href="/blog?category=fashion" className="group">
-                <div className="relative aspect-[3/4] overflow-hidden rounded-2xl">
-                  <Image
-                    src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80"
-                    alt="Fashion content"
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="text-2xl font-semibold text-primary-foreground">
-                      Fashion & Style
-                    </h3>
-                    <p className="mt-2 text-sm text-primary-foreground/80">
-                      Capsule wardrobe tips, outfit ideas, and style inspiration for every season.
-                    </p>
+                <div className="group overflow-hidden rounded-2xl">
+                  <div className="relative aspect-[3/4] bg-card">
+                    <Image
+                      src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80"
+                      alt="Fashion content"
+                      fill
+                      className="
+                        object-cover
+                        transition-transform duration-500 ease-out
+                        group-hover:scale-110
+                      "
+                    />
                   </div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-2xl font-semibold text-primary-foreground">
+                    Fashion & Style
+                  </h3>
+                  <p className="mt-2 text-sm text-primary-foreground/80">
+                    Capsule wardrobe tips, outfit ideas, and style inspiration for every season.
+                  </p>
                 </div>
               </Link>
               <Link href="/blog?category=home-decor" className="group">
-                <div className="relative aspect-[3/4] overflow-hidden rounded-2xl">
-                  <Image
-                    src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=80"
-                    alt="Home decor content"
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="text-2xl font-semibold text-primary-foreground">
-                      Home Decor
-                    </h3>
-                    <p className="mt-2 text-sm text-primary-foreground/80">
-                      Creating cozy, beautiful spaces that feel like home on any budget.
-                    </p>
+                <div className="group overflow-hidden rounded-2xl">
+                  <div className="relative aspect-[3/4] bg-card">
+                    <Image
+                      src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=80"
+                      alt="Home decor content"
+                      fill
+                      className="
+                        object-cover
+                        transition-transform duration-500 ease-out
+                        group-hover:scale-110
+                      "
+                    />
                   </div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-2xl font-semibold text-primary-foreground">
+                    Home Decor
+                  </h3>
+                  <p className="mt-2 text-sm text-primary-foreground/80">
+                    Creating cozy, beautiful spaces that feel like home on any budget.
+                  </p>
                 </div>
               </Link>
               <Link href="/amazon-finds" className="group">
-                <div className="relative aspect-[3/4] overflow-hidden rounded-2xl">
-                  <Image
-                    src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&q=80"
-                    alt="Beauty content"
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="text-2xl font-semibold text-primary-foreground">
-                      Beauty & Self Care
-                    </h3>
-                    <p className="mt-2 text-sm text-primary-foreground/80">
-                      Skincare routines, wellness tips, and products that actually work.
-                    </p>
+                <div className="group overflow-hidden rounded-2xl">
+                  <div className="relative aspect-[3/4] bg-card">
+                    <Image
+                      src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&q=80"
+                      alt="Beauty content"
+                      fill
+                      className="
+                        object-cover
+                        transition-transform duration-500 ease-out
+                        group-hover:scale-110
+                      "
+                    />
                   </div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-2xl font-semibold text-primary-foreground">
+                    Beauty & Self Care
+                  </h3>
+                  <p className="mt-2 text-sm text-primary-foreground/80">
+                    Skincare routines, wellness tips, and products that actually work.
+                  </p>
                 </div>
               </Link>
             </div>
