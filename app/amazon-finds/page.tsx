@@ -61,14 +61,26 @@ export default function AmazonFindsPage() {
     fetchData()
   }, [])
 
-  const filteredProducts =
-    selectedCategory === "all"
-      ? amazonFinds
-      : amazonFinds.filter(
-          (product: any) =>
-            product.category?.toLowerCase() ===
-            selectedCategory.toLowerCase()
-        )
+const filteredProducts =
+  selectedCategory === "all"
+    ? amazonFinds
+    : amazonFinds.filter((product: any) => {
+        const category = product.category?.toLowerCase() || ""
+
+        if (selectedCategory === "Fashion") {
+          return category.includes("fashion")
+        }
+
+        if (selectedCategory === "Home Decor") {
+          return category.includes("home")
+        }
+
+        if (selectedCategory === "Beauty") {
+          return category.includes("beauty")
+        }
+
+        return false
+      })
 
   return (
     <div className="min-h-screen">
