@@ -1,4 +1,4 @@
-        import Image from "next/image"
+import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
@@ -8,14 +8,60 @@ import { BlogCard, ProductCard } from "@/components/cards"
 import { NewsletterPopup } from "@/components/newsletter-popup"
 import { Button } from "@/components/ui/button"
 
-import { blogPosts, amazonFinds, categories, shopFavorites } from "@/lib/data"
-
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 
 export default async function HomePage() {
+
+  // HERO
   const hero = await client.fetch(`
-    *[_type == "hero"][0]
+    *[_type == "hero"][0]{
+      eyebrow,
+      title1,
+      title2,
+      title3,
+      description,
+      buttonText,
+      buttonLink,
+      heroImage
+    }
+  `)
+
+  // CATEGORIES
+  const categories = await client.fetch(`
+    *[_type == "category"]{
+      _id,
+      title,
+      "slug": slug.current,
+      image,
+      count
+    }
+  `)
+
+  // POSTS
+  const blogPosts = await client.fetch(`
+    *[_type == "post"] | order(publishedAt desc)[0...6]{
+      _id,
+      title,
+      excerpt,
+      publishedAt,
+      "slug": slug.current,
+      mainImage,
+      "category": categories[0]->title
+    }
+  `)
+
+  // AMAZON FINDS
+  const amazonFinds = await client.fetch(`
+    *[_type == "amazonFind"][0...4]{
+      _id,
+      title,
+      price,
+      originalPrice,
+      image,
+      link,
+      category
+    }
   `)
 
   return (
@@ -23,13 +69,15 @@ export default async function HomePage() {
       <Header />
 
       <main>
-        {/* Hero Section */}
+
+        {/* HERO SECTION */}
         <section className="relative overflow-hidden bg-secondary/30">
           <div className="mx-auto max-w-7xl px-4 py-16 md:py-24">
             <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
-              
-              {/* Left Content */}
+
+              {/* LEFT */}
               <div className="animate-fade-up space-y-6 text-center lg:text-left">
+
                 <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
                   {hero?.eyebrow}
                 </p>
@@ -45,6 +93,7 @@ export default async function HomePage() {
                 </p>
 
                 <div className="flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
+
                   <Button asChild size="lg" className="w-full sm:w-auto">
                     <Link href={hero?.buttonLink || "/"}>
                       {hero?.buttonText}
@@ -61,12 +110,15 @@ export default async function HomePage() {
                       Shop My Finds
                     </Link>
                   </Button>
+
                 </div>
               </div>
 
-              {/* Right Image */}
+              {/* RIGHT IMAGE */}
               <div className="relative animate-fade-in">
+
                 <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
+
                   {hero?.heroImage && (
                     <Image
                       src={urlFor(hero.heroImage).width(1000).url()}
@@ -77,13 +129,15 @@ export default async function HomePage() {
                       sizes="(max-width: 1024px) 100vw, 50vw"
                     />
                   )}
+
                 </div>
 
-                {/* Floating cards */}
+                {/* FLOATING CARDS */}
                 <div className="absolute -bottom-4 -left-4 rounded-xl bg-card p-4 shadow-lg md:-left-8 md:p-6">
                   <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                     Trending Now
                   </p>
+
                   <p className="mt-1 font-semibold">
                     Spring Capsule Wardrobe
                   </p>
@@ -91,17 +145,20 @@ export default async function HomePage() {
 
                 <div className="absolute -right-4 top-8 rounded-xl bg-card p-4 shadow-lg md:-right-8 md:p-6">
                   <p className="text-2xl font-bold">500+</p>
+
                   <p className="text-xs text-muted-foreground">
                     Curated Finds
                   </p>
                 </div>
+
               </div>
             </div>
           </div>
         </section>
 
-        {/* Categories Section */}
+        {/* CATEGORIES */}
         <section className="mx-auto max-w-7xl px-4 py-16 md:py-24">
+
           <div className="text-center">
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
               Browse By Category
@@ -113,15 +170,18 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {categories.map((category) => (
+
+            {categories.map((category: any) => (
+
               <Link
-                key={category.slug}
+                key={category._id}
                 href={`/blog?category=${category.slug}`}
                 className="group relative aspect-[3/4] overflow-hidden rounded-xl"
               >
+
                 <Image
-                  src={category.image}
-                  alt={category.name}
+                  src={urlFor(category.image).width(800).url()}
+                  alt={category.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
@@ -130,23 +190,31 @@ export default async function HomePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
 
                 <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+
                   <h3 className="text-lg font-semibold text-primary-foreground">
-                    {category.name}
+                    {category.title}
                   </h3>
 
                   <p className="text-sm text-primary-foreground/80">
                     {category.count} articles
                   </p>
+
                 </div>
+
               </Link>
+
             ))}
+
           </div>
         </section>
 
-        {/* Trending Posts */}
+        {/* TRENDING POSTS */}
         <section className="bg-secondary/30 py-16 md:py-24">
+
           <div className="mx-auto max-w-7xl px-4">
+
             <div className="flex items-end justify-between">
+
               <div>
                 <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
                   Latest Articles
@@ -163,28 +231,39 @@ export default async function HomePage() {
               >
                 View All <ArrowRight className="h-4 w-4" />
               </Link>
+
             </div>
 
             <div className="masonry-grid mt-12">
-              {blogPosts.slice(0, 6).map((post) => (
+
+              {blogPosts.map((post: any) => (
+
                 <BlogCard
-                  key={post.id}
+                  key={post._id}
                   title={post.title}
                   excerpt={post.excerpt}
-                  image={post.image}
+                  image={post.mainImage}
                   category={post.category}
-                  date={post.date}
+                  date={
+                    post.publishedAt
+                      ? new Date(post.publishedAt).toDateString()
+                      : "No date"
+                  }
                   slug={post.slug}
-                  featured={post.featured}
                 />
+
               ))}
+
             </div>
+
           </div>
         </section>
 
-        {/* Amazon Finds */}
+        {/* AMAZON FINDS */}
         <section className="mx-auto max-w-7xl px-4 py-16 md:py-24">
+
           <div className="flex items-end justify-between">
+
             <div>
               <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
                 Curated for You
@@ -205,12 +284,15 @@ export default async function HomePage() {
             >
               Shop All <ArrowRight className="h-4 w-4" />
             </Link>
+
           </div>
 
           <div className="masonry-grid mt-12">
-            {amazonFinds.slice(0, 4).map((product) => (
+
+            {amazonFinds.map((product: any) => (
+
               <ProductCard
-                key={product.id}
+                key={product._id}
                 title={product.title}
                 price={product.price}
                 originalPrice={product.originalPrice}
@@ -218,15 +300,21 @@ export default async function HomePage() {
                 link={product.link}
                 category={product.category}
               />
+
             ))}
+
           </div>
+
         </section>
 
-        {/* About Preview */}
+        {/* ABOUT PREVIEW */}
         <section className="mx-auto max-w-7xl px-4 py-16 md:py-24">
+
           <div className="grid items-center gap-12 lg:grid-cols-2">
+
             <div className="relative">
               <div className="relative aspect-square overflow-hidden rounded-2xl">
+
                 <Image
                   src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80"
                   alt="About VelvetNest"
@@ -234,10 +322,12 @@ export default async function HomePage() {
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
+
               </div>
             </div>
 
             <div className="space-y-6">
+
               <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
                 About VelvetNest
               </p>
@@ -257,13 +347,18 @@ export default async function HomePage() {
                   Read My Story <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
+
             </div>
+
           </div>
+
         </section>
+
       </main>
 
       <Footer />
       <NewsletterPopup />
+
     </div>
   )
-                  }    
+              }
