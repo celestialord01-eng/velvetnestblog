@@ -1,3 +1,6 @@
+                 "use client"
+
+import { useEffect, useState } from "react"
 import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
@@ -11,12 +14,6 @@ import { Button } from "@/components/ui/button"
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 
-export const metadata: Metadata = {
-  title: "Amazon Finds | VelvetNest - Curated Affordable Picks",
-  description:
-    "Discover my favorite Amazon finds for fashion, home decor, and beauty.",
-}
-
 const filterCategories = [
   { label: "All", value: "all" },
   { label: "Fashion", value: "Fashion" },
@@ -24,32 +21,54 @@ const filterCategories = [
   { label: "Beauty", value: "Beauty" },
 ]
 
-export default async function AmazonFindsPage() {
-  // AMAZON FINDS
-  const amazonFinds = await client.fetch(`
-    *[_type == "amazonFind"] | order(featured desc, _createdAt desc){
-      _id,
-      title,
-      price,
-      originalPrice,
-      affiliateLink,
-      image,
-      featured,
-      "category": category->title
-    }
-  `)
+export default function AmazonFindsPage() {
+  const [amazonFinds, setAmazonFinds] = useState<any[]>([])
+  const [shopFavorites, setShopFavorites] = useState<any[]>([])
+  const [selectedCategory, setSelectedCategory] = useState("all")
 
-  // FAVORITES
-  const shopFavorites = await client.fetch(`
-    *[_type == "amazonFind" && featured == true][0...4]{
-      _id,
-      title,
-      price,
-      affiliateLink,
-      image,
-      "category": category->title
+  useEffect(() => {
+    async function fetchData() {
+      // AMAZON FINDS
+      const finds = await client.fetch(`
+        *[_type == "amazonFind"] | order(featured desc, _createdAt desc){
+          _id,
+          title,
+          price,
+          originalPrice,
+          affiliateLink,
+          image,
+          featured,
+          "category": category->title
+        }
+      `)
+
+      // FAVORITES
+      const favorites = await client.fetch(`
+        *[_type == "amazonFind" && featured == true][0...4]{
+          _id,
+          title,
+          price,
+          affiliateLink,
+          image,
+          "category": category->title
+        }
+      `)
+
+      setAmazonFinds(finds)
+      setShopFavorites(favorites)
     }
-  `)
+
+    fetchData()
+  }, [])
+
+  const filteredProducts =
+    selectedCategory === "all"
+      ? amazonFinds
+      : amazonFinds.filter(
+          (product: any) =>
+            product.category?.toLowerCase() ===
+            selectedCategory.toLowerCase()
+        )
 
   return (
     <div className="min-h-screen">
@@ -142,8 +161,9 @@ export default async function AmazonFindsPage() {
               {filterCategories.map((category) => (
                 <button
                   key={category.value}
+                  onClick={() => setSelectedCategory(category.value)}
                   className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                    category.value === "all"
+                    selectedCategory === category.value
                       ? "border border-primary bg-primary text-primary-foreground"
                       : "border border-border hover:border-primary hover:bg-secondary"
                   }`}
@@ -162,7 +182,7 @@ export default async function AmazonFindsPage() {
 
             <div className="masonry-grid">
 
-              {amazonFinds.map((product: any) => (
+              {filteredProducts.map((product: any) => (
                 <ProductCard
                   key={product._id}
                   title={product.title}
@@ -310,4 +330,4 @@ export default async function AmazonFindsPage() {
       <Footer />
     </div>
   )
-}
+                                       } 
