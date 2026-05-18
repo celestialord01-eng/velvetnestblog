@@ -7,9 +7,9 @@ import { ExternalLink } from "lucide-react"
 interface BlogCardProps {
   title: string
   excerpt?: string
-  image: string
-  category: string
-  date: string
+  image?: string
+  category?: string
+  date?: string
   slug: string
   featured?: boolean
 }
@@ -23,39 +23,43 @@ export function BlogCard({
   slug,
   featured = false,
 }: BlogCardProps) {
+  const imageSrc = image || "/placeholder.jpg"
+
   return (
     <article className="group masonry-item">
       <Link href={`/blog/${slug}`} className="block">
         <div className="relative overflow-hidden rounded-lg bg-card">
-          
-          {/* Image */}
+
+          {/* IMAGE */}
           <div
             className={`relative ${
               featured ? "aspect-[3/4]" : "aspect-[4/5]"
             }`}
           >
             <Image
-              src={image}
+              src={imageSrc}
               alt={title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
-              sizes="(max-width: 640px) 100vw,
-                     (max-width: 1024px) 50vw,
-                     25vw"
+              sizes="
+                (max-width: 640px) 100vw,
+                (max-width: 1024px) 50vw,
+                25vw
+              "
             />
 
-            {/* Overlay */}
+            {/* OVERLAY */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
           </div>
 
-          {/* Category Badge */}
+          {/* CATEGORY */}
           <div className="absolute left-3 top-3">
             <span className="rounded-full bg-card/90 px-3 py-1 text-xs font-medium uppercase tracking-wider backdrop-blur-sm">
-              {category}
+              {category || "Lifestyle"}
             </span>
           </div>
 
-          {/* Pinterest Button */}
+          {/* PINTEREST BUTTON */}
           <button
             type="button"
             aria-label="Save to Pinterest"
@@ -64,9 +68,11 @@ export function BlogCard({
               e.preventDefault()
 
               const pinterestUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(
-                window.location.origin + "/blog/" + slug
+                typeof window !== "undefined"
+                  ? window.location.origin + "/blog/" + slug
+                  : ""
               )}&media=${encodeURIComponent(
-                image
+                imageSrc
               )}&description=${encodeURIComponent(title)}`
 
               window.open(
@@ -86,10 +92,11 @@ export function BlogCard({
           </button>
         </div>
 
-        {/* Content */}
+        {/* CONTENT */}
         <div className="mt-4 space-y-2">
+
           <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-            {date}
+            {date || "Recently Published"}
           </p>
 
           <h3 className="text-lg font-semibold leading-tight transition-colors group-hover:text-accent">
@@ -101,6 +108,7 @@ export function BlogCard({
               {excerpt}
             </p>
           )}
+
         </div>
       </Link>
     </article>
@@ -109,11 +117,11 @@ export function BlogCard({
 
 interface ProductCardProps {
   title: string
-  price: string
+  price?: string
   originalPrice?: string
-  image: string
-  link: string
-  category: string
+  image?: string
+  link?: string
+  category?: string
 }
 
 export function ProductCard({
@@ -124,37 +132,41 @@ export function ProductCard({
   link,
   category,
 }: ProductCardProps) {
+  const imageSrc = image || "/placeholder.jpg"
+
   return (
     <article className="group masonry-item">
       <a
-        href={link}
+        href={link || "#"}
         target="_blank"
         rel="noopener noreferrer sponsored"
         className="block"
       >
         <div className="relative overflow-hidden rounded-lg bg-card">
-          
-          {/* Product Image */}
+
+          {/* PRODUCT IMAGE */}
           <div className="relative aspect-square">
             <Image
-              src={image}
+              src={imageSrc}
               alt={title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
-              sizes="(max-width: 640px) 100vw,
-                     (max-width: 1024px) 50vw,
-                     25vw"
+              sizes="
+                (max-width: 640px) 100vw,
+                (max-width: 1024px) 50vw,
+                25vw
+              "
             />
           </div>
 
-          {/* Category Badge */}
+          {/* CATEGORY */}
           <div className="absolute left-3 top-3">
             <span className="rounded-full bg-card/90 px-3 py-1 text-xs font-medium uppercase tracking-wider backdrop-blur-sm">
-              {category}
+              {category || "Amazon Find"}
             </span>
           </div>
 
-          {/* Shop Overlay */}
+          {/* SHOP OVERLAY */}
           <div className="absolute bottom-3 left-3 right-3 opacity-0 transition-all duration-300 group-hover:opacity-100">
             <span className="flex items-center justify-center gap-2 rounded-lg bg-primary py-2 text-sm font-medium text-primary-foreground">
               Shop Now
@@ -163,23 +175,32 @@ export function ProductCard({
           </div>
         </div>
 
-        {/* Product Info */}
+        {/* PRODUCT INFO */}
         <div className="mt-4 space-y-1">
+
           <h3 className="line-clamp-2 text-sm font-medium leading-tight transition-colors group-hover:text-accent">
             {title}
           </h3>
 
           <div className="flex items-center gap-2">
-            <span className="font-semibold">{price}</span>
+
+            {price && (
+              <span className="font-semibold">
+                {price}
+              </span>
+            )}
 
             {originalPrice && (
               <span className="text-sm text-muted-foreground line-through">
                 {originalPrice}
               </span>
             )}
+
           </div>
+
         </div>
       </a>
     </article>
   )
-}
+        }
+      
