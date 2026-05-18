@@ -94,18 +94,24 @@ export default async function AmazonFindsPage() {
                   {amazonFinds.slice(0, 4).map((item: any) => (
                     <div
                       key={item._id}
-                      className="relative aspect-[3/4] overflow-hidden rounded-xl bg-card"
+                      className="group overflow-hidden rounded-xl"
                     >
                       {item.image?.asset && (
-                        <Image
-                          src={urlFor(item.image)
-                            .width(600)
-                            .url()}
-                          alt={item.title}
-                          fill
-                          className="object-cover"
-                          sizes="25vw"
-                        />
+                        <div className="relative aspect-[3/4] bg-card">
+                          <Image
+                            src={urlFor(item.image)
+                              .width(600)
+                              .url()}
+                            alt={item.title}
+                            fill
+                            className="
+                              object-cover
+                              transition-transform duration-500 ease-out
+                              group-hover:scale-110
+                            "
+                            sizes="25vw"
+                          />
+                        </div>
                       )}
                     </div>
                   ))}
@@ -212,27 +218,35 @@ export default async function AmazonFindsPage() {
                   rel="noopener noreferrer sponsored"
                   className="group"
                 >
-                  <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-card">
+                  <div className="group overflow-hidden rounded-xl">
 
-                    {item.image?.asset && (
-                      <Image
-                        src={urlFor(item.image)
-                          .width(1000)
-                          .url()}
-                        alt={item.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        sizes="25vw"
-                      />
-                    )}
+                    <div className="relative aspect-[3/4] bg-card">
 
-                    <div className="absolute inset-0 flex items-end bg-gradient-to-t from-foreground/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <div className="w-full p-4 text-center">
-                        <span className="inline-flex items-center gap-2 rounded-full bg-card px-4 py-2 text-sm font-medium">
-                          Shop Now
-                          <ExternalLink className="h-4 w-4" />
-                        </span>
+                      {item.image?.asset && (
+                        <Image
+                          src={urlFor(item.image)
+                            .width(1000)
+                            .url()}
+                          alt={item.title}
+                          fill
+                          className="
+                            object-cover
+                            transition-transform duration-500 ease-out
+                            group-hover:scale-110
+                          "
+                          sizes="25vw"
+                        />
+                      )}
+
+                      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-foreground/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <div className="w-full p-4 text-center">
+                          <span className="inline-flex items-center gap-2 rounded-full bg-card px-4 py-2 text-sm font-medium">
+                            Shop Now
+                            <ExternalLink className="h-4 w-4" />
+                          </span>
+                        </div>
                       </div>
+
                     </div>
 
                   </div>
@@ -278,7 +292,7 @@ export default async function AmazonFindsPage() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 rounded-lg border-0 bg-primary-foreground/10 px-4 py-3 text-primary-foreground placeholder:text-primary-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary-foreground/30"
+                className="flex-1 rounded-lg border-0 bg-primary-foreground/10 px-4 py-3 text-primary-foreground placeholder:text-primary-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary-foreground/20"
                 required
               />
 
@@ -296,5 +310,4 @@ export default async function AmazonFindsPage() {
       <Footer />
     </div>
   )
-            }
-  
+}
