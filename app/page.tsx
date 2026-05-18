@@ -1,3 +1,4 @@
+
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
@@ -60,7 +61,7 @@ export default async function HomePage() {
       price,
       originalPrice,
       affiliateLink,
-      productImage,
+      image,
       featured,
       "category": category->title
     }
@@ -337,7 +338,7 @@ export default async function HomePage() {
                     ? urlFor(product.image).width(1000).url()
                     : "/placeholder.jpg"
                 }
-                link={product.affiliateLink}
+                link={product.affiliateLink || "#"}
                 category={product.category || "Amazon Find"}
               />
 
@@ -409,4 +410,4 @@ export default async function HomePage() {
 
     </div>
   )
-                }
+              }
