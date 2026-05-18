@@ -133,18 +133,26 @@ export default async function HomePage() {
               {/* RIGHT IMAGE */}
               <div className="relative animate-fade-in">
 
-                <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-card">
+                <div className="group overflow-hidden rounded-2xl">
 
-                  {hero?.heroImage && (
-                    <Image
-                      src={urlFor(hero.heroImage).width(1200).url()}
-                      alt="VelvetNest Hero"
-                      fill
-                      priority
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                  )}
+                  <div className="relative aspect-[4/5] bg-card">
+
+                    {hero?.heroImage && (
+                      <Image
+                        src={urlFor(hero.heroImage).width(1200).url()}
+                        alt="VelvetNest Hero"
+                        fill
+                        priority
+                        className="
+                          object-cover
+                          transition-transform duration-500 ease-out
+                          group-hover:scale-110
+                        "
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                      />
+                    )}
+
+                  </div>
 
                 </div>
 
@@ -354,17 +362,25 @@ export default async function HomePage() {
 
             <div className="relative">
 
-              <div className="relative aspect-square overflow-hidden rounded-2xl bg-card">
+              <div className="group overflow-hidden rounded-2xl">
 
-                {about?.image && (
-                  <Image
-                    src={urlFor(about.image).width(1200).url()}
-                    alt={about?.title || "About VelvetNest"}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
-                )}
+                <div className="relative aspect-square bg-card">
+
+                  {about?.image && (
+                    <Image
+                      src={urlFor(about.image).width(1200).url()}
+                      alt={about?.title || "About VelvetNest"}
+                      fill
+                      className="
+                        object-cover
+                        transition-transform duration-500 ease-out
+                        group-hover:scale-110
+                      "
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
+                  )}
+
+                </div>
 
               </div>
 
@@ -410,4 +426,4 @@ export default async function HomePage() {
 
     </div>
   )
-              }
+}
