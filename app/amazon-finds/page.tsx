@@ -96,16 +96,17 @@ export default async function AmazonFindsPage() {
                       key={item._id}
                       className="relative aspect-[3/4] overflow-hidden rounded-xl"
                     >
-                      {item.productImage && (
-                        <Image
-                          src={urlFor(item.productImage)
-                            .width(600)
-                            .url()}
-                          alt={item.title}
-                          fill
-                          className="object-cover"
-                        />
-                      )}
+                      {item.productImage?.asset && (
+  <Image
+    src={urlFor(item.productImage)
+      .width(600)
+      .url()}
+    alt={item.title}
+    fill
+    className="object-cover"
+    sizes="25vw"
+  />
+)}
                     </div>
                   ))}
 
