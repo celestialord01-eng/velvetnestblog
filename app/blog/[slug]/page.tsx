@@ -329,33 +329,40 @@ export default async function BlogPostPage({
               </div>
             </div>
 
-            <aside className="hidden lg:block">
-              <div className="sticky top-24 rounded-2xl border p-6">
-                <h3 className="mb-4 text-lg font-semibold">
-                  Table of Contents
-                </h3>
+            <aside className="order-first lg:order-last">
+  <div className="mb-10 rounded-3xl border border-border bg-secondary/30 p-6 lg:sticky lg:top-24">
+    
+    <h3 className="mb-5 text-lg font-semibold tracking-tight">
+      Table of Contents
+    </h3>
 
-                <ul className="space-y-3 text-sm">
-                  {toc.map((item: any) => (
-                    <li
-                      key={item.id}
-                      className={
-                        item.level === "h3"
-                          ? "ml-4"
-                          : ""
-                      }
-                    >
-                      <a
-                        href={`#${item.id}`}
-                        className="text-muted-foreground transition hover:text-foreground"
-                      >
-                        {item.text}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </aside>
+    <ul className="space-y-3">
+      {toc.map((item: any) => (
+        <li
+          key={item.id}
+          className={
+            item.level === "h3"
+              ? "ml-4"
+              : ""
+          }
+        >
+          <a
+            href={`#${item.id}`}
+            className="
+              block rounded-lg px-3 py-2
+              text-sm text-muted-foreground
+              transition-all duration-200
+              hover:bg-background
+              hover:text-foreground
+            "
+          >
+            {item.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</aside>
           </div>
         </article>
 
