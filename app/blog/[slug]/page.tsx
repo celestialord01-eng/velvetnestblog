@@ -1,9 +1,10 @@
-    import type { Metadata } from "next"
+        import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, Clock, Calendar } from "lucide-react"
 import { PortableText } from "@portabletext/react"
+import slugify from "slugify"
 
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -58,6 +59,33 @@ async function getRelatedPosts(
   })
 }
 
+function headingToId(text: string) {
+  return slugify(text, {
+    lower: true,
+    strict: true,
+  })
+}
+
+function getTableOfContents(body: any[]) {
+  return body
+    ?.filter(
+      (block) =>
+        block._type === "block" &&
+        ["h2", "h3"].includes(block.style)
+    )
+    .map((block) => {
+      const text = block.children
+        .map((child: any) => child.text)
+        .join("")
+
+      return {
+        text,
+        level: block.style,
+        id: headingToId(text),
+      }
+    })
+}
+
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
@@ -74,48 +102,66 @@ export async function generateMetadata({
   return {
     title: `${post.title} | VelvetNest`,
     description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      type: "article",
-      images: [post.image],
-    },
   }
 }
 
 const portableTextComponents = {
-  
-types: {
-  image: ({ value }: any) => (
-    <div className="my-10 overflow-hidden rounded-2xl">
-      <Image
-        src={urlFor(value).width(1200).url()}
-        alt={value.alt || "Blog image"}
-        width={1200}
-        height={800}
-        className="h-auto w-full rounded-2xl object-cover"
-      />
-    </div>
-  ),
-},
+  types: {
+    image: ({ value }: any) => (
+      <div className="my-10 overflow-hidden rounded-2xl">
+        <Image
+          src={urlFor(value).width(1200).url()}
+          alt={value.alt || "Blog image"}
+          width={1200}
+          height={800}
+          className="h-auto w-full rounded-2xl object-cover"
+        />
+      </div>
+    ),
+  },
+
   block: {
-    h1: ({ children }: any) => (
-      <h1 className="mt-12 mb-6 text-4xl font-bold tracking-tight">
-        {children}
-      </h1>
-    ),
+    h1: ({ children }: any) => {
+      const text = children?.[0]
+      const id = headingToId(text)
 
-    h2: ({ children }: any) => (
-      <h2 className="mt-12 mb-6 text-3xl font-semibold tracking-tight">
-        {children}
-      </h2>
-    ),
+      return (
+        <h1
+          id={id}
+          className="scroll-mt-28 mt-12 mb-6 text-4xl font-bold tracking-tight"
+        >
+          {children}
+        </h1>
+      )
+    },
 
-    h3: ({ children }: any) => (
-      <h3 className="mt-10 mb-4 text-2xl font-semibold">
-        {children}
-      </h3>
-    ),
+    h2: ({ children }: any) => {
+      const text = children?.[0]
+      const id = headingToId(text)
+
+      return (
+        <h2
+          id={id}
+          className="scroll-mt-28 mt-12 mb-6 text-3xl font-semibold tracking-tight"
+        >
+          {children}
+        </h2>
+      )
+    },
+
+    h3: ({ children }: any) => {
+      const text = children?.[0]
+      const id = headingToId(text)
+
+      return (
+        <h3
+          id={id}
+          className="scroll-mt-28 mt-10 mb-4 text-2xl font-semibold"
+        >
+          {children}
+        </h3>
+      )
+    },
 
     normal: ({ children }: any) => (
       <p className="mb-6 text-lg leading-8 text-muted-foreground">
@@ -193,6 +239,8 @@ export default async function BlogPostPage({
     notFound()
   }
 
+  const toc = getTableOfContents(post.body)
+
   const relatedPosts = await getRelatedPosts(
     post.category,
     post._id
@@ -256,26 +304,58 @@ export default async function BlogPostPage({
 
           <div className="relative mx-auto aspect-[21/9] max-w-6xl overflow-hidden rounded-3xl">
             <Image
-  src={urlFor(post.mainImage).width(1200).url()}
-  alt={post.title}
-  width={1200}
-  height={800}
-/>
+              src={urlFor(post.mainImage).width(1200).url()}
+              alt={post.title}
+              width={1200}
+              height={800}
+              className="h-full w-full object-cover"
+            />
           </div>
 
-          <div className="mx-auto max-w-3xl px-4 py-12 md:py-16">
-            <ShareButtons post={post} />
-
-            <div className="mt-12">
-              <PortableText
-                value={post.body}
-                components={portableTextComponents}
-              />
-            </div>
-
-            <div className="mt-16">
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 px-4 py-12 lg:grid-cols-[1fr_300px]">
+            
+            <div className="max-w-3xl">
               <ShareButtons post={post} />
+
+              <div className="mt-12">
+                <PortableText
+                  value={post.body}
+                  components={portableTextComponents}
+                />
+              </div>
+
+              <div className="mt-16">
+                <ShareButtons post={post} />
+              </div>
             </div>
+
+            <aside className="hidden lg:block">
+              <div className="sticky top-24 rounded-2xl border p-6">
+                <h3 className="mb-4 text-lg font-semibold">
+                  Table of Contents
+                </h3>
+
+                <ul className="space-y-3 text-sm">
+                  {toc.map((item: any) => (
+                    <li
+                      key={item.id}
+                      className={
+                        item.level === "h3"
+                          ? "ml-4"
+                          : ""
+                      }
+                    >
+                      <a
+                        href={`#${item.id}`}
+                        className="text-muted-foreground transition hover:text-foreground"
+                      >
+                        {item.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </aside>
           </div>
         </article>
 
@@ -316,7 +396,7 @@ export default async function BlogPostPage({
                     key={relatedPost._id}
                     title={relatedPost.title}
                     excerpt={relatedPost.excerpt}
-                    image={relatedPost.image}
+                    image={relatedPost.mainImage}
                     category={relatedPost.category}
                     date={
                       relatedPost.publishedAt
@@ -337,4 +417,4 @@ export default async function BlogPostPage({
       <Footer />
     </div>
   )
-            }
+                            }
