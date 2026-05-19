@@ -3,6 +3,11 @@
 html {
   scroll-behavior: smooth;
 }
+
+::selection {
+  background: #d6c6b8;
+  color: #000;
+}
 @import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
