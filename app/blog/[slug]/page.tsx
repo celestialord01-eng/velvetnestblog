@@ -1,4 +1,4 @@
-        import type { Metadata } from "next"
+              import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -108,13 +108,13 @@ export async function generateMetadata({
 const portableTextComponents = {
   types: {
     image: ({ value }: any) => (
-      <div className="my-10 overflow-hidden rounded-2xl">
+      <div className="my-14 overflow-hidden rounded-3xl">
         <Image
           src={urlFor(value).width(1200).url()}
           alt={value.alt || "Blog image"}
           width={1200}
           height={800}
-          className="h-auto w-full rounded-2xl object-cover"
+          className="h-auto w-full rounded-3xl object-cover"
         />
       </div>
     ),
@@ -142,7 +142,7 @@ const portableTextComponents = {
       return (
         <h2
           id={id}
-          className="scroll-mt-28 mt-12 mb-6 text-3xl font-semibold tracking-tight"
+          className="scroll-mt-28 mt-16 mb-8 text-3xl font-semibold tracking-tight md:text-4xl"
         >
           {children}
         </h2>
@@ -156,7 +156,7 @@ const portableTextComponents = {
       return (
         <h3
           id={id}
-          className="scroll-mt-28 mt-10 mb-4 text-2xl font-semibold"
+          className="scroll-mt-28 mt-12 mb-5 text-2xl font-semibold md:text-3xl"
         >
           {children}
         </h3>
@@ -164,13 +164,13 @@ const portableTextComponents = {
     },
 
     normal: ({ children }: any) => (
-      <p className="mb-6 text-lg leading-8 text-muted-foreground">
+      <p className="mb-8 text-[1.15rem] leading-9 text-foreground/80">
         {children}
       </p>
     ),
 
     blockquote: ({ children }: any) => (
-      <blockquote className="my-8 border-l-4 border-primary pl-6 italic text-muted-foreground">
+      <blockquote className="my-10 border-l-4 border-primary pl-6 text-xl italic leading-9 text-foreground/70">
         {children}
       </blockquote>
     ),
@@ -178,13 +178,13 @@ const portableTextComponents = {
 
   list: {
     bullet: ({ children }: any) => (
-      <ul className="mb-6 ml-6 list-disc space-y-3">
+      <ul className="mb-8 ml-6 list-disc space-y-4">
         {children}
       </ul>
     ),
 
     number: ({ children }: any) => (
-      <ol className="mb-6 ml-6 list-decimal space-y-3">
+      <ol className="mb-8 ml-6 list-decimal space-y-4">
         {children}
       </ol>
     ),
@@ -192,13 +192,13 @@ const portableTextComponents = {
 
   listItem: {
     bullet: ({ children }: any) => (
-      <li className="text-lg leading-8 text-muted-foreground">
+      <li className="text-[1.1rem] leading-9 text-foreground/80">
         {children}
       </li>
     ),
 
     number: ({ children }: any) => (
-      <li className="text-lg leading-8 text-muted-foreground">
+      <li className="text-[1.1rem] leading-9 text-foreground/80">
         {children}
       </li>
     ),
@@ -212,7 +212,9 @@ const portableTextComponents = {
     ),
 
     em: ({ children }: any) => (
-      <em className="italic">{children}</em>
+      <em className="italic">
+        {children}
+      </em>
     ),
 
     link: ({ children, value }: any) => (
@@ -220,7 +222,7 @@ const portableTextComponents = {
         href={value.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="font-medium text-primary underline underline-offset-4"
+        className="font-medium text-primary underline underline-offset-4 transition hover:opacity-80"
       >
         {children}
       </a>
@@ -279,11 +281,11 @@ export default async function BlogPostPage({
               </span>
             </div>
 
-            <h1 className="mt-6 text-4xl font-bold leading-tight tracking-tight md:text-5xl lg:text-6xl">
+            <h1 className="mt-6 text-3xl font-bold leading-tight tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
               {post.title}
             </h1>
 
-            <p className="mt-6 text-xl leading-relaxed text-muted-foreground">
+            <p className="mt-6 text-lg leading-8 text-foreground/70 md:text-xl">
               {post.excerpt}
             </p>
 
@@ -304,65 +306,66 @@ export default async function BlogPostPage({
 
           <div className="relative mx-auto aspect-[21/9] max-w-6xl overflow-hidden rounded-3xl">
             <Image
-              src={urlFor(post.mainImage).width(1200).url()}
+              src={urlFor(post.mainImage).width(1400).url()}
               alt={post.title}
-              width={1200}
-              height={800}
+              width={1400}
+              height={900}
               className="h-full w-full object-cover"
+              priority
             />
           </div>
 
-          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 px-4 py-12 lg:grid-cols-[1fr_300px]">
-            
-            <div className="max-w-3xl">
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 py-10 lg:grid-cols-[minmax(0,1fr)_300px]">
+
+            <div className="mx-auto max-w-2xl">
               <ShareButtons post={post} />
 
-              <div className="mt-12">
+              <div className="mt-14">
                 <PortableText
                   value={post.body}
                   components={portableTextComponents}
                 />
               </div>
 
-              <div className="mt-16">
+              <div className="mt-20">
                 <ShareButtons post={post} />
               </div>
             </div>
 
             <aside className="order-first lg:order-last">
-  <div className="mb-10 rounded-3xl border border-border bg-secondary/30 p-6 lg:sticky lg:top-24">
-    
-    <h3 className="mb-5 text-lg font-semibold tracking-tight">
-      Table of Contents
-    </h3>
+              <div className="mb-10 rounded-3xl border border-border bg-secondary/30 p-6 lg:sticky lg:top-24">
 
-    <ul className="space-y-3">
-      {toc.map((item: any) => (
-        <li
-          key={item.id}
-          className={
-            item.level === "h3"
-              ? "ml-4"
-              : ""
-          }
-        >
-          <a
-            href={`#${item.id}`}
-            className="
-              block rounded-lg px-3 py-2
-              text-sm text-muted-foreground
-              transition-all duration-200
-              hover:bg-background
-              hover:text-foreground
-            "
-          >
-            {item.text}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
-</aside>
+                <h3 className="mb-5 text-lg font-semibold tracking-tight">
+                  Table of Contents
+                </h3>
+
+                <ul className="space-y-1">
+                  {toc.map((item: any) => (
+                    <li
+                      key={item.id}
+                      className={
+                        item.level === "h3"
+                          ? "ml-4"
+                          : ""
+                      }
+                    >
+                      <a
+                        href={`#${item.id}`}
+                        className="
+                          block rounded-xl px-3 py-2.5
+                          text-sm leading-6 text-foreground/70
+                          transition-all duration-200
+                          hover:bg-background
+                          hover:text-foreground
+                        "
+                      >
+                        {item.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </aside>
           </div>
         </article>
 
@@ -424,4 +427,4 @@ export default async function BlogPostPage({
       <Footer />
     </div>
   )
-                            }
+              }
