@@ -1,10 +1,11 @@
-              import type { Metadata } from "next"
+import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft, Clock, Calendar } from "lucide-react"
 import { PortableText } from "@portabletext/react"
 import slugify from "slugify"
+import readingTime from "reading-time"
 
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -84,6 +85,16 @@ function getTableOfContents(body: any[]) {
         id: headingToId(text),
       }
     })
+}
+
+function getPlainText(blocks: any[]) {
+  return blocks
+    ?.map((block) =>
+      block.children
+        ?.map((child: any) => child.text)
+        .join("")
+    )
+    .join(" ")
 }
 
 export async function generateMetadata({
@@ -243,6 +254,10 @@ export default async function BlogPostPage({
 
   const toc = getTableOfContents(post.body)
 
+  const stats = readingTime(
+    getPlainText(post.body)
+  )
+
   const relatedPosts = await getRelatedPosts(
     post.category,
     post._id
@@ -299,7 +314,7 @@ export default async function BlogPostPage({
 
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
-                5 min read
+                {Math.ceil(stats.minutes)} min read
               </div>
             </div>
           </header>
@@ -422,9 +437,75 @@ export default async function BlogPostPage({
             </div>
           </section>
         )}
+
+        <section className="py-16">
+          <div className="mx-auto max-w-3xl rounded-3xl border border-border bg-secondary/20 p-8 md:p-12">
+
+            <div className="flex flex-col items-center text-center">
+
+              <div className="flex h-24 w-24 items-center justify-center rounded-full bg-secondary text-2xl font-semibold">
+                V
+              </div>
+
+              <h3 className="mt-6 text-2xl font-semibold tracking-tight">
+                About VelvetNest
+              </h3>
+
+              <p className="mt-4 max-w-2xl text-lg leading-8 text-foreground/70">
+                VelvetNest shares elevated fashion inspiration,
+                cozy home decor ideas, beauty trends, outfit
+                inspiration, and curated Amazon finds designed
+                for modern feminine living.
+              </p>
+
+            </div>
+
+          </div>
+        </section>
+
+        <section className="border-t border-border bg-secondary/30 py-20">
+
+          <div className="mx-auto max-w-3xl px-4 text-center">
+
+            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
+              Join VelvetNest ✨
+            </h2>
+
+            <p className="mt-5 text-lg leading-8 text-foreground/70">
+              Get weekly outfit inspiration, cozy decor ideas,
+              beauty trends, and curated Amazon finds delivered
+              straight to your inbox.
+            </p>
+
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
+
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="
+                  h-12 rounded-full border border-border
+                  bg-background px-6 outline-none
+                "
+              />
+
+              <button
+                className="
+                  h-12 rounded-full bg-primary
+                  px-8 text-primary-foreground
+                  transition hover:opacity-90
+                "
+              >
+                Subscribe
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
       </main>
 
       <Footer />
     </div>
   )
-              }
+            }
