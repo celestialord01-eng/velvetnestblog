@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+                  import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -10,6 +10,13 @@ import readingTime from "reading-time"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { BlogCard, ProductCard } from "@/components/cards"
+
+import { ReadingProgress } from "@/components/reading-progress"
+import TableOfContents from "@/components/table-of-contents"
+import MobileTOC from "@/components/mobile-toc"
+import BlogImage from "@/components/blog-image"
+import FadeIn from "@/components/fade-in"
+
 import { amazonFinds } from "@/lib/data"
 import ShareButtons from "./ShareButtons"
 import { client } from "@/sanity/lib/client"
@@ -113,6 +120,34 @@ export async function generateMetadata({
   return {
     title: `${post.title} | VelvetNest`,
     description: post.excerpt,
+
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: "article",
+      url: `https://velvetnestblog.vercel.app/blog/${post.slug}`,
+      images: [
+        {
+          url: urlFor(post.mainImage).width(1200).url(),
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [
+        urlFor(post.mainImage).width(1200).url(),
+      ],
+    },
+
+    alternates: {
+      canonical: `https://velvetnestblog.vercel.app/blog/${post.slug}`,
+    },
   }
 }
 
@@ -120,12 +155,9 @@ const portableTextComponents = {
   types: {
     image: ({ value }: any) => (
       <div className="my-14 overflow-hidden rounded-3xl">
-        <Image
+        <BlogImage
           src={urlFor(value).width(1200).url()}
           alt={value.alt || "Blog image"}
-          width={1200}
-          height={800}
-          className="h-auto w-full rounded-3xl object-cover"
         />
       </div>
     ),
@@ -258,6 +290,19 @@ export default async function BlogPostPage({
     getPlainText(post.body)
   )
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    image: urlFor(post.mainImage).width(1200).url(),
+    datePublished: post.publishedAt,
+    author: {
+      "@type": "Organization",
+      name: "VelvetNest",
+    },
+  }
+
   const relatedPosts = await getRelatedPosts(
     post.category,
     post._id
@@ -277,11 +322,24 @@ export default async function BlogPostPage({
 
   return (
     <div className="min-h-screen bg-background">
+
+      <ReadingProgress />
+
       <Header />
 
       <main>
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd),
+          }}
+        />
+
         <article>
+
           <header className="mx-auto max-w-4xl px-4 py-12 md:py-16">
+
             <Link
               href="/blog"
               className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -305,8 +363,10 @@ export default async function BlogPostPage({
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
+
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
+
                 {post.publishedAt
                   ? new Date(post.publishedAt).toDateString()
                   : "No date"}
@@ -316,23 +376,34 @@ export default async function BlogPostPage({
                 <Clock className="h-4 w-4" />
                 {Math.ceil(stats.minutes)} min read
               </div>
+
             </div>
+
           </header>
 
-          <div className="relative mx-auto aspect-[21/9] max-w-6xl overflow-hidden rounded-3xl">
-            <Image
-              src={urlFor(post.mainImage).width(1400).url()}
-              alt={post.title}
-              width={1400}
-              height={900}
-              className="h-full w-full object-cover"
-              priority
-            />
+          <FadeIn>
+            <div className="relative mx-auto aspect-[21/9] max-w-6xl overflow-hidden rounded-3xl">
+
+              <Image
+                src={urlFor(post.mainImage).width(1400).url()}
+                alt={post.title}
+                width={1400}
+                height={900}
+                className="h-full w-full object-cover"
+                priority
+              />
+
+            </div>
+          </FadeIn>
+
+          <div className="mx-auto max-w-7xl px-4 pt-8">
+            <MobileTOC toc={toc} />
           </div>
 
           <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 py-10 lg:grid-cols-[minmax(0,1fr)_300px]">
 
             <div className="mx-auto max-w-2xl">
+
               <ShareButtons post={post} />
 
               <div className="mt-14">
@@ -345,167 +416,163 @@ export default async function BlogPostPage({
               <div className="mt-20">
                 <ShareButtons post={post} />
               </div>
+
             </div>
 
             <aside className="order-first lg:order-last">
-              <div className="mb-10 rounded-3xl border border-border bg-secondary/30 p-6 lg:sticky lg:top-24">
-
-                <h3 className="mb-5 text-lg font-semibold tracking-tight">
-                  Table of Contents
-                </h3>
-
-                <ul className="space-y-1">
-                  {toc.map((item: any) => (
-                    <li
-                      key={item.id}
-                      className={
-                        item.level === "h3"
-                          ? "ml-4"
-                          : ""
-                      }
-                    >
-                      <a
-                        href={`#${item.id}`}
-                        className="
-                          block rounded-xl px-3 py-2.5
-                          text-sm leading-6 text-foreground/70
-                          transition-all duration-200
-                          hover:bg-background
-                          hover:text-foreground
-                        "
-                      >
-                        {item.text}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <TableOfContents toc={toc} />
             </aside>
+
           </div>
+
         </article>
 
         {relatedProducts.length > 0 && (
-          <section className="border-t border-border bg-secondary/30 py-16">
-            <div className="mx-auto max-w-7xl px-4">
-              <h2 className="text-center text-2xl font-semibold tracking-tight md:text-3xl">
-                Shop the Look
-              </h2>
+          <FadeIn>
+            <section className="border-t border-border bg-secondary/30 py-16">
 
-              <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {relatedProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    title={product.title}
-                    price={product.price}
-                    originalPrice={product.originalPrice}
-                    image={product.image}
-                    link={product.link}
-                    category={product.category}
-                  />
-                ))}
+              <div className="mx-auto max-w-7xl px-4">
+
+                <h2 className="text-center text-2xl font-semibold tracking-tight md:text-3xl">
+                  Shop the Look
+                </h2>
+
+                <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+                  {relatedProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      title={product.title}
+                      price={product.price}
+                      originalPrice={product.originalPrice}
+                      image={product.image}
+                      link={product.link}
+                      category={product.category}
+                    />
+                  ))}
+
+                </div>
+
               </div>
-            </div>
-          </section>
+
+            </section>
+          </FadeIn>
         )}
 
         {relatedPosts.length > 0 && (
-          <section className="py-16 md:py-24">
-            <div className="mx-auto max-w-7xl px-4">
-              <h2 className="text-center text-2xl font-semibold tracking-tight md:text-3xl">
-                You Might Also Like
-              </h2>
+          <FadeIn>
+            <section className="py-16 md:py-24">
 
-              <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {relatedPosts.map((relatedPost: any) => (
-                  <BlogCard
-                    key={relatedPost._id}
-                    title={relatedPost.title}
-                    excerpt={relatedPost.excerpt}
-                    image={relatedPost.mainImage}
-                    category={relatedPost.category}
-                    date={
-                      relatedPost.publishedAt
-                        ? new Date(
-                            relatedPost.publishedAt
-                          ).toDateString()
-                        : "No date"
-                    }
-                    slug={relatedPost.slug}
-                  />
-                ))}
+              <div className="mx-auto max-w-7xl px-4">
+
+                <h2 className="text-center text-2xl font-semibold tracking-tight md:text-3xl">
+                  You Might Also Like
+                </h2>
+
+                <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+
+                  {relatedPosts.map((relatedPost: any) => (
+                    <BlogCard
+                      key={relatedPost._id}
+                      title={relatedPost.title}
+                      excerpt={relatedPost.excerpt}
+                      image={relatedPost.mainImage}
+                      category={relatedPost.category}
+                      date={
+                        relatedPost.publishedAt
+                          ? new Date(
+                              relatedPost.publishedAt
+                            ).toDateString()
+                          : "No date"
+                      }
+                      slug={relatedPost.slug}
+                    />
+                  ))}
+
+                </div>
+
               </div>
-            </div>
-          </section>
+
+            </section>
+          </FadeIn>
         )}
 
-        <section className="py-16">
-          <div className="mx-auto max-w-3xl rounded-3xl border border-border bg-secondary/20 p-8 md:p-12">
+        <FadeIn>
+          <section className="py-16">
 
-            <div className="flex flex-col items-center text-center">
+            <div className="mx-auto max-w-3xl rounded-3xl border border-border bg-secondary/20 p-8 md:p-12">
 
-              <div className="flex h-24 w-24 items-center justify-center rounded-full bg-secondary text-2xl font-semibold">
-                V
+              <div className="flex flex-col items-center text-center">
+
+                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-secondary text-2xl font-semibold">
+                  V
+                </div>
+
+                <h3 className="mt-6 text-2xl font-semibold tracking-tight">
+                  About VelvetNest
+                </h3>
+
+                <p className="mt-4 max-w-2xl text-lg leading-8 text-foreground/70">
+                  VelvetNest shares elevated fashion inspiration,
+                  cozy home decor ideas, beauty trends, outfit
+                  inspiration, and curated Amazon finds designed
+                  for modern feminine living.
+                </p>
+
               </div>
 
-              <h3 className="mt-6 text-2xl font-semibold tracking-tight">
-                About VelvetNest
-              </h3>
+            </div>
 
-              <p className="mt-4 max-w-2xl text-lg leading-8 text-foreground/70">
-                VelvetNest shares elevated fashion inspiration,
-                cozy home decor ideas, beauty trends, outfit
-                inspiration, and curated Amazon finds designed
-                for modern feminine living.
+          </section>
+        </FadeIn>
+
+        <FadeIn>
+          <section className="border-t border-border bg-secondary/30 py-20">
+
+            <div className="mx-auto max-w-3xl px-4 text-center">
+
+              <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
+                Join VelvetNest ✨
+              </h2>
+
+              <p className="mt-5 text-lg leading-8 text-foreground/70">
+                Get weekly outfit inspiration, cozy decor ideas,
+                beauty trends, and curated Amazon finds delivered
+                straight to your inbox.
               </p>
 
-            </div>
+              <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
 
-          </div>
-        </section>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="
+                    h-12 rounded-full border border-border
+                    bg-background px-6 outline-none
+                  "
+                />
 
-        <section className="border-t border-border bg-secondary/30 py-20">
+                <button
+                  className="
+                    h-12 rounded-full bg-primary
+                    px-8 text-primary-foreground
+                    transition hover:opacity-90
+                  "
+                >
+                  Subscribe
+                </button>
 
-          <div className="mx-auto max-w-3xl px-4 text-center">
-
-            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-              Join VelvetNest ✨
-            </h2>
-
-            <p className="mt-5 text-lg leading-8 text-foreground/70">
-              Get weekly outfit inspiration, cozy decor ideas,
-              beauty trends, and curated Amazon finds delivered
-              straight to your inbox.
-            </p>
-
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center">
-
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="
-                  h-12 rounded-full border border-border
-                  bg-background px-6 outline-none
-                "
-              />
-
-              <button
-                className="
-                  h-12 rounded-full bg-primary
-                  px-8 text-primary-foreground
-                  transition hover:opacity-90
-                "
-              >
-                Subscribe
-              </button>
+              </div>
 
             </div>
 
-          </div>
+          </section>
+        </FadeIn>
 
-        </section>
       </main>
 
       <Footer />
+
     </div>
   )
-            }
+    }
