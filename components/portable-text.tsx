@@ -5,33 +5,45 @@ import Link from "next/link"
 
 import { headingToId } from "@/lib/heading"
 
+// Controls drop cap so it only appears once
+let hasDropCap = false
+
 const components: PortableTextComponents = {
   block: {
     normal: ({ children }: any) => {
-  return (
-    <p
-      className="
-        mb-8
-        text-[18px]
-        leading-[1.95]
-        tracking-[0.01em]
-        text-stone-700
+      const applyDropCap = !hasDropCap
+      hasDropCap = true
 
-        first-letter:float-left
-        first-letter:mr-3
-        first-letter:mt-1
-        first-letter:text-6xl
-        md:first-letter:text-8xl
-        first-letter:font-serif
-        first-letter:font-semibold
-        first-letter:leading-[0.8]
-        first-letter:text-stone-900
-      "
-    >
-      {children}
-    </p>
-  )
-},
+      return (
+        <p
+          className={`
+            mb-8
+            text-[18px]
+            leading-[1.95]
+            tracking-[0.01em]
+            text-stone-700
+
+            ${
+              applyDropCap
+                ? `
+                  first-letter:float-left
+                  first-letter:mr-3
+                  first-letter:mt-1
+                  first-letter:text-6xl
+                  md:first-letter:text-8xl
+                  first-letter:font-serif
+                  first-letter:font-semibold
+                  first-letter:leading-[0.8]
+                  first-letter:text-stone-900
+                `
+                : ""
+            }
+          `}
+        >
+          {children}
+        </p>
+      )
+    },
 
     h1: ({ children }: any) => {
       const text = children?.[0]
@@ -226,6 +238,9 @@ const components: PortableTextComponents = {
 }
 
 export function CustomPortableText({ value }: any) {
+  // Reset drop cap on every article render
+  hasDropCap = false
+
   return (
     <div
       className="
@@ -239,4 +254,4 @@ export function CustomPortableText({ value }: any) {
       />
     </div>
   )
-}
+                                           }
