@@ -814,12 +814,23 @@ export default async function BlogPostPage({
               "
             >
 
-              <PortableText
-                value={bodyContent}
-                components={
-                  portableTextComponents
-                }
-              />
+              <div className="space-y-6">
+
+  <h2 className="text-3xl font-bold">
+    TEST ARTICLE
+  </h2>
+
+  <p className="text-lg leading-8 text-muted-foreground">
+    If you can see this page,
+    then the crash is coming from
+    PortableText or BlogImage.
+  </p>
+
+  <pre className="overflow-auto rounded-2xl bg-black p-6 text-sm text-white">
+    {JSON.stringify(bodyContent, null, 2)}
+  </pre>
+
+</div>
             </article>
 
             
