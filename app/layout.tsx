@@ -1,4 +1,5 @@
-import GoogleAnalytics from "@/components/GoogleAnalytics"
+import { PageTransition } from "@/components/page-transition"
+  import GoogleAnalytics from "@/components/GoogleAnalytics"
 
 import type { Metadata } from "next"
 
@@ -142,10 +143,11 @@ export default function RootLayout({
     >
       <body className="bg-background text-foreground antialiased">
         <GoogleAnalytics />
+        <PageTransition>
+           {children}
+          </PageTransition>
 
-        {children}
-
-        {process.env.NODE_ENV === "production" && (
+       {process.env.NODE_ENV === "production" && (
           <Analytics />
         )}
       </body>
