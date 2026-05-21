@@ -11,25 +11,39 @@ let hasDropCap = false
 const components: PortableTextComponents = {
   block: {
     normal: ({ children }: any) => {
-      const applyDropCap = !hasDropCap
-      hasDropCap = true
+  const text =
+    typeof children?.[0] === "string"
+      ? children[0]
+      : ""
 
-      return (
-        <p
-          className={`
-            mb-8
-            text-[18px]
-            leading-[1.95]
-            tracking-[0.01em]
-            text-stone-700
+  const isAffiliateDisclosure =
+    text.includes("affiliate links") ||
+    text.includes("commission")
 
-            ${applyDropCap ? "drop-cap" : ""}
-          `}
-        >
-          {children}
-        </p>
-      )
-    },
+  const applyDropCap =
+    !hasDropCap &&
+    !isAffiliateDisclosure
+
+  if (applyDropCap) {
+    hasDropCap = true
+  }
+
+  return (
+    <p
+      className={`
+        mb-8
+        text-[18px]
+        leading-[1.95]
+        tracking-[0.01em]
+        text-stone-700
+
+        ${applyDropCap ? "drop-cap" : ""}
+      `}
+    >
+      {children}
+    </p>
+  )
+},
 
     h1: ({ children }: any) => {
       const text = children?.[0]
