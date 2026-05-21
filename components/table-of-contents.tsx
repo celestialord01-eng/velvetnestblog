@@ -1,74 +1,80 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import clsx from "clsx"
+import Link from "next/link"
 
 interface TOCItem {
   text: string
-  id: string
   level: string
+  id: string
+}
+
+interface TableOfContentsProps {
+  items?: TOCItem[]
 }
 
 export default function TableOfContents({
-  toc,
-}: {
-  toc: TOCItem[]
-}) {
-  const [activeId, setActiveId] = useState("")
+  items = [],
+}: TableOfContentsProps) {
 
-  useEffect(() => {
-    const headings = document.querySelectorAll("h2, h3")
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id)
-          }
-        })
-      },
-      {
-        rootMargin: "-30% 0px -60% 0px",
-      }
-    )
-
-    headings.forEach((heading) => {
-      observer.observe(heading)
-    })
-
-    return () => {
-      headings.forEach((heading) => {
-        observer.unobserve(heading)
-      })
-    }
-  }, [])
+  if (!items.length) {
+    return null
+  }
 
   return (
-    <div className="rounded-3xl border border-border bg-secondary/30 p-6 lg:sticky lg:top-24">
-      <h3 className="mb-5 text-lg font-semibold tracking-tight">
+
+    <div
+      className="
+        rounded-3xl
+        border
+        border-[#ece6de]
+        bg-white
+        p-6
+        shadow-sm
+      "
+    >
+
+      <h3
+        className="
+          mb-5
+          text-lg
+          font-semibold
+          text-[#2c2520]
+        "
+      >
         Table of Contents
       </h3>
 
-      <ul className="space-y-1">
-        {toc.map((item) => (
-          <li
-            key={item.id}
-            className={item.level === "h3" ? "ml-4" : ""}
-          >
-            <a
-              href={`#${item.id}`}
-              className={clsx(
-                "block rounded-xl px-3 py-2.5 text-sm leading-6 transition-all duration-200",
-                activeId === item.id
-                  ? "bg-background font-medium text-foreground shadow-sm"
-                  : "text-foreground/70 hover:bg-background hover:text-foreground"
-              )}
+      <nav>
+
+        <ul className="space-y-3">
+
+          {items.map((item) => (
+
+            <li
+              key={item.id}
+              className={
+                item.level === "h3"
+                  ? "ml-4"
+                  : ""
+              }
             >
-              {item.text}
-            </a>
-          </li>
-        ))}
-      </ul>
+
+              <Link
+                href={`#${item.id}`}
+                className="
+                  text-sm
+                  leading-6
+                  text-[#6b6258]
+                  transition-colors
+                  hover:text-[#2c2520]
+                "
+              >
+                {item.text}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   )
-        }
+                }
