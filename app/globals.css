@@ -227,3 +227,9 @@ html {
   font-weight: 600;
   color: #1c1917;
 }
+
+@media (min-width: 768px) {
+  .drop-cap::first-letter {
+    font-size: 7rem;
+  }
+}
