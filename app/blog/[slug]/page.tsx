@@ -32,8 +32,6 @@ import BlogImage from "@/components/blog-image"
 
 import FadeIn from "@/components/fade-in"
 
-import { amazonFinds } from "@/lib/data"
-
 import ShareButtons from "./ShareButtons"
 
 import { client } from "@/sanity/lib/client"
@@ -45,7 +43,10 @@ interface BlogPostPageProps {
   }
 }
 
-// GET POST
+/* =========================================================
+   GET POST
+========================================================= */
+
 async function getPost(slug: string) {
 
   const query = `
@@ -81,8 +82,8 @@ async function getPost(slug: string) {
     },
 
     category->{
-  title,
-  "slug": slug.current,
+      title,
+      "slug": slug.current,
       description,
       seoTitle,
       seoDescription,
@@ -101,69 +102,41 @@ async function getPost(slug: string) {
   })
 }
 
-// RELATED POSTS
-async function getRelatedPosts(
-  categorySlug: string,
-  currentId: string
-) {
+/* =========================================================
+   TOC ID
+========================================================= */
 
-  const query = `
-  *[
-    _type == "post" &&
-    category->slug.current == $categorySlug &&
-    _id != $currentId
-  ]
-  | order(publishedAt desc)[0...3]{
-
-    _id,
-    title,
-    excerpt,
-    publishedAt,
-
-    "slug": slug.current,
-
-    mainImage{
-      asset->{
-        url
-      },
-      alt
-    },
-
-    category->{
-      title,
-      slug
-    }
-  }
-  `
-
-  return await client.fetch(query, {
-    categorySlug,
-    currentId,
-  })
-}
-
-// TOC ID
 function headingToId(text: string) {
+
   return slugify(text, {
     lower: true,
     strict: true,
   })
 }
 
-// TABLE OF CONTENTS
-function getTableOfContents(body: any[]) {
+/* =========================================================
+   TABLE OF CONTENTS
+========================================================= */
+
+function getTableOfContents(
+  body: any[] = []
+) {
 
   return body
-    ?.filter(
+    .filter(
       (block) =>
-        block._type === "block" &&
-        ["h2", "h3"].includes(block.style)
+        block?._type === "block" &&
+        ["h2", "h3"].includes(block?.style)
     )
     .map((block) => {
 
-      const text = block.children
-        .map((child: any) => child.text)
-        .join("")
+      const text =
+        block?.children
+          ?.map(
+            (child: any) =>
+              child?.text || ""
+          )
+          .join("") || ""
 
       return {
         text,
@@ -173,19 +146,30 @@ function getTableOfContents(body: any[]) {
     })
 }
 
-// READING TIME TEXT
-function getPlainText(blocks: any[]) {
+/* =========================================================
+   PLAIN TEXT
+========================================================= */
+
+function getPlainText(
+  blocks: any[] = []
+) {
 
   return blocks
-    ?.map((block) =>
-      block.children
-        ?.map((child: any) => child.text)
-        .join("")
+    .map((block) =>
+      block?.children
+        ?.map(
+          (child: any) =>
+            child?.text || ""
+        )
+        .join("") || ""
     )
     .join(" ")
 }
 
-// SEO
+/* =========================================================
+   SEO
+========================================================= */
+
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
@@ -193,14 +177,16 @@ export async function generateMetadata({
   const { slug } = params
 
   const post = await getPost(slug)
-  console.log(post)
+
   if (!post) {
+
     return {
       title: "Post Not Found | VelvetNest",
     }
   }
 
   return {
+
     title:
       post.seoTitle ||
       `${post.title} | VelvetNest`,
@@ -210,6 +196,7 @@ export async function generateMetadata({
       post.excerpt,
 
     openGraph: {
+
       title: post.title,
 
       description:
@@ -221,22 +208,26 @@ export async function generateMetadata({
       url:
         `https://velvetnestblog.vercel.app/blog/${post.slug}`,
 
-      images: [
-        {
-          url:
-            post.mainImage?.asset?.url,
+      images:
+        post.mainImage?.asset?.url
+          ? [
+              {
+                url:
+                  post.mainImage.asset.url,
 
-          width: 1200,
-          height: 630,
+                width: 1200,
+                height: 630,
 
-          alt:
-            post.mainImage?.alt ||
-            post.title,
-        },
-      ],
+                alt:
+                  post.mainImage?.alt ||
+                  post.title,
+              },
+            ]
+          : [],
     },
 
     twitter: {
+
       card: "summary_large_image",
 
       title: post.title,
@@ -245,19 +236,26 @@ export async function generateMetadata({
         post.seoDescription ||
         post.excerpt,
 
-      images: [
-        post.mainImage?.asset?.url,
-      ],
+      images:
+        post.mainImage?.asset?.url
+          ? [
+              post.mainImage.asset.url,
+            ]
+          : [],
     },
 
     alternates: {
+
       canonical:
         `https://velvetnestblog.vercel.app/blog/${post.slug}`,
     },
   }
 }
 
-// PORTABLE TEXT
+/* =========================================================
+   PORTABLE TEXT
+========================================================= */
+
 const portableTextComponents = {
 
   types: {
@@ -279,11 +277,14 @@ const portableTextComponents = {
 
     h1: ({ children }: any) => {
 
-      const text = children?.[0]
+      const text =
+        children?.[0] || ""
 
-      const id = headingToId(text)
+      const id =
+        headingToId(text)
 
       return (
+
         <h1
           id={id}
           className="
@@ -302,11 +303,14 @@ const portableTextComponents = {
 
     h2: ({ children }: any) => {
 
-      const text = children?.[0]
+      const text =
+        children?.[0] || ""
 
-      const id = headingToId(text)
+      const id =
+        headingToId(text)
 
       return (
+
         <h2
           id={id}
           className="
@@ -326,11 +330,14 @@ const portableTextComponents = {
 
     h3: ({ children }: any) => {
 
-      const text = children?.[0]
+      const text =
+        children?.[0] || ""
 
-      const id = headingToId(text)
+      const id =
+        headingToId(text)
 
       return (
+
         <h3
           id={id}
           className="
@@ -349,28 +356,34 @@ const portableTextComponents = {
 
     normal: ({ children }: any) => (
 
-      <p className="
-        mb-8
-        text-[1.15rem]
-        leading-9
-        text-foreground/80
-      ">
+      <p
+        className="
+          mb-8
+          text-[1.15rem]
+          leading-9
+          text-foreground/80
+        "
+      >
         {children}
       </p>
     ),
 
-    blockquote: ({ children }: any) => (
+    blockquote: ({
+      children,
+    }: any) => (
 
-      <blockquote className="
-        my-10
-        border-l-4
-        border-primary
-        pl-6
-        text-xl
-        italic
-        leading-9
-        text-foreground/70
-      ">
+      <blockquote
+        className="
+          my-10
+          border-l-4
+          border-primary
+          pl-6
+          text-xl
+          italic
+          leading-9
+          text-foreground/70
+        "
+      >
         {children}
       </blockquote>
     ),
@@ -378,26 +391,34 @@ const portableTextComponents = {
 
   list: {
 
-    bullet: ({ children }: any) => (
+    bullet: ({
+      children,
+    }: any) => (
 
-      <ul className="
-        mb-8
-        ml-6
-        list-disc
-        space-y-4
-      ">
+      <ul
+        className="
+          mb-8
+          ml-6
+          list-disc
+          space-y-4
+        "
+      >
         {children}
       </ul>
     ),
 
-    number: ({ children }: any) => (
+    number: ({
+      children,
+    }: any) => (
 
-      <ol className="
-        mb-8
-        ml-6
-        list-decimal
-        space-y-4
-      ">
+      <ol
+        className="
+          mb-8
+          ml-6
+          list-decimal
+          space-y-4
+        "
+      >
         {children}
       </ol>
     ),
@@ -405,24 +426,32 @@ const portableTextComponents = {
 
   listItem: {
 
-    bullet: ({ children }: any) => (
+    bullet: ({
+      children,
+    }: any) => (
 
-      <li className="
-        text-[1.1rem]
-        leading-9
-        text-foreground/80
-      ">
+      <li
+        className="
+          text-[1.1rem]
+          leading-9
+          text-foreground/80
+        "
+      >
         {children}
       </li>
     ),
 
-    number: ({ children }: any) => (
+    number: ({
+      children,
+    }: any) => (
 
-      <li className="
-        text-[1.1rem]
-        leading-9
-        text-foreground/80
-      ">
+      <li
+        className="
+          text-[1.1rem]
+          leading-9
+          text-foreground/80
+        "
+      >
         {children}
       </li>
     ),
@@ -430,26 +459,35 @@ const portableTextComponents = {
 
   marks: {
 
-    strong: ({ children }: any) => (
+    strong: ({
+      children,
+    }: any) => (
 
-      <strong className="
-        font-semibold
-        text-foreground
-      ">
+      <strong
+        className="
+          font-semibold
+          text-foreground
+        "
+      >
         {children}
       </strong>
     ),
 
-    em: ({ children }: any) => (
+    em: ({
+      children,
+    }: any) => (
       <em className="italic">
         {children}
       </em>
     ),
 
-    link: ({ children, value }: any) => (
+    link: ({
+      children,
+      value,
+    }: any) => (
 
       <a
-        href={value.href}
+        href={value?.href || "#"}
         target="_blank"
         rel="noopener noreferrer"
         className="
@@ -467,70 +505,72 @@ const portableTextComponents = {
   },
 }
 
+/* =========================================================
+   PAGE
+========================================================= */
+
 export default async function BlogPostPage({
   params,
 }: BlogPostPageProps) {
 
   const { slug } = params
 
-  const post = await getPost(slug)
+  const post =
+    await getPost(slug)
 
   if (!post) {
     notFound()
   }
 
-  const toc =
-    getTableOfContents(post.body)
+  const bodyContent =
+    Array.isArray(post?.body)
+      ? post.body
+      : []
 
-  const stats = readingTime(
-    getPlainText(post.body)
-  )
+  const toc =
+    getTableOfContents(
+      bodyContent
+    )
+
+  const stats =
+    readingTime(
+      getPlainText(
+        bodyContent
+      )
+    )
 
   const jsonLd = {
-    "@context": "https://schema.org",
 
-    "@type": "Article",
+    "@context":
+      "https://schema.org",
 
-    headline: post.title,
+    "@type":
+      "Article",
+
+    headline:
+      post.title,
 
     description:
       post.excerpt,
 
     image:
-      post.mainImage?.asset?.url,
+      post.mainImage?.asset?.url || "",
 
     datePublished:
       post.publishedAt,
 
     author: {
-      "@type": "Organization",
-      name: "VelvetNest",
+
+      "@type":
+        "Organization",
+
+      name:
+        "VelvetNest",
     },
   }
 
-  const categorySlug =
-  post.category?.slug
-
-  const relatedPosts =
-    await getRelatedPosts(
-      categorySlug,
-      post._id
-    )
-
-  const relatedProducts =
-    amazonFinds
-      .filter((p) =>
-        categorySlug === "fashion"
-          ? p.category === "fashion"
-          : categorySlug === "home-decor"
-          ? p.category === "home"
-          : categorySlug === "beauty"
-          ? p.category === "beauty"
-          : true
-      )
-      .slice(0, 4)
-
   return (
+
     <div className="min-h-screen bg-background">
 
       <ReadingProgress />
@@ -542,11 +582,264 @@ export default async function BlogPostPage({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(jsonLd),
+            __html:
+              JSON.stringify(
+                jsonLd
+              ),
           }}
         />
 
-        {/* REST OF YOUR JSX REMAINS SAME */}
+        {/* HERO */}
+
+        <section
+          className="
+            border-b
+            border-border
+            bg-[#f7f4ef]
+          "
+        >
+
+          <div
+            className="
+              mx-auto
+              max-w-6xl
+              px-4
+              py-14
+              md:py-20
+            "
+          >
+
+            <Link
+              href="/blog"
+              className="
+                mb-10
+                inline-flex
+                items-center
+                gap-2
+                text-sm
+                font-medium
+                text-muted-foreground
+                transition
+                hover:text-foreground
+              "
+            >
+
+              <ArrowLeft className="h-4 w-4" />
+
+              Back to Blog
+            </Link>
+
+            <div
+              className="
+                grid
+                gap-12
+                lg:grid-cols-[1fr_320px]
+              "
+            >
+
+              {/* CONTENT */}
+
+              <div>
+
+                <div
+                  className="
+                    flex
+                    flex-wrap
+                    items-center
+                    gap-4
+                    text-sm
+                    text-muted-foreground
+                  "
+                >
+
+                  {post.category?.title && (
+
+                    <span
+                      className="
+                        rounded-full
+                        bg-[#ede7df]
+                        px-4
+                        py-1.5
+                        text-xs
+                        font-medium
+                        uppercase
+                        tracking-[0.18em]
+                        text-[#2c2520]
+                      "
+                    >
+                      {post.category.title}
+                    </span>
+                  )}
+
+                  <div
+                    className="
+                      flex
+                      items-center
+                      gap-2
+                    "
+                  >
+
+                    <Calendar className="h-4 w-4" />
+
+                    {post.publishedAt
+                      ? new Date(
+                          post.publishedAt
+                        ).toDateString()
+                      : "Recently Published"}
+                  </div>
+
+                  <div
+                    className="
+                      flex
+                      items-center
+                      gap-2
+                    "
+                  >
+
+                    <Clock className="h-4 w-4" />
+
+                    {stats.text}
+                  </div>
+                </div>
+
+                <h1
+                  className="
+                    mt-8
+                    text-4xl
+                    font-bold
+                    leading-tight
+                    tracking-tight
+                    md:text-6xl
+                  "
+                >
+                  {post.title}
+                </h1>
+
+                {post.excerpt && (
+
+                  <p
+                    className="
+                      mt-8
+                      max-w-3xl
+                      text-xl
+                      leading-9
+                      text-muted-foreground
+                    "
+                  >
+                    {post.excerpt}
+                  </p>
+                )}
+
+                <div className="mt-8">
+
+                  <ShareButtons
+                    title={post.title}
+                  />
+                </div>
+              </div>
+
+              {/* TOC */}
+
+              <aside className="hidden lg:block">
+
+                <div className="sticky top-28">
+
+                  <TableOfContents
+                    items={toc}
+                  />
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        {/* FEATURED IMAGE */}
+
+        {post.mainImage?.asset?.url && (
+
+          <section className="py-10">
+
+            <div
+              className="
+                mx-auto
+                max-w-6xl
+                px-4
+              "
+            >
+
+              <div
+                className="
+                  overflow-hidden
+                  rounded-[2rem]
+                "
+              >
+
+                <div
+                  className="
+                    relative
+                    aspect-[16/9]
+                  "
+                >
+
+                  <Image
+                    src={
+                      post.mainImage
+                        .asset.url
+                    }
+                    alt={
+                      post.mainImage
+                        ?.alt ||
+                      post.title
+                    }
+                    fill
+                    priority
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* ARTICLE */}
+
+        <section className="pb-24">
+
+          <div
+            className="
+              mx-auto
+              grid
+              max-w-6xl
+              gap-12
+              px-4
+              lg:grid-cols-[1fr_320px]
+            "
+          >
+
+            <article
+              className="
+                prose
+                prose-neutral
+                max-w-none
+              "
+            >
+
+              <PortableText
+                value={bodyContent}
+                components={
+                  portableTextComponents
+                }
+              />
+            </article>
+
+            <aside className="lg:hidden">
+
+              <MobileTOC
+                items={toc}
+              />
+            </aside>
+          </div>
+        </section>
 
       </main>
 
@@ -554,4 +847,4 @@ export default async function BlogPostPage({
 
     </div>
   )
-            }
+    }
