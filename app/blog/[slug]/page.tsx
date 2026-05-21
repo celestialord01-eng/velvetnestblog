@@ -526,10 +526,7 @@ export default async function BlogPostPage({
       ? post.body
       : []
 
-  const toc =
-    getTableOfContents(
-      bodyContent
-    )
+  
 
   const stats =
     readingTime(
@@ -825,12 +822,7 @@ export default async function BlogPostPage({
               />
             </article>
 
-            <aside className="lg:hidden">
-
-              <MobileTOC
-                items={toc}
-              />
-            </aside>
+            
           </div>
         </section>
 
