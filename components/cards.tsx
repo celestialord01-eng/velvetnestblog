@@ -4,6 +4,10 @@ import Image from "next/image"
 import Link from "next/link"
 import { ExternalLink } from "lucide-react"
 
+/* =========================================================
+   BLOG CARD
+========================================================= */
+
 interface BlogCardProps {
   title: string
   excerpt?: string
@@ -26,9 +30,9 @@ export function BlogCard({
   readingTime,
 }: BlogCardProps) {
 
-  const imageSrc = image || "/placeholder.jpg"
+  const imageSrc =
+    image || "/placeholder.jpg"
 
-  // FIXED SLUG
   const postUrl =
     slug && slug.length > 0
       ? `/blog/${slug}`
@@ -305,6 +309,199 @@ export function BlogCard({
           </div>
         </div>
       </Link>
+    </article>
+  )
+}
+
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
+
+interface ProductCardProps {
+  title: string
+  price?: string
+  originalPrice?: string
+  image?: string
+  link?: string
+  category?: string
+}
+
+export function ProductCard({
+  title,
+  price,
+  originalPrice,
+  image,
+  link,
+  category,
+}: ProductCardProps) {
+
+  const imageSrc =
+    image || "/placeholder.jpg"
+
+  return (
+    <article className="group">
+
+      <a
+        href={link || "#"}
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+        className="block"
+      >
+
+        <div
+          className="
+            overflow-hidden
+            rounded-[28px]
+            bg-white
+            shadow-sm
+            transition-all
+            duration-500
+            hover:-translate-y-1
+            hover:shadow-2xl
+          "
+        >
+
+          {/* IMAGE */}
+          <div
+            className="
+              relative
+              aspect-square
+              overflow-hidden
+            "
+          >
+
+            <Image
+              src={imageSrc}
+              alt={title}
+              fill
+              className="
+                object-cover
+                transition-transform
+                duration-700
+                group-hover:scale-105
+              "
+              sizes="
+                (max-width: 640px) 100vw,
+                (max-width: 1024px) 50vw,
+                25vw
+              "
+            />
+
+            {/* CATEGORY */}
+            <div className="absolute left-4 top-4">
+
+              <span
+                className="
+                  rounded-full
+                  border
+                  border-white/20
+                  bg-white/90
+                  px-4
+                  py-1.5
+                  text-[11px]
+                  font-medium
+                  uppercase
+                  tracking-[0.18em]
+                  text-[#2c2520]
+                  backdrop-blur-md
+                "
+              >
+                {category || "Amazon Find"}
+              </span>
+            </div>
+
+            {/* SHOP BUTTON */}
+            <div
+              className="
+                absolute
+                inset-x-4
+                bottom-4
+                translate-y-4
+                opacity-0
+                transition-all
+                duration-300
+                group-hover:translate-y-0
+                group-hover:opacity-100
+              "
+            >
+
+              <span
+                className="
+                  flex
+                  items-center
+                  justify-center
+                  gap-2
+                  rounded-2xl
+                  bg-[#2c2520]
+                  py-3
+                  text-sm
+                  font-medium
+                  text-white
+                "
+              >
+                Shop Now
+
+                <ExternalLink className="h-4 w-4" />
+              </span>
+            </div>
+          </div>
+
+          {/* CONTENT */}
+          <div className="p-5">
+
+            <h3
+              className="
+                line-clamp-2
+                text-base
+                font-medium
+                leading-7
+                text-[#2c2520]
+                transition-colors
+                duration-300
+                group-hover:text-[#5f5246]
+              "
+            >
+              {title}
+            </h3>
+
+            <div
+              className="
+                mt-4
+                flex
+                items-center
+                gap-3
+              "
+            >
+
+              {price && (
+
+                <span
+                  className="
+                    text-lg
+                    font-semibold
+                    text-[#2c2520]
+                  "
+                >
+                  {price}
+                </span>
+              )}
+
+              {originalPrice && (
+
+                <span
+                  className="
+                    text-sm
+                    text-[#8b7d6b]
+                    line-through
+                  "
+                >
+                  {originalPrice}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </a>
     </article>
   )
             }
