@@ -2,16 +2,25 @@ import type { Metadata } from "next"
 
 import Image from "next/image"
 import Link from "next/link"
-import { notFound } from "next/navigation"
+
+import {
+  notFound,
+} from "next/navigation"
 
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+
+import { BlogCard } from "@/components/cards"
 
 import { client } from "@/sanity/lib/client"
 
 import {
   categoryPostsQuery,
 } from "@/lib/queries"
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
 
 const categories = [
   "fashion",
@@ -21,60 +30,100 @@ const categories = [
   "self-care",
 ]
 
+/* =========================================================
+   TYPES
+========================================================= */
+
 type Props = {
   params: Promise<{
     slug: string
   }>
 }
 
-// SEO METADATA
+/* =========================================================
+   METADATA
+========================================================= */
+
 export async function generateMetadata({
   params,
 }: Props): Promise<Metadata> {
 
-  const { slug } = await params
+  const { slug } =
+    await params
 
   const title =
     slug
       .replace(/-/g, " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase())
+      .replace(
+        /\b\w/g,
+        (char) =>
+          char.toUpperCase()
+      )
 
   return {
-    title: `${title} | VelvetNest`,
-    description: `Explore curated ${title} inspiration, ideas, trends, and timeless lifestyle content from VelvetNest.`,
+    title:
+      `${title} | VelvetNest`,
+
+    description:
+      `Explore curated ${title} inspiration, timeless ideas, and elevated lifestyle content from VelvetNest.`,
   }
 }
+
+/* =========================================================
+   PAGE
+========================================================= */
 
 export default async function CategoryPage({
   params,
 }: Props) {
 
-  const { slug } = await params
+  const { slug } =
+    await params
 
-  if (!categories.includes(slug)) {
+  if (
+    !categories.includes(slug)
+  ) {
     notFound()
   }
 
-  const posts = await client.fetch(
-    categoryPostsQuery,
-    { slug }
-  )
+  const posts =
+    await client.fetch(
+      categoryPostsQuery,
+      { slug }
+    )
 
   const categoryTitle =
     slug
       .replace(/-/g, " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase())
+      .replace(
+        /\b\w/g,
+        (char) =>
+          char.toUpperCase()
+      )
 
   return (
-    <>
+
+    <div className="min-h-screen bg-background">
+
       <Header />
 
-      <main className="min-h-screen bg-[#f8f5f1]">
+      <main>
 
-        {/* HERO SECTION */}
-        <section className="relative overflow-hidden border-b border-[#ece6de]">
+        {/* =========================================================
+            HERO
+        ========================================================= */}
 
-          {/* BACKGROUND IMAGE */}
+        <section
+          className="
+            relative
+            overflow-hidden
+            border-b
+            border-border
+          "
+        >
+
+          {/* BACKGROUND */}
+
           <div className="absolute inset-0">
 
             <Image
@@ -85,186 +134,269 @@ export default async function CategoryPage({
               className="object-cover"
             />
 
-            <div className="absolute inset-0 bg-black/40" />
+            <div
+              className="
+                absolute
+                inset-0
+                bg-black/35
+              "
+            />
+
           </div>
 
           {/* CONTENT */}
-          <div className="relative z-10 px-4 py-28">
 
-            <div className="mx-auto max-w-4xl text-center text-white">
+          <div
+            className="
+              relative
+              z-10
+              px-5
+              py-32
+              md:py-40
+            "
+          >
 
-              <p className="mb-4 text-xs uppercase tracking-[0.35em] text-white/80">
+            <div
+              className="
+                mx-auto
+                max-w-4xl
+                text-center
+                text-white
+              "
+            >
+
+              <p
+                className="
+                  text-[11px]
+                  uppercase
+                  tracking-[0.35em]
+                  text-white/80
+                "
+              >
                 VelvetNest Category
               </p>
 
-              <h1 className="text-5xl font-semibold tracking-tight md:text-6xl">
+              <h1
+                className="
+                  mt-5
+                  font-serif
+                  text-[4rem]
+                  leading-[0.92]
+                  tracking-[-0.06em]
+                  md:text-[6rem]
+                  lg:text-[7rem]
+                "
+              >
                 {categoryTitle}
               </h1>
 
-              <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/90">
-                Explore curated inspiration, elegant trends,
-                and timeless lifestyle ideas from VelvetNest.
+              <p
+                className="
+                  mx-auto
+                  mt-8
+                  max-w-2xl
+                  text-[1.1rem]
+                  leading-[2]
+                  text-white/90
+                "
+              >
+                Explore curated inspiration,
+                timeless trends,
+                and elevated lifestyle ideas from VelvetNest.
               </p>
+
             </div>
+
           </div>
+
         </section>
 
-        {/* POSTS SECTION */}
-        <section className="px-4 py-16">
+        {/* =========================================================
+            POSTS
+        ========================================================= */}
 
-          <div className="mx-auto max-w-7xl">
+        <section
+          className="
+            py-24
+            md:py-32
+          "
+        >
 
-            {/* EMPTY STATE */}
+          <div
+            className="
+              mx-auto
+              max-w-7xl
+              px-5
+            "
+          >
+
+            {/* EMPTY */}
+
             {posts.length === 0 && (
 
-              <div className="rounded-3xl border border-dashed border-[#d8cec2] bg-white p-20 text-center">
+              <div
+                className="
+                  rounded-[2.5rem]
+                  border
+                  border-dashed
+                  border-border
+                  bg-card
+                  px-10
+                  py-24
+                  text-center
+                "
+              >
 
-                <h2 className="text-3xl font-semibold text-[#2c2520]">
-                  No posts yet
+                <p
+                  className="
+                    text-[11px]
+                    uppercase
+                    tracking-[0.25em]
+                    text-muted-foreground
+                  "
+                >
+                  Coming Soon
+                </p>
+
+                <h2
+                  className="
+                    mt-5
+                    font-serif
+                    text-[3rem]
+                    tracking-[-0.05em]
+                    text-foreground
+                  "
+                >
+                  No articles yet
                 </h2>
 
-                <p className="mt-4 text-[#6b6258]">
-                  Articles for this category will appear here soon.
+                <p
+                  className="
+                    mx-auto
+                    mt-5
+                    max-w-lg
+                    text-[1.05rem]
+                    leading-8
+                    text-[#6b6057]
+                  "
+                >
+                  Curated articles for this category
+                  will appear here soon.
                 </p>
+
               </div>
+
             )}
 
-            {/* POSTS GRID */}
+            {/* POSTS */}
+
             {posts.length > 0 && (
 
-              <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+              <>
+                {/* LABEL */}
 
-                {posts.map((post: any) => (
+                <div
+                  className="
+                    mb-14
+                    flex
+                    items-end
+                    justify-between
+                  "
+                >
 
-                  <article
-                    key={post._id}
+                  <div>
+
+                    <p
+                      className="
+                        text-[11px]
+                        uppercase
+                        tracking-[0.35em]
+                        text-muted-foreground
+                      "
+                    >
+                      Curated Articles
+                    </p>
+
+                    <h2
+                      className="
+                        mt-4
+                        font-serif
+                        text-[3rem]
+                        tracking-[-0.05em]
+                        md:text-[5rem]
+                      "
+                    >
+                      Explore Stories
+                    </h2>
+
+                  </div>
+
+                  <p
                     className="
-                      group
-                      overflow-hidden
-                      rounded-[28px]
-                      bg-white
-                      shadow-sm
-                      transition-all
-                      duration-500
-                      hover:-translate-y-1
-                      hover:shadow-2xl
+                      hidden
+                      text-sm
+                      text-muted-foreground
+                      md:block
                     "
                   >
+                    {posts.length} Articles
+                  </p>
 
-                    {/* IMAGE */}
-                    <Link href={`/blog/${post.slug.current}`}>
+                </div>
 
-                      <div className="relative aspect-[4/5] overflow-hidden">
+                {/* GRID */}
 
-                        <Image
-                          src={post.mainImage?.asset?.url}
-                          alt={post.mainImage?.alt || post.title}
-                          fill
-                          className="
-                            object-cover
-                            transition-transform
-                            duration-700
-                            group-hover:scale-105
-                          "
-                        />
+                <div className="masonry-grid">
 
-                        {/* FEATURED BADGE */}
-                        {post.featured && (
+                  {posts.map(
+                    (post: any) => (
 
-                          <div className="
-                            absolute
-                            left-4
-                            top-4
-                            rounded-full
-                            bg-black/80
-                            px-3
-                            py-1
-                            text-xs
-                            font-medium
-                            uppercase
-                            tracking-[0.15em]
-                            text-white
-                            backdrop-blur-md
-                          ">
-                            Featured
-                          </div>
-                        )}
-                      </div>
-                    </Link>
+                      <BlogCard
+                        key={post._id}
+                        title={post.title}
+                        excerpt={post.excerpt}
+                        image={
+                          post.mainImage?.asset
+                            ?.url
+                        }
+                        category={
+                          post.category
+                            ?.title
+                        }
+                        date={
+                          post.publishedAt
+                            ? new Date(
+                                post.publishedAt
+                              ).toDateString()
+                            : "Recently Published"
+                        }
+                        slug={
+                          post.slug.current
+                        }
+                        featured={
+                          post.featured
+                        }
+                        readingTime={
+                          post.readingTime
+                        }
+                      />
 
-                    {/* CONTENT */}
-                    <div className="p-6">
+                    )
+                  )}
 
-                      {/* CATEGORY */}
-                      <p className="
-                        mb-3
-                        text-xs
-                        uppercase
-                        tracking-[0.25em]
-                        text-[#8b7d6b]
-                      ">
-                        {post.category?.title}
-                      </p>
+                </div>
+              </>
 
-                      {/* TITLE */}
-                      <h2 className="
-                        text-2xl
-                        font-semibold
-                        leading-tight
-                        text-[#2c2520]
-                      ">
-                        {post.title}
-                      </h2>
-
-                      {/* EXCERPT */}
-                      <p className="
-                        mt-4
-                        line-clamp-3
-                        leading-relaxed
-                        text-[#6b6258]
-                      ">
-                        {post.excerpt}
-                      </p>
-
-                      {/* FOOTER */}
-                      <div className="mt-6 flex items-center justify-between">
-
-                        <Link
-                          href={`/blog/${post.slug.current}`}
-                          className="
-                            text-sm
-                            font-medium
-                            text-[#2c2520]
-                            underline-offset-4
-                            transition-all
-                            duration-300
-                            hover:underline
-                          "
-                        >
-                          Read Article →
-                        </Link>
-
-                        {post.readingTime && (
-                          <span className="
-                            text-xs
-                            uppercase
-                            tracking-[0.15em]
-                            text-[#8b7d6b]
-                          ">
-                            {post.readingTime} min read
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
             )}
+
           </div>
+
         </section>
+
       </main>
 
       <Footer />
-    </>
+
+    </div>
   )
-}
+    }
