@@ -36,7 +36,7 @@ const components: PortableTextComponents = {
         leading-[1.95]
         tracking-[0.01em]
         text-stone-700
-
+        first-line:text-stone-800
         ${applyDropCap ? "drop-cap" : ""}
       `}
     >
