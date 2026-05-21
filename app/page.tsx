@@ -1,4 +1,3 @@
-
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
@@ -35,13 +34,14 @@ export default async function HomePage() {
       title,
       "slug": slug.current,
       image,
-      count
+      "count": count(*[_type == "post" && references(^._id)])
     }
   `)
 
   // POSTS
   const blogPosts = await client.fetch(`
-    *[_type == "post"] | order(publishedAt desc)[0...6]{
+    *[_type == "post"]
+    | order(featured desc, publishedAt desc)[0...6]{
       _id,
       title,
       excerpt,
@@ -49,13 +49,14 @@ export default async function HomePage() {
       "slug": slug.current,
       mainImage,
       featured,
-      "category": categories[0]->title
+      "category": category->title
     }
   `)
 
   // AMAZON FINDS
   const amazonFinds = await client.fetch(`
-    *[_type == "amazonFind"] | order(_createdAt desc)[0...4]{
+    *[_type == "amazonFind"]
+    | order(featured desc, _createdAt desc)[0...4]{
       _id,
       title,
       price,
@@ -67,7 +68,7 @@ export default async function HomePage() {
     }
   `)
 
-  // ABOUT PAGE
+  // ABOUT
   const about = await client.fetch(`
     *[_type == "aboutPage"][0]{
       title,
@@ -78,158 +79,205 @@ export default async function HomePage() {
   `)
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#f8f5f1] text-[#2c2520]">
+
       <Header />
 
       <main>
 
         {/* HERO SECTION */}
-        <section className="relative overflow-hidden bg-secondary/30">
-          <div className="mx-auto max-w-7xl px-4 py-16 md:py-24">
+        <section className="relative overflow-hidden border-b border-[#ece6de] bg-[#f3efe9]">
 
-            <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          <div className="mx-auto grid max-w-7xl items-center gap-14 px-4 py-16 md:py-24 lg:grid-cols-2 lg:gap-20">
 
-              {/* LEFT CONTENT */}
-              <div className="animate-fade-up space-y-6 text-center lg:text-left">
+            {/* LEFT CONTENT */}
+            <div className="space-y-7 text-center lg:text-left">
 
-                <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                  {hero?.eyebrow || "Welcome to VelvetNest"}
-                </p>
+              <p className="text-xs font-medium uppercase tracking-[0.35em] text-[#8b7d6b]">
+                {hero?.eyebrow || "Welcome to VelvetNest"}
+              </p>
 
-                <h1 className="text-4xl font-semibold leading-tight tracking-tight md:text-5xl lg:text-6xl">
-                  <span className="block">{hero?.title1}</span>
-                  <span className="block">{hero?.title2}</span>
-                  <span className="block text-accent">
-                    {hero?.title3}
+              <h1 className="text-4xl font-semibold leading-tight tracking-tight md:text-5xl lg:text-6xl">
+
+                {hero?.title1 && (
+                  <span className="block">
+                    {hero.title1}
                   </span>
-                </h1>
+                )}
 
-                <p className="mx-auto max-w-md text-lg leading-relaxed text-muted-foreground lg:mx-0">
-                  {hero?.description}
-                </p>
+                {hero?.title2 && (
+                  <span className="block">
+                    {hero.title2}
+                  </span>
+                )}
 
-                <div className="flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
+                {hero?.title3 && (
+                  <span className="block text-[#8d6e63]">
+                    {hero.title3}
+                  </span>
+                )}
 
-                  <Button asChild size="lg" className="w-full sm:w-auto">
-                    <Link href={hero?.buttonLink || "/blog"}>
-                      {hero?.buttonText || "Explore the Blog"}
-                    </Link>
-                  </Button>
+              </h1>
 
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="w-full sm:w-auto"
-                  >
-                    <Link href="/amazon-finds">
-                      Shop My Finds
-                    </Link>
-                  </Button>
+              <p className="mx-auto max-w-xl text-lg leading-8 text-[#6b6258] lg:mx-0">
+                {hero?.description}
+              </p>
 
-                </div>
+              <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
+
+                <Button
+                  asChild
+                  size="lg"
+                  className="
+                    h-12 rounded-full bg-[#2c2520]
+                    px-8 text-white transition-all
+                    duration-300 hover:bg-[#1d1814]
+                  "
+                >
+                  <Link href={hero?.buttonLink || "/blog"}>
+                    {hero?.buttonText || "Explore the Blog"}
+                  </Link>
+                </Button>
+
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="
+                    h-12 rounded-full border-[#d7cec3]
+                    bg-white px-8 text-[#2c2520]
+                    hover:bg-[#f5f0ea]
+                  "
+                >
+                  <Link href="/amazon-finds">
+                    Shop Amazon Finds
+                  </Link>
+                </Button>
+
               </div>
 
-              {/* RIGHT IMAGE */}
-              <div className="relative animate-fade-in">
+            </div>
 
-                <div className="group overflow-hidden rounded-2xl">
+            {/* HERO IMAGE */}
+            <div className="relative">
 
-                  <div className="relative aspect-[4/5] bg-card">
+              <div className="group relative overflow-hidden rounded-[2rem] shadow-2xl">
 
-                    {hero?.heroImage && (
+                <div className="relative aspect-[4/5] bg-[#ede7df]">
+
+                  {hero?.heroImage && (
+                    <>
                       <Image
-                        src={urlFor(hero.heroImage).width(1200).url()}
+                        src={urlFor(hero.heroImage).width(1400).url()}
                         alt="VelvetNest Hero"
                         fill
                         priority
                         className="
                           object-cover
-                          transition-transform duration-500 ease-out
-                          group-hover:scale-110
+                          transition-transform
+                          duration-700
+                          ease-out
+                          group-hover:scale-105
                         "
-                        sizes="(max-width: 1024px) 100vw, 50vw"
                       />
-                    )}
 
-                  </div>
-
-                </div>
-
-                {/* FLOATING CARDS */}
-                <div className="absolute -bottom-4 -left-4 rounded-xl bg-card p-4 shadow-xl md:-left-8 md:p-6">
-
-                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                    Trending Now
-                  </p>
-
-                  <p className="mt-1 font-semibold">
-                    Spring Capsule Wardrobe
-                  </p>
-
-                </div>
-
-                <div className="absolute -right-4 top-8 rounded-xl bg-card p-4 shadow-xl md:-right-8 md:p-6">
-
-                  <p className="text-2xl font-bold">500+</p>
-
-                  <p className="text-xs text-muted-foreground">
-                    Curated Finds
-                  </p>
+                      <div className="absolute inset-0 bg-black/10" />
+                    </>
+                  )}
 
                 </div>
 
               </div>
+
+              {/* FLOATING CARD */}
+              <div className="absolute -bottom-5 left-4 rounded-2xl border border-[#ece6de] bg-white/95 p-5 shadow-xl backdrop-blur-md md:left-8">
+
+                <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-[#8b7d6b]">
+                  Trending Now
+                </p>
+
+                <p className="mt-2 text-sm font-semibold">
+                  Quiet Luxury Fashion
+                </p>
+
+              </div>
+
+              {/* FLOATING STATS */}
+              <div className="absolute right-4 top-6 rounded-2xl border border-[#ece6de] bg-white/95 p-5 shadow-xl backdrop-blur-md md:right-8">
+
+                <p className="text-2xl font-bold">
+                  500+
+                </p>
+
+                <p className="text-xs text-[#7a7065]">
+                  Curated Finds
+                </p>
+
+              </div>
+
             </div>
+
           </div>
+
         </section>
 
         {/* CATEGORIES */}
-        <section className="mx-auto max-w-7xl px-4 py-16 md:py-24">
+        <section className="mx-auto max-w-7xl px-4 py-20 md:py-24">
 
           <div className="text-center">
 
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+            <p className="text-xs font-medium uppercase tracking-[0.35em] text-[#8b7d6b]">
               Browse By Category
             </p>
 
-            <h2 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">
               Find Your Inspiration
             </h2>
 
           </div>
 
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
 
             {categories.map((category: any) => (
 
               <Link
                 key={category._id}
-                href={`/blog?category=${category.slug}`}
-                className="group relative aspect-[3/4] overflow-hidden rounded-xl bg-card"
+                href={`/category/${category.slug}`}
+                className="
+                  group relative aspect-[3/4]
+                  overflow-hidden rounded-[1.8rem]
+                  bg-[#ece5dc]
+                "
               >
 
                 {category?.image && (
                   <Image
-                    src={urlFor(category.image).width(1000).url()}
+                    src={urlFor(category.image).width(1200).url()}
                     alt={category.title}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    sizes="(max-width: 640px) 100vw,
-                           (max-width: 1024px) 50vw,
-                           20vw"
+                    className="
+                      object-cover
+                      transition-transform
+                      duration-700
+                      group-hover:scale-110
+                    "
+                    sizes="
+                      (max-width: 640px) 100vw,
+                      (max-width: 1024px) 50vw,
+                      20vw
+                    "
                   />
                 )}
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
+                <div className="absolute bottom-0 left-0 right-0 p-5 text-center">
 
-                  <h3 className="text-lg font-semibold text-white">
+                  <h3 className="text-xl font-semibold text-white">
                     {category.title}
                   </h3>
 
-                  <p className="text-sm text-white/80">
+                  <p className="mt-1 text-sm text-white/80">
                     {category.count || 0} articles
                   </p>
 
@@ -240,10 +288,11 @@ export default async function HomePage() {
             ))}
 
           </div>
+
         </section>
 
         {/* TRENDING POSTS */}
-        <section className="bg-secondary/30 py-16 md:py-24">
+        <section className="border-y border-[#ece6de] bg-[#f3efe9] py-20 md:py-24">
 
           <div className="mx-auto max-w-7xl px-4">
 
@@ -251,11 +300,11 @@ export default async function HomePage() {
 
               <div>
 
-                <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+                <p className="text-xs font-medium uppercase tracking-[0.35em] text-[#8b7d6b]">
                   Latest Articles
                 </p>
 
-                <h2 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
+                <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">
                   Trending on VelvetNest
                 </h2>
 
@@ -263,7 +312,11 @@ export default async function HomePage() {
 
               <Link
                 href="/blog"
-                className="hidden items-center gap-2 text-sm font-medium transition-colors hover:text-accent md:flex"
+                className="
+                  hidden items-center gap-2
+                  text-sm font-medium transition-all
+                  hover:gap-3 md:flex
+                "
               >
                 View All
                 <ArrowRight className="h-4 w-4" />
@@ -271,7 +324,7 @@ export default async function HomePage() {
 
             </div>
 
-            <div className="masonry-grid mt-12">
+            <div className="masonry-grid mt-14">
 
               {blogPosts.map((post: any) => (
 
@@ -299,32 +352,38 @@ export default async function HomePage() {
             </div>
 
           </div>
+
         </section>
 
         {/* AMAZON FINDS */}
-        <section className="mx-auto max-w-7xl px-4 py-16 md:py-24">
+        <section className="mx-auto max-w-7xl px-4 py-20 md:py-24">
 
           <div className="flex items-end justify-between">
 
             <div>
 
-              <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+              <p className="text-xs font-medium uppercase tracking-[0.35em] text-[#8b7d6b]">
                 Curated for You
               </p>
 
-              <h2 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-5xl">
                 Amazon Finds
               </h2>
 
-              <p className="mt-2 max-w-md text-muted-foreground">
-                Affordable, stylish picks handpicked by me.
+              <p className="mt-3 max-w-lg text-[#6b6258]">
+                Elevated fashion, cozy home decor, beauty favorites,
+                and lifestyle essentials curated for modern feminine living.
               </p>
 
             </div>
 
             <Link
               href="/amazon-finds"
-              className="hidden items-center gap-2 text-sm font-medium transition-colors hover:text-accent md:flex"
+              className="
+                hidden items-center gap-2
+                text-sm font-medium transition-all
+                hover:gap-3 md:flex
+              "
             >
               Shop All
               <ArrowRight className="h-4 w-4" />
@@ -332,7 +391,7 @@ export default async function HomePage() {
 
           </div>
 
-          <div className="masonry-grid mt-12">
+          <div className="masonry-grid mt-14">
 
             {amazonFinds.map((product: any) => (
 
@@ -353,58 +412,66 @@ export default async function HomePage() {
             ))}
 
           </div>
+
         </section>
 
-        {/* ABOUT SECTION */}
-        <section className="mx-auto max-w-7xl px-4 py-16 md:py-24">
+        {/* ABOUT */}
+        <section className="border-t border-[#ece6de] bg-[#f3efe9] py-20 md:py-24">
 
-          <div className="grid items-center gap-12 lg:grid-cols-2">
+          <div className="mx-auto grid max-w-7xl items-center gap-14 px-4 lg:grid-cols-2">
 
-            <div className="relative">
+            {/* IMAGE */}
+            <div className="group overflow-hidden rounded-[2rem] shadow-xl">
 
-              <div className="group overflow-hidden rounded-2xl">
+              <div className="relative aspect-square bg-[#e8e0d6]">
 
-                <div className="relative aspect-square bg-card">
-
-                  {about?.image && (
-                    <Image
-                      src={urlFor(about.image).width(1200).url()}
-                      alt={about?.title || "About VelvetNest"}
-                      fill
-                      className="
-                        object-cover
-                        transition-transform duration-500 ease-out
-                        group-hover:scale-110
-                      "
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                  )}
-
-                </div>
+                {about?.image && (
+                  <Image
+                    src={urlFor(about.image).width(1400).url()}
+                    alt={about?.title || "About VelvetNest"}
+                    fill
+                    className="
+                      object-cover
+                      transition-transform
+                      duration-700
+                      group-hover:scale-105
+                    "
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                )}
 
               </div>
 
             </div>
 
-            <div className="space-y-6">
+            {/* CONTENT */}
+            <div className="space-y-7">
 
-              <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+              <p className="text-xs font-medium uppercase tracking-[0.35em] text-[#8b7d6b]">
                 About VelvetNest
               </p>
 
-              <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
+              <h2 className="text-3xl font-semibold tracking-tight md:text-5xl">
                 {about?.title}
               </h2>
 
-              <p className="text-lg text-muted-foreground">
+              <p className="text-xl text-[#6b6258]">
                 {about?.subtitle}
               </p>
 
-              <p className="leading-relaxed text-muted-foreground">
+              <p className="leading-8 text-[#6b6258]">
                 {about?.description}
               </p>
 
-              <Button asChild variant="outline" size="lg">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="
+                  h-12 rounded-full border-[#d7cec3]
+                  bg-white px-8 hover:bg-[#f5f0ea]
+                "
+              >
 
                 <Link href="/about">
                   Read My Story
@@ -426,4 +493,4 @@ export default async function HomePage() {
 
     </div>
   )
-}
+          }
