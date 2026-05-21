@@ -23,21 +23,7 @@ const components: PortableTextComponents = {
             tracking-[0.01em]
             text-stone-700
 
-            ${
-              applyDropCap
-                ? `
-                  first-letter:float-left
-                  first-letter:mr-3
-                  first-letter:mt-1
-                  first-letter:text-6xl
-                  md:first-letter:text-8xl
-                  first-letter:font-serif
-                  first-letter:font-semibold
-                  first-letter:leading-[0.8]
-                  first-letter:text-stone-900
-                `
-                : ""
-            }
+            ${applyDropCap ? "drop-cap" : ""}
           `}
         >
           {children}
@@ -242,16 +228,11 @@ export function CustomPortableText({ value }: any) {
   hasDropCap = false
 
   return (
-    <div
-      className="
-        mx-auto
-        max-w-3xl
-      "
-    >
+    <div className="mx-auto max-w-3xl">
       <PortableText
         value={value}
         components={components}
       />
     </div>
   )
-                                           }
+}
