@@ -1,3 +1,4 @@
+
 "use client"
 
 import Image from "next/image"
@@ -6,6 +7,14 @@ import Link from "next/link"
 import {
   ExternalLink,
 } from "lucide-react"
+
+import {
+  motion,
+} from "framer-motion"
+
+import {
+  useState,
+} from "react"
 
 /* =========================================================
    BLOG CARD
@@ -36,10 +45,17 @@ export function BlogCard({
   const imageSrc =
     image || "/placeholder.jpg"
 
+  const [imageLoaded, setImageLoaded] =
+    useState(false)
+
   const postUrl =
     slug && slug.length > 0
       ? `/blog/${slug}`
       : "/blog"
+
+  /* =========================================================
+     PINTEREST SHARE
+  ========================================================= */
 
   const handlePinterestShare = (
     e: React.MouseEvent<HTMLButtonElement>
@@ -71,7 +87,25 @@ export function BlogCard({
 
   return (
 
-    <article className="group">
+    <motion.article
+      initial={{
+        opacity: 0,
+        y: 30,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      viewport={{
+        once: true,
+        amount: 0.2,
+      }}
+      transition={{
+        duration: 0.7,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="group"
+    >
 
       <Link
         href={postUrl}
@@ -101,16 +135,43 @@ export function BlogCard({
               alt={title}
               fill
               priority={featured}
-              className="
+              onLoad={() =>
+                setImageLoaded(true)
+              }
+              className={`
                 object-cover
-                transition-transform
-                duration-700
-                group-hover:scale-[1.03]
-              "
+                transition-all
+                duration-[1400ms]
+                ease-out
+                group-hover:scale-[1.025]
+                group-hover:-translate-y-1
+                ${
+                  imageLoaded
+                    ? "scale-100 blur-0 opacity-100"
+                    : "scale-105 blur-md opacity-0"
+                }
+              `}
               sizes="
                 (max-width: 640px) 100vw,
                 (max-width: 1024px) 50vw,
                 33vw
+              "
+            />
+
+            {/* LUXURY OVERLAY */}
+
+            <div
+              className="
+                absolute
+                inset-0
+                bg-gradient-to-t
+                from-black/[0.08]
+                via-transparent
+                to-transparent
+                opacity-0
+                transition-opacity
+                duration-700
+                group-hover:opacity-100
               "
             />
 
@@ -274,6 +335,7 @@ export function BlogCard({
               tracking-[-0.04em]
               text-foreground
               transition
+              duration-300
               group-hover:opacity-70
             "
           >
@@ -317,7 +379,6 @@ export function BlogCard({
               "
             >
               Read Article →
-
             </span>
 
           </div>
@@ -326,7 +387,7 @@ export function BlogCard({
 
       </Link>
 
-    </article>
+    </motion.article>
   )
 }
 
@@ -355,9 +416,30 @@ export function ProductCard({
   const imageSrc =
     image || "/placeholder.jpg"
 
+  const [imageLoaded, setImageLoaded] =
+    useState(false)
+
   return (
 
-    <article className="group">
+    <motion.article
+      initial={{
+        opacity: 0,
+        y: 30,
+      }}
+      whileInView={{
+        opacity: 1,
+        y: 0,
+      }}
+      viewport={{
+        once: true,
+        amount: 0.2,
+      }}
+      transition={{
+        duration: 0.7,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="group"
+    >
 
       <a
         href={link || "#"}
@@ -388,16 +470,43 @@ export function ProductCard({
               src={imageSrc}
               alt={title}
               fill
-              className="
+              onLoad={() =>
+                setImageLoaded(true)
+              }
+              className={`
                 object-cover
-                transition-transform
-                duration-700
-                group-hover:scale-[1.03]
-              "
+                transition-all
+                duration-[1400ms]
+                ease-out
+                group-hover:scale-[1.025]
+                group-hover:-translate-y-1
+                ${
+                  imageLoaded
+                    ? "scale-100 blur-0 opacity-100"
+                    : "scale-105 blur-md opacity-0"
+                }
+              `}
               sizes="
                 (max-width: 640px) 100vw,
                 (max-width: 1024px) 50vw,
                 25vw
+              "
+            />
+
+            {/* OVERLAY */}
+
+            <div
+              className="
+                absolute
+                inset-0
+                bg-gradient-to-t
+                from-black/[0.08]
+                via-transparent
+                to-transparent
+                opacity-0
+                transition-opacity
+                duration-700
+                group-hover:opacity-100
               "
             />
 
@@ -485,6 +594,7 @@ export function ProductCard({
               tracking-[-0.03em]
               text-foreground
               transition
+              duration-300
               group-hover:opacity-70
             "
           >
@@ -534,6 +644,6 @@ export function ProductCard({
 
       </a>
 
-    </article>
+    </motion.article>
   )
-         }
+}
