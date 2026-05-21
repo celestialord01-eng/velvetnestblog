@@ -219,10 +219,10 @@ html {
 }
 .drop-cap::first-letter {
   float: left;
-  font-size: 5rem;
-  line-height: 0.85;
+  font-size: 4.5rem;
+  line-height: 0.82;
   margin-right: 0.75rem;
-  margin-top: 0.4rem;
+  margin-top: 0.45rem;
   font-family: serif;
   font-weight: 600;
   color: #1c1917;
@@ -232,4 +232,4 @@ html {
   .drop-cap::first-letter {
     font-size: 7rem;
   }
-}
+  }
