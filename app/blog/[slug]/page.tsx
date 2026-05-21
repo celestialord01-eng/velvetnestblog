@@ -6,12 +6,12 @@ import { notFound } from "next/navigation"
 import {
   ArrowLeft,
   Clock,
- Calendar,
-  Pinterest,
-  Facebook,
+  Calendar,
+  Pin,
+  Globe,
   Send,
   MessageCircle,
-  Instagram,
+  Camera,
   Link as LinkIcon,
 } from "lucide-react"
 
@@ -491,12 +491,12 @@ function ShareButtons() {
 
   const shareLinks = [
     {
-      icon: <Pinterest size={16} />,
+      icon: <Pin size={16} />,
       href: "#",
     },
 
     {
-      icon: <Facebook size={16} />,
+      icon: <Globe size={16} />,
       href: "#",
     },
 
@@ -511,7 +511,7 @@ function ShareButtons() {
     },
 
     {
-      icon: <Instagram size={16} />,
+      icon: <Camera size={16} />,
       href: "https://instagram.com",
     },
   ]
