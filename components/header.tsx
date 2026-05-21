@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { Search, Menu, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -30,19 +30,16 @@ export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
 
   const pathname = usePathname()
-  const searchParams = useSearchParams()
-
-  const activeCategory = searchParams.get("category")
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#e7e1d8] bg-white/90 backdrop-blur-xl">
-      
+
       <div className="mx-auto max-w-7xl px-4">
-        
+
         {/* TOP NAVBAR */}
         <div className="flex h-16 items-center justify-between md:h-20">
 
-          {/* Mobile Menu */}
+          {/* MOBILE MENU BUTTON */}
           <button
             className="transition-all duration-300 active:scale-90 md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -76,7 +73,7 @@ export function Header() {
             </div>
           </Link>
 
-          {/* DESKTOP NAV */}
+          {/* DESKTOP NAVIGATION */}
           <nav className="hidden items-center gap-3 md:flex">
 
             {navLinks.map((link) => {
@@ -187,7 +184,7 @@ export function Header() {
             {categories.map((category) => {
               const slug = category.toLowerCase().replace(/\s+/g, "-")
 
-              const isActive = activeCategory === slug
+              const isActive = pathname === `/category/${slug}`
 
               return (
                 <Link
@@ -255,13 +252,13 @@ export function Header() {
               )
             })}
 
-            {/* MOBILE CATEGORIES */}
+            {/* MOBILE CATEGORY LINKS */}
             <div className="mt-6 flex flex-wrap gap-2">
 
               {categories.map((category) => {
                 const slug = category.toLowerCase().replace(/\s+/g, "-")
 
-                const isActive = activeCategory === slug
+                const isActive = pathname === `/category/${slug}`
 
                 return (
                   <Link
@@ -295,4 +292,4 @@ export function Header() {
       )}
     </header>
   )
-}
+                      }
