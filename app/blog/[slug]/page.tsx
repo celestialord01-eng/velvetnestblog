@@ -193,7 +193,7 @@ export async function generateMetadata({
   const { slug } = params
 
   const post = await getPost(slug)
-
+  console.log(post)
   if (!post) {
     return {
       title: "Post Not Found | VelvetNest",
