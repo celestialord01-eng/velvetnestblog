@@ -6,17 +6,14 @@ import { notFound } from "next/navigation"
 import {
   ArrowLeft,
   Clock,
-  Calendar,
+ Calendar,
+  Pinterest,
+  Facebook,
+  Send,
+  MessageCircle,
+  Instagram,
+  Link as LinkIcon,
 } from "lucide-react"
-
-import {
-  FaPinterestP,
-  FaFacebookF,
-  FaTelegramPlane,
-  FaWhatsapp,
-  FaInstagram,
-  FaLink,
-} from "react-icons/fa"
 
 import { PortableText } from "@portabletext/react"
 
@@ -145,6 +142,7 @@ function getPlainText(
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
+
   const { slug } = await params
 
   const post = await getPost(slug)
@@ -173,7 +171,8 @@ export async function generateMetadata({
 
       type: "article",
 
-      url: `https://velvetnestblog.vercel.app/blog/${post.slug}`,
+      url:
+        `https://velvetnestblog.vercel.app/blog/${post.slug}`,
 
       images:
         post.mainImage?.asset?.url
@@ -181,8 +180,10 @@ export async function generateMetadata({
               {
                 url:
                   post.mainImage.asset.url,
+
                 width: 1200,
                 height: 630,
+
                 alt:
                   post.mainImage?.alt ||
                   post.title,
@@ -209,7 +210,8 @@ export async function generateMetadata({
     },
 
     alternates: {
-      canonical: `https://velvetnestblog.vercel.app/blog/${post.slug}`,
+      canonical:
+        `https://velvetnestblog.vercel.app/blog/${post.slug}`,
     },
   }
 }
@@ -219,9 +221,13 @@ export async function generateMetadata({
 ========================================================= */
 
 const portableTextComponents = {
+
   types: {
+
     image: ({ value }: any) => (
+
       <figure className="my-14">
+
         <div
           className="
             relative
@@ -231,15 +237,18 @@ const portableTextComponents = {
             rounded-[2rem]
           "
         >
+
           <Image
             src={urlFor(value).url()}
             alt={value?.alt || "Blog image"}
             fill
             className="object-cover"
           />
+
         </div>
 
         {value?.caption && (
+
           <figcaption
             className="
               mt-4
@@ -251,13 +260,17 @@ const portableTextComponents = {
           >
             {value.caption}
           </figcaption>
+
         )}
+
       </figure>
     ),
   },
 
   block: {
+
     h2: ({ children }: any) => {
+
       const text =
         typeof children?.[0] === "string"
           ? children[0]
@@ -267,6 +280,7 @@ const portableTextComponents = {
         headingToId(text)
 
       return (
+
         <h2
           id={id}
           className="
@@ -287,6 +301,7 @@ const portableTextComponents = {
     },
 
     h3: ({ children }: any) => {
+
       const text =
         typeof children?.[0] === "string"
           ? children[0]
@@ -296,6 +311,7 @@ const portableTextComponents = {
         headingToId(text)
 
       return (
+
         <h3
           id={id}
           className="
@@ -316,6 +332,7 @@ const portableTextComponents = {
     },
 
     normal: ({ children }: any) => (
+
       <p
         className="
           mb-8
@@ -332,6 +349,7 @@ const portableTextComponents = {
     blockquote: ({
       children,
     }: any) => (
+
       <blockquote
         className="
           my-12
@@ -350,9 +368,11 @@ const portableTextComponents = {
   },
 
   list: {
+
     bullet: ({
       children,
     }: any) => (
+
       <ul
         className="
           mb-10
@@ -369,6 +389,7 @@ const portableTextComponents = {
     number: ({
       children,
     }: any) => (
+
       <ol
         className="
           mb-10
@@ -384,9 +405,11 @@ const portableTextComponents = {
   },
 
   listItem: {
+
     bullet: ({
       children,
     }: any) => (
+
       <li
         className="
           text-[17px]
@@ -400,6 +423,7 @@ const portableTextComponents = {
     number: ({
       children,
     }: any) => (
+
       <li
         className="
           text-[17px]
@@ -412,9 +436,11 @@ const portableTextComponents = {
   },
 
   marks: {
+
     strong: ({
       children,
     }: any) => (
+
       <strong
         className="
           font-semibold
@@ -437,6 +463,7 @@ const portableTextComponents = {
       children,
       value,
     }: any) => (
+
       <a
         href={value?.href || "#"}
         target="_blank"
@@ -460,50 +487,42 @@ const portableTextComponents = {
    SHARE BUTTONS
 ========================================================= */
 
-import ShareButtons from "./ShareButtons"({
-  post,
-}: {
-  post: {
-    title: string
-    image: string
-  }
-}) {
-  const url =
-    typeof window !== "undefined"
-      ? window.location.href
-      : ""
+function ShareButtons() {
 
   const shareLinks = [
     {
-      icon: <FaPinterestP />,
-      href: `https://pinterest.com/pin/create/button/?url=${url}`,
+      icon: <Pinterest size={16} />,
+      href: "#",
     },
 
     {
-      icon: <FaFacebookF />,
-      href: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      icon: <Facebook size={16} />,
+      href: "#",
     },
 
     {
-      icon: <FaWhatsapp />,
-      href: `https://api.whatsapp.com/send?text=${url}`,
+      icon: <MessageCircle size={16} />,
+      href: "#",
     },
 
     {
-      icon: <FaTelegramPlane />,
-      href: `https://t.me/share/url?url=${url}`,
+      icon: <Send size={16} />,
+      href: "#",
     },
 
     {
-      icon: <FaInstagram />,
+      icon: <Instagram size={16} />,
       href: "https://instagram.com",
     },
   ]
 
   return (
+
     <div className="flex flex-wrap gap-4">
+
       {shareLinks.map(
         (item, index) => (
+
           <a
             key={index}
             href={item.href}
@@ -527,19 +546,12 @@ import ShareButtons from "./ShareButtons"({
               hover:shadow-md
             "
           >
-            <span className="text-[15px]">
-              {item.icon}
-            </span>
+            {item.icon}
           </a>
         )
       )}
 
       <button
-        onClick={() =>
-          navigator.clipboard.writeText(
-            window.location.href
-          )
-        }
         className="
           flex
           h-11
@@ -558,8 +570,9 @@ import ShareButtons from "./ShareButtons"({
           hover:shadow-md
         "
       >
-        <FaLink />
+        <LinkIcon size={16} />
       </button>
+
     </div>
   )
 }
@@ -571,6 +584,7 @@ import ShareButtons from "./ShareButtons"({
 export default async function BlogPostPage({
   params,
 }: BlogPostPageProps) {
+
   const { slug } = await params
 
   const post =
@@ -598,6 +612,7 @@ export default async function BlogPostPage({
     )
 
   return (
+
     <div className="min-h-screen bg-[#f8f5f1]">
 
       <ReadingProgress />
@@ -634,9 +649,11 @@ export default async function BlogPostPage({
                 hover:text-black
               "
             >
+
               <ArrowLeft className="h-4 w-4" />
 
               Back to Blog
+
             </Link>
 
             <div
@@ -663,6 +680,7 @@ export default async function BlogPostPage({
                 >
 
                   {post.category?.title && (
+
                     <span
                       className="
                         rounded-full
@@ -680,9 +698,11 @@ export default async function BlogPostPage({
                     >
                       {post.category.title}
                     </span>
+
                   )}
 
                   <div className="flex items-center gap-2">
+
                     <Calendar className="h-4 w-4" />
 
                     {post.publishedAt
@@ -690,13 +710,17 @@ export default async function BlogPostPage({
                           post.publishedAt
                         ).toDateString()
                       : "Recently Published"}
+
                   </div>
 
                   <div className="flex items-center gap-2">
+
                     <Clock className="h-4 w-4" />
 
                     {stats.text}
+
                   </div>
+
                 </div>
 
                 <h1
@@ -715,6 +739,7 @@ export default async function BlogPostPage({
                 </h1>
 
                 {post.excerpt && (
+
                   <p
                     className="
                       mt-8
@@ -726,16 +751,13 @@ export default async function BlogPostPage({
                   >
                     {post.excerpt}
                   </p>
+
                 )}
 
                 <div className="mt-10">
-                  <ShareButtons
-                    post={{
-                      title: post.title,
-                      image:
-                        post.mainImage?.asset?.url || "",
-                    }}
-                  />
+
+                  <ShareButtons />
+
                 </div>
 
               </div>
@@ -824,7 +846,9 @@ export default async function BlogPostPage({
             lg:hidden
           "
         >
+
           <MobileTOC items={toc} />
+
         </div>
 
         {/* ARTICLE */}
@@ -857,11 +881,8 @@ export default async function BlogPostPage({
 
             </article>
 
-            {/* RIGHT SIDEBAR */}
-
             <aside className="hidden lg:block">
-              <div className="sticky top-28">
-              </div>
+              <div className="sticky top-28" />
             </aside>
 
           </div>
@@ -874,4 +895,4 @@ export default async function BlogPostPage({
 
     </div>
   )
-        }
+    }
