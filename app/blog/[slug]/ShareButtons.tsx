@@ -1,11 +1,11 @@
 "use client"
 
 import {
-  Pinterest,
-  Facebook,
+  Pin,
+  Globe,
   Send,
   MessageCircle,
-  Instagram,
+  Camera,
   Link as LinkIcon,
   Check,
 } from "lucide-react"
@@ -39,7 +39,7 @@ export default function ShareButtons({
       name: "Pinterest",
 
       icon: (
-        <Pinterest size={17} />
+        <Pin size={17} />
       ),
 
       href:
@@ -50,7 +50,7 @@ export default function ShareButtons({
       name: "Facebook",
 
       icon: (
-        <Facebook size={17} />
+        <Globe size={17} />
       ),
 
       href:
@@ -83,7 +83,7 @@ export default function ShareButtons({
       name: "Instagram",
 
       icon: (
-        <Instagram size={17} />
+        <Camera size={17} />
       ),
 
       href:
@@ -208,4 +208,4 @@ export default function ShareButtons({
 
     </div>
   )
-          }
+}
