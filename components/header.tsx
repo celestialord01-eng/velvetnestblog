@@ -8,6 +8,7 @@ import {
 } from "next/navigation"
 
 import {
+  useEffect,
   useState,
 } from "react"
 
@@ -16,6 +17,8 @@ import {
   Search,
   X,
 } from "lucide-react"
+
+import { motion } from "framer-motion"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -61,18 +64,71 @@ export function Header() {
   const [isSearchOpen, setIsSearchOpen] =
     useState(false)
 
+  const [isScrolled, setIsScrolled] =
+    useState(false)
+
+  /* =========================================================
+     SCROLL EFFECT
+  ========================================================= */
+
+  useEffect(() => {
+
+    const handleScroll = () => {
+
+      setIsScrolled(
+        window.scrollY > 20
+      )
+
+    }
+
+    window.addEventListener(
+      "scroll",
+      handleScroll
+    )
+
+    return () =>
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      )
+
+  }, [])
+
   return (
 
-    <header
-      className="
+    <motion.header
+      initial={{
+        y: -80,
+        opacity: 0,
+      }}
+      animate={{
+        y: 0,
+        opacity: 1,
+      }}
+      transition={{
+        duration: 0.7,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className={`
         sticky
         top-0
         z-50
-        border-b
-        border-border/60
-        bg-background/80
-        backdrop-blur-xl
-      "
+        transition-all
+        duration-500
+        ${
+          isScrolled
+            ? `
+              border-b
+              border-border/60
+              bg-background/70
+              shadow-[0_10px_40px_rgba(0,0,0,0.04)]
+              backdrop-blur-2xl
+            `
+            : `
+              bg-transparent
+            `
+        }
+      `}
     >
 
       <div
@@ -86,13 +142,18 @@ export function Header() {
         {/* MAIN NAV */}
 
         <div
-          className="
+          className={`
             flex
-            h-[78px]
             items-center
             justify-between
-            md:h-[92px]
-          "
+            transition-all
+            duration-500
+            ${
+              isScrolled
+                ? "h-[74px]"
+                : "h-[88px] md:h-[96px]"
+            }
+          `}
         >
 
           {/* MOBILE MENU */}
@@ -153,14 +214,19 @@ export function Header() {
               <div>
 
                 <h1
-                  className="
+                  className={`
                     font-serif
-                    text-[1.9rem]
                     font-medium
                     tracking-[-0.04em]
                     text-foreground
-                    md:text-[2.3rem]
-                  "
+                    transition-all
+                    duration-500
+                    ${
+                      isScrolled
+                        ? "text-[1.9rem]"
+                        : "text-[2.2rem] md:text-[2.5rem]"
+                    }
+                  `}
                 >
                   VelvetNest
                 </h1>
@@ -213,7 +279,9 @@ export function Header() {
                       font-medium
                       uppercase
                       tracking-[0.22em]
-                      transition
+                      transition-all
+                      duration-300
+                      hover:opacity-70
                       ${
                         isActive
                           ? "text-foreground"
@@ -226,7 +294,8 @@ export function Header() {
 
                     {isActive && (
 
-                      <span
+                      <motion.span
+                        layoutId="header-active"
                         className="
                           absolute
                           -bottom-2
@@ -268,7 +337,9 @@ export function Header() {
               aria-label="Search"
               className="
                 text-muted-foreground
-                transition
+                transition-all
+                duration-300
+                hover:scale-110
                 hover:text-foreground
               "
             >
@@ -287,7 +358,9 @@ export function Header() {
               className="
                 hidden
                 text-muted-foreground
-                transition
+                transition-all
+                duration-300
+                hover:scale-110
                 hover:text-foreground
                 md:block
               "
@@ -309,263 +382,8 @@ export function Header() {
 
         </div>
 
-        {/* SEARCH BAR */}
-
-        {isSearchOpen && (
-
-          <div
-            className="
-              animate-in
-              fade-in-0
-              border-t
-              border-border
-              py-5
-              duration-300
-            "
-          >
-
-            <form
-              className="
-                mx-auto
-                flex
-                max-w-xl
-                gap-3
-              "
-            >
-
-              <Input
-                type="search"
-                placeholder="Search fashion, decor, beauty..."
-                className="
-                  h-12
-                  rounded-full
-                  border-border
-                  bg-card
-                  px-5
-                  shadow-none
-                  focus-visible:ring-1
-                  focus-visible:ring-[#b79d84]
-                "
-              />
-
-              <Button
-                type="submit"
-                className="
-                  h-12
-                  rounded-full
-                  bg-[#2c2623]
-                  px-6
-                  text-white
-                  hover:bg-black
-                "
-              >
-                Search
-              </Button>
-
-            </form>
-
-          </div>
-
-        )}
-
-        {/* CATEGORY BAR */}
-
-        <div
-          className="
-            hidden
-            border-t
-            border-border
-            py-4
-            md:block
-          "
-        >
-
-          <div
-            className="
-              flex
-              flex-wrap
-              items-center
-              justify-center
-              gap-6
-            "
-          >
-
-            {categories.map(
-              (category) => {
-
-                const slug =
-                  category
-                    .toLowerCase()
-                    .replace(
-                      /\s+/g,
-                      "-"
-                    )
-
-                const isActive =
-                  pathname ===
-                  `/category/${slug}`
-
-                return (
-
-                  <Link
-                    key={category}
-                    href={`/category/${slug}`}
-                    className={`
-                      text-[11px]
-                      font-medium
-                      uppercase
-                      tracking-[0.22em]
-                      transition
-                      ${
-                        isActive
-                          ? "text-foreground"
-                          : "text-muted-foreground hover:text-foreground"
-                      }
-                    `}
-                  >
-
-                    {category}
-
-                  </Link>
-
-                )
-              }
-            )}
-
-          </div>
-
-        </div>
-
       </div>
 
-      {/* MOBILE MENU */}
-
-      {isMenuOpen && (
-
-        <div
-          className="
-            animate-in
-            fade-in-0
-            border-t
-            border-border
-            bg-background
-            md:hidden
-            duration-300
-          "
-        >
-
-          <nav
-            className="
-              flex
-              flex-col
-              gap-1
-              px-5
-              py-6
-            "
-          >
-
-            {navLinks.map(
-              (link) => {
-
-                const isActive =
-                  pathname ===
-                  link.href
-
-                return (
-
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() =>
-                      setIsMenuOpen(
-                        false
-                      )
-                    }
-                    className={`
-                      rounded-xl
-                      px-4
-                      py-3
-                      text-sm
-                      uppercase
-                      tracking-[0.16em]
-                      transition
-                      ${
-                        isActive
-                          ? "bg-card text-foreground"
-                          : "text-muted-foreground hover:bg-card"
-                      }
-                    `}
-                  >
-
-                    {link.label}
-
-                  </Link>
-
-                )
-              }
-            )}
-
-            {/* MOBILE CATEGORIES */}
-
-            <div
-              className="
-                mt-6
-                flex
-                flex-wrap
-                gap-3
-              "
-            >
-
-              {categories.map(
-                (category) => {
-
-                  const slug =
-                    category
-                      .toLowerCase()
-                      .replace(
-                        /\s+/g,
-                        "-"
-                      )
-
-                  return (
-
-                    <Link
-                      key={category}
-                      href={`/category/${slug}`}
-                      onClick={() =>
-                        setIsMenuOpen(
-                          false
-                        )
-                      }
-                      className="
-                        rounded-full
-                        border
-                        border-border
-                        px-4
-                        py-2
-                        text-[10px]
-                        uppercase
-                        tracking-[0.18em]
-                        text-muted-foreground
-                      "
-                    >
-
-                      {category}
-
-                    </Link>
-
-                  )
-                }
-              )}
-
-            </div>
-
-          </nav>
-
-        </div>
-
-      )}
-
-    </header>
+    </motion.header>
   )
-            }
+        }
