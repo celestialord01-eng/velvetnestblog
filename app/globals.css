@@ -217,3 +217,13 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--muted-foreground);
 }
+.drop-cap::first-letter {
+  float: left;
+  font-size: 5rem;
+  line-height: 0.85;
+  margin-right: 0.75rem;
+  margin-top: 0.4rem;
+  font-family: serif;
+  font-weight: 600;
+  color: #1c1917;
+}
