@@ -16,7 +16,7 @@ const components: PortableTextComponents = {
           ? children[0]
           : ""
 
-      // Skip affiliate disclaimer paragraphs
+      // Skip affiliate disclosures
       const isAffiliateDisclosure =
         text.includes("affiliate links") ||
         text.includes("commission")
@@ -32,12 +32,13 @@ const components: PortableTextComponents = {
       return (
         <p
           className={`
-            mb-6 md:mb-8
-            text-[16px] md:text-[18px]
-            leading-[1.85] md:leading-[1.95]
+            mb-7 md:mb-8
+            text-[1.12rem] md:text-[1.22rem]
+            leading-[1.95]
             tracking-[0.01em]
             text-stone-700
             first-line:text-stone-800
+            antialiased
 
             ${applyDropCap ? "drop-cap" : ""}
           `}
@@ -55,16 +56,16 @@ const components: PortableTextComponents = {
         <h1
           id={id}
           className="
-            scroll-mt-28
-            mt-14 md:mt-20
-            mb-6 md:mb-8
+            scroll-mt-32
+            mt-16 md:mt-24
+            mb-8 md:mb-10
             font-serif
-            text-4xl
+            text-[2.8rem]
+            leading-[1.05]
             font-semibold
-            leading-tight
-            tracking-tight
+            tracking-[-0.03em]
             text-stone-900
-            md:text-5xl
+            md:text-6xl
           "
         >
           {children}
@@ -80,16 +81,16 @@ const components: PortableTextComponents = {
         <h2
           id={id}
           className="
-            scroll-mt-28
-            mt-14 md:mt-20
-            mb-5 md:mb-6
+            scroll-mt-32
+            mt-20 md:mt-28
+            mb-6 md:mb-8
             font-serif
-            text-[30px]
-            leading-tight
+            text-[2.3rem]
+            leading-[1.08]
             font-semibold
-            tracking-tight
+            tracking-[-0.03em]
             text-stone-900
-            md:text-4xl
+            md:text-5xl
           "
         >
           {children}
@@ -106,15 +107,15 @@ const components: PortableTextComponents = {
           id={id}
           className="
             scroll-mt-28
-            mt-10 md:mt-14
+            mt-14 md:mt-16
             mb-4 md:mb-5
             font-serif
-            text-2xl
+            text-[1.9rem]
+            leading-[1.15]
             font-semibold
-            leading-tight
             tracking-tight
             text-stone-900
-            md:text-3xl
+            md:text-[2.4rem]
           "
         >
           {children}
@@ -122,17 +123,47 @@ const components: PortableTextComponents = {
       )
     },
 
+    h4: ({ children }: any) => {
+      const text = children?.[0]
+      const id = headingToId(text)
+
+      return (
+        <h4
+          id={id}
+          className="
+            scroll-mt-24
+            mt-10
+            mb-4
+            font-serif
+            text-[1.45rem]
+            font-semibold
+            leading-tight
+            text-stone-800
+            md:text-3xl
+          "
+        >
+          {children}
+        </h4>
+      )
+    },
+
     blockquote: ({ children }: any) => (
       <blockquote
         className="
-          my-10
-          border-l-4
-          border-stone-300
-          pl-6
-          text-lg md:text-xl
+          relative
+          my-12 md:my-14
+          overflow-hidden
+          rounded-[24px]
+          border-l-2
+          border-[#8d7b6a]
+          bg-[#f6f2ec]
+          px-6 py-7 md:px-8 md:py-9
+          text-[1.08rem] md:text-[1.2rem]
           italic
-          leading-8 md:leading-9
-          text-stone-600
+          leading-[1.9]
+          tracking-[0.01em]
+          text-stone-700
+          shadow-[0_8px_30px_rgba(0,0,0,0.03)]
         "
       >
         {children}
@@ -144,13 +175,14 @@ const components: PortableTextComponents = {
     bullet: ({ children }: any) => (
       <ul
         className="
-          mb-6 md:mb-8
+          mb-8 md:mb-10
           ml-5 md:ml-6
           list-disc
-          space-y-2 md:space-y-3
-          text-[16px] md:text-[18px]
-          leading-[1.85]
+          space-y-3 md:space-y-4
+          text-[1.12rem] md:text-[1.18rem]
+          leading-[1.95]
           text-stone-700
+          marker:text-stone-500
         "
       >
         {children}
@@ -160,13 +192,14 @@ const components: PortableTextComponents = {
     number: ({ children }: any) => (
       <ol
         className="
-          mb-6 md:mb-8
+          mb-8 md:mb-10
           ml-5 md:ml-6
           list-decimal
-          space-y-2 md:space-y-3
-          text-[16px] md:text-[18px]
-          leading-[1.85]
+          space-y-3 md:space-y-4
+          text-[1.12rem] md:text-[1.18rem]
+          leading-[1.95]
           text-stone-700
+          marker:text-stone-500
         "
       >
         {children}
@@ -176,30 +209,44 @@ const components: PortableTextComponents = {
 
   listItem: {
     bullet: ({ children }: any) => (
-      <li className="pl-1">{children}</li>
+      <li className="pl-1">
+        {children}
+      </li>
     ),
 
     number: ({ children }: any) => (
-      <li className="pl-1">{children}</li>
+      <li className="pl-1">
+        {children}
+      </li>
     ),
   },
 
   marks: {
     strong: ({ children }: any) => (
-      <strong className="font-semibold text-stone-900">
+      <strong
+        className="
+          font-semibold
+          text-stone-900
+        "
+      >
         {children}
       </strong>
     ),
 
     em: ({ children }: any) => (
-      <em className="italic text-stone-600">
+      <em
+        className="
+          italic
+          text-stone-600
+        "
+      >
         {children}
       </em>
     ),
 
     link: ({ children, value }: any) => {
       const rel = !value?.href?.startsWith("/")
-        ? "noreferrer noopener"
+        ? "noreferrer noopener sponsored"
         : undefined
 
       return (
@@ -207,13 +254,18 @@ const components: PortableTextComponents = {
           href={value?.href || "#"}
           rel={rel}
           className="
+            inline-block
+            border-b
+            border-[#8d7b6a]
+            pb-[1px]
             font-medium
             text-stone-900
-            underline
-            underline-offset-4
+            no-underline
             transition-all
             duration-300
-            hover:opacity-60
+            hover:border-stone-900
+            hover:text-[#8d7b6a]
+            hover:opacity-90
           "
         >
           {children}
@@ -227,28 +279,41 @@ const components: PortableTextComponents = {
       if (!value?.asset?.url) return null
 
       return (
-        <figure className="my-10 md:my-14 overflow-hidden rounded-[28px]">
-          <Image
-            src={value.asset.url}
-            alt={value.alt || "Blog image"}
-            width={1400}
-            height={900}
-            className="
-              h-auto
-              w-full
-              rounded-[28px]
-              object-cover
-              shadow-sm
-            "
-          />
+        <figure
+          className="
+            group
+            my-14 md:my-20
+            overflow-hidden
+            rounded-[30px]
+          "
+        >
+          <div className="overflow-hidden rounded-[30px]">
+            <Image
+              src={value.asset.url}
+              alt={value.alt || "VelvetNest blog image"}
+              width={1400}
+              height={1800}
+              className="
+                h-auto
+                w-full
+                rounded-[30px]
+                object-cover
+                shadow-[0_10px_40px_rgba(0,0,0,0.06)]
+                transition-transform
+                duration-700
+                group-hover:scale-[1.02]
+              "
+            />
+          </div>
 
           {value.caption && (
             <figcaption
               className="
-                mt-4
+                mt-5
                 text-center
                 text-sm
                 italic
+                tracking-wide
                 text-stone-500
               "
             >
@@ -262,15 +327,15 @@ const components: PortableTextComponents = {
 }
 
 export function CustomPortableText({ value }: any) {
-  // Reset drop cap for every article render
+  // Reset drop cap for every article
   hasDropCap = false
 
   return (
     <div
       className="
         mx-auto
-        max-w-3xl
-        px-6 md:px-0
+        max-w-[68ch]
+        px-5 md:px-0
       "
     >
       <PortableText
@@ -279,4 +344,4 @@ export function CustomPortableText({ value }: any) {
       />
     </div>
   )
-}
+        }
