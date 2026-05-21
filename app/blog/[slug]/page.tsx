@@ -81,8 +81,8 @@ async function getPost(slug: string) {
     },
 
     category->{
-      title,
-      slug,
+  title,
+  "slug": slug.current,
       description,
       seoTitle,
       seoDescription,
@@ -509,7 +509,7 @@ export default async function BlogPostPage({
   }
 
   const categorySlug =
-    post.category?.slug?.current
+  post.category?.slug
 
   const relatedPosts =
     await getRelatedPosts(
