@@ -1,8 +1,7 @@
-      "use client"
+"use client"
 
 import Image from "next/image"
 import Link from "next/link"
-
 import { ExternalLink } from "lucide-react"
 
 interface BlogCardProps {
@@ -11,7 +10,7 @@ interface BlogCardProps {
   image?: string
   category?: string
   date?: string
-  slug: string
+  slug?: string
   featured?: boolean
   readingTime?: number
 }
@@ -27,39 +26,70 @@ export function BlogCard({
   readingTime,
 }: BlogCardProps) {
 
-  const imageSrc =
-    image || "/placeholder.jpg"
+  const imageSrc = image || "/placeholder.jpg"
+
+  // FIXED SLUG
+  const postUrl =
+    slug && slug.length > 0
+      ? `/blog/${slug}`
+      : "/blog"
+
+  const handlePinterestShare = (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+
+    e.preventDefault()
+    e.stopPropagation()
+
+    const shareUrl =
+      typeof window !== "undefined"
+        ? `${window.location.origin}${postUrl}`
+        : ""
+
+    const pinterestUrl =
+      `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(
+        shareUrl
+      )}&media=${encodeURIComponent(
+        imageSrc
+      )}&description=${encodeURIComponent(
+        title
+      )}`
+
+    window.open(
+      pinterestUrl,
+      "_blank",
+      "width=750,height=600"
+    )
+  }
 
   return (
     <article className="group">
 
       <Link
-        href={`/blog/${slug}`}
+        href={postUrl}
         className="block"
       >
 
-        <div className="
-          overflow-hidden
-          rounded-[28px]
-          bg-white
-          shadow-sm
-          transition-all
-          duration-500
-          hover:-translate-y-1
-          hover:shadow-2xl
-        ">
+        <div
+          className="
+            overflow-hidden
+            rounded-[28px]
+            bg-white
+            shadow-sm
+            transition-all
+            duration-500
+            hover:-translate-y-1
+            hover:shadow-2xl
+          "
+        >
 
           {/* IMAGE */}
           <div
-            className={`
+            className="
               relative
+              aspect-[4/5]
               overflow-hidden
-              ${
-                featured
-                  ? "aspect-[4/5]"
-                  : "aspect-[4/5]"
-              }
-            `}
+            "
           >
 
             <Image
@@ -81,65 +111,63 @@ export function BlogCard({
             />
 
             {/* OVERLAY */}
-            <div className="
-              absolute
-              inset-0
-              bg-gradient-to-t
-              from-black/50
-              via-transparent
-              to-transparent
-              opacity-0
-              transition-opacity
-              duration-500
-              group-hover:opacity-100
-            " />
+            <div
+              className="
+                absolute
+                inset-0
+                bg-gradient-to-t
+                from-black/50
+                via-transparent
+                to-transparent
+                opacity-0
+                transition-opacity
+                duration-500
+                group-hover:opacity-100
+              "
+            />
 
             {/* CATEGORY */}
-            <div className="
-              absolute
-              left-4
-              top-4
-            ">
+            <div className="absolute left-4 top-4">
 
-              <span className="
-                rounded-full
-                border
-                border-white/20
-                bg-white/90
-                px-4
-                py-1.5
-                text-[11px]
-                font-medium
-                uppercase
-                tracking-[0.18em]
-                text-[#2c2520]
-                backdrop-blur-md
-              ">
-                {category || "Lifestyle"}
-              </span>
-            </div>
-
-            {/* FEATURED BADGE */}
-            {featured && (
-
-              <div className="
-                absolute
-                right-4
-                top-4
-              ">
-
-                <span className="
+              <span
+                className="
                   rounded-full
-                  bg-[#2c2520]
+                  border
+                  border-white/20
+                  bg-white/90
                   px-4
                   py-1.5
                   text-[11px]
                   font-medium
                   uppercase
                   tracking-[0.18em]
-                  text-white
-                  shadow-lg
-                ">
+                  text-[#2c2520]
+                  backdrop-blur-md
+                "
+              >
+                {category || "Lifestyle"}
+              </span>
+            </div>
+
+            {/* FEATURED */}
+            {featured && (
+
+              <div className="absolute right-4 top-4">
+
+                <span
+                  className="
+                    rounded-full
+                    bg-[#2c2520]
+                    px-4
+                    py-1.5
+                    text-[11px]
+                    font-medium
+                    uppercase
+                    tracking-[0.18em]
+                    text-white
+                    shadow-lg
+                  "
+                >
                   Featured
                 </span>
               </div>
@@ -149,6 +177,7 @@ export function BlogCard({
             <button
               type="button"
               aria-label="Save to Pinterest"
+              onClick={handlePinterestShare}
               className="
                 absolute
                 bottom-4
@@ -161,37 +190,15 @@ export function BlogCard({
                 rounded-full
                 bg-white/90
                 text-[#2c2520]
-                opacity-0
+                opacity-100
+                md:opacity-0
                 shadow-lg
                 backdrop-blur-md
                 transition-all
                 duration-300
                 hover:scale-110
-                group-hover:opacity-100
+                md:group-hover:opacity-100
               "
-              onClick={(e) => {
-
-                e.preventDefault()
-
-                const pinterestUrl =
-                  `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(
-                    typeof window !== "undefined"
-                      ? window.location.origin +
-                        "/blog/" +
-                        slug
-                      : ""
-                  )}&media=${encodeURIComponent(
-                    imageSrc
-                  )}&description=${encodeURIComponent(
-                    title
-                  )}`
-
-                window.open(
-                  pinterestUrl,
-                  "_blank",
-                  "width=750,height=600"
-                )
-              }}
             >
 
               <svg
@@ -208,60 +215,70 @@ export function BlogCard({
           <div className="p-6">
 
             {/* META */}
-            <div className="
-              mb-4
-              flex
-              items-center
-              justify-between
-              gap-3
-            ">
+            <div
+              className="
+                mb-4
+                flex
+                items-center
+                justify-between
+                gap-3
+              "
+            >
 
-              <p className="
-                text-[11px]
-                font-medium
-                uppercase
-                tracking-[0.18em]
-                text-[#8b7d6b]
-              ">
+              <p
+                className="
+                  text-[11px]
+                  font-medium
+                  uppercase
+                  tracking-[0.18em]
+                  text-[#8b7d6b]
+                "
+              >
                 {date || "Recently Published"}
               </p>
 
               {readingTime && (
 
-                <span className="
-                  text-[11px]
-                  uppercase
-                  tracking-[0.18em]
-                  text-[#8b7d6b]
-                ">
+                <span
+                  className="
+                    text-[11px]
+                    uppercase
+                    tracking-[0.18em]
+                    text-[#8b7d6b]
+                  "
+                >
                   {readingTime} min read
                 </span>
               )}
             </div>
 
             {/* TITLE */}
-            <h3 className="
-              text-2xl
-              font-semibold
-              leading-tight
-              tracking-tight
-              text-[#2c2520]
-              transition-colors
-              duration-300
-              group-hover:text-[#5f5246]
-            ">
+            <h3
+              className="
+                text-2xl
+                font-semibold
+                leading-tight
+                tracking-tight
+                text-[#2c2520]
+                transition-colors
+                duration-300
+                group-hover:text-[#5f5246]
+              "
+            >
               {title}
             </h3>
 
             {/* EXCERPT */}
             {excerpt && (
 
-              <p className="
-                mt-4
-                line-clamp-3
-                leading-7
-                text-[#6b6258]
-              ">
+              <p
+                className="
+                  mt-4
+                  line-clamp-3
+                  leading-7
+                  text-[#6b6258]
+                "
+              >
                 {excerpt}
               </p>
             )}
@@ -269,17 +286,19 @@ export function BlogCard({
             {/* READ MORE */}
             <div className="mt-6">
 
-              <span className="
-                inline-flex
-                items-center
-                gap-2
-                text-sm
-                font-medium
-                text-[#2c2520]
-                transition-all
-                duration-300
-                group-hover:gap-3
-              ">
+              <span
+                className="
+                  inline-flex
+                  items-center
+                  gap-2
+                  text-sm
+                  font-medium
+                  text-[#2c2520]
+                  transition-all
+                  duration-300
+                  group-hover:gap-3
+                "
+              >
                 Read Article →
               </span>
             </div>
@@ -288,179 +307,4 @@ export function BlogCard({
       </Link>
     </article>
   )
-}
-
-interface ProductCardProps {
-  title: string
-  price?: string
-  originalPrice?: string
-  image?: string
-  link?: string
-  category?: string
-}
-
-export function ProductCard({
-  title,
-  price,
-  originalPrice,
-  image,
-  link,
-  category,
-}: ProductCardProps) {
-
-  const imageSrc =
-    image || "/placeholder.jpg"
-
-  return (
-    <article className="group">
-
-      <a
-        href={link || "#"}
-        target="_blank"
-        rel="noopener noreferrer sponsored"
-        className="block"
-      >
-
-        <div className="
-          overflow-hidden
-          rounded-[28px]
-          bg-white
-          shadow-sm
-          transition-all
-          duration-500
-          hover:-translate-y-1
-          hover:shadow-2xl
-        ">
-
-          {/* PRODUCT IMAGE */}
-          <div className="
-            relative
-            aspect-square
-            overflow-hidden
-          ">
-
-            <Image
-              src={imageSrc}
-              alt={title}
-              fill
-              className="
-                object-cover
-                transition-transform
-                duration-700
-                group-hover:scale-105
-              "
-              sizes="
-                (max-width: 640px) 100vw,
-                (max-width: 1024px) 50vw,
-                25vw
-              "
-            />
-
-            {/* CATEGORY */}
-            <div className="
-              absolute
-              left-4
-              top-4
-            ">
-
-              <span className="
-                rounded-full
-                border
-                border-white/20
-                bg-white/90
-                px-4
-                py-1.5
-                text-[11px]
-                font-medium
-                uppercase
-                tracking-[0.18em]
-                text-[#2c2520]
-                backdrop-blur-md
-              ">
-                {category || "Amazon Find"}
-              </span>
-            </div>
-
-            {/* SHOP BUTTON */}
-            <div className="
-              absolute
-              inset-x-4
-              bottom-4
-              translate-y-4
-              opacity-0
-              transition-all
-              duration-300
-              group-hover:translate-y-0
-              group-hover:opacity-100
-            ">
-
-              <span className="
-                flex
-                items-center
-                justify-center
-                gap-2
-                rounded-2xl
-                bg-[#2c2520]
-                py-3
-                text-sm
-                font-medium
-                text-white
-              ">
-                Shop Now
-
-                <ExternalLink className="h-4 w-4" />
-              </span>
-            </div>
-          </div>
-
-          {/* CONTENT */}
-          <div className="p-5">
-
-            <h3 className="
-              line-clamp-2
-              text-base
-              font-medium
-              leading-7
-              text-[#2c2520]
-              transition-colors
-              duration-300
-              group-hover:text-[#5f5246]
-            ">
-              {title}
-            </h3>
-
-            <div className="
-              mt-4
-              flex
-              items-center
-              gap-3
-            ">
-
-              {price && (
-
-                <span className="
-                  text-lg
-                  font-semibold
-                  text-[#2c2520]
-                ">
-                  {price}
-                </span>
-              )}
-
-              {originalPrice && (
-
-                <span className="
-                  text-sm
-                  text-[#8b7d6b]
-                  line-through
-                ">
-                  {originalPrice}
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-      </a>
-    </article>
-  )
-        }
+            }
