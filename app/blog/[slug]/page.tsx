@@ -40,9 +40,9 @@ import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 
 interface BlogPostPageProps {
-  params: Promise<{
+  params: {
     slug: string
-  }>
+  }
 }
 
 // GET POST
@@ -190,7 +190,7 @@ export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
 
-  const { slug } = await params
+  const { slug } = params
 
   const post = await getPost(slug)
 
@@ -471,7 +471,7 @@ export default async function BlogPostPage({
   params,
 }: BlogPostPageProps) {
 
-  const { slug } = await params
+  const { slug } = params
 
   const post = await getPost(slug)
 
