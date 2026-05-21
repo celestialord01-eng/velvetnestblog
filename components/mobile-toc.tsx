@@ -2,6 +2,10 @@
 
 import Link from "next/link"
 
+/* =========================================================
+   TYPES
+========================================================= */
+
 interface TOCItem {
   text: string
   level: string
@@ -11,6 +15,10 @@ interface TOCItem {
 interface MobileTOCProps {
   items?: TOCItem[]
 }
+
+/* =========================================================
+   MOBILE TOC
+========================================================= */
 
 export default function MobileTOC({
   items = [],
@@ -24,25 +32,46 @@ export default function MobileTOC({
 
     <div
       className="
-        rounded-3xl
+        rounded-[2rem]
         border
-        border-[#ece6de]
-        bg-white
-        p-5
+        border-border
+        bg-card/80
+        p-6
+        backdrop-blur-xl
       "
     >
 
+      {/* LABEL */}
+
+      <p
+        className="
+          text-[10px]
+          uppercase
+          tracking-[0.25em]
+          text-muted-foreground
+        "
+      >
+        Quick Navigation
+      </p>
+
+      {/* TITLE */}
+
       <h3
         className="
-          mb-4
-          text-base
-          font-semibold
+          mt-3
+          font-serif
+          text-[2rem]
+          leading-none
+          tracking-[-0.04em]
+          text-foreground
         "
       >
         Contents
       </h3>
 
-      <ul className="space-y-3">
+      {/* LIST */}
+
+      <ul className="mt-7 space-y-4">
 
         {items.map((item) => (
 
@@ -50,23 +79,43 @@ export default function MobileTOC({
             key={item.id}
             className={
               item.level === "h3"
-                ? "ml-4"
+                ? "ml-5"
                 : ""
             }
           >
 
             <Link
               href={`#${item.id}`}
-              className="
-                text-sm
-                text-[#6b6258]
-              "
+              className={`
+                block
+                transition-all
+                duration-300
+                hover:translate-x-1
+                ${
+                  item.level === "h3"
+                    ? "text-[0.95rem] text-[#7b6f66]"
+                    : "text-[1rem] text-[#5d524a]"
+                }
+              `}
             >
-              {item.text}
+
+              <span
+                className="
+                  leading-7
+                  hover:text-foreground
+                "
+              >
+                {item.text}
+              </span>
+
             </Link>
+
           </li>
+
         ))}
+
       </ul>
+
     </div>
   )
 }
