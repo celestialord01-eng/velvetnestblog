@@ -1,5 +1,5 @@
 import { PageTransition } from "@/components/page-transition"
-  import GoogleAnalytics from "@/components/GoogleAnalytics"
+import GoogleAnalytics from "@/components/GoogleAnalytics"
 
 import type { Metadata } from "next"
 
@@ -34,10 +34,13 @@ const inter = Inter({
 =================================================== */
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://velvetnestblog.vercel.app"),
+  metadataBase: new URL(
+    "https://velvetnestblog.vercel.app"
+  ),
 
   title: {
-    default: "VelvetNest | Luxury Fashion, Home & Lifestyle",
+    default:
+      "VelvetNest | Luxury Fashion, Home & Lifestyle",
     template: "%s | VelvetNest",
   },
 
@@ -55,25 +58,49 @@ export const metadata: Metadata = {
     "minimal fashion",
     "cozy home decor",
     "capsule wardrobe",
+    "quiet luxury",
+    "feminine lifestyle",
+    "street style",
+    "beauty products",
+    "self care routine",
   ],
 
-  authors: [{ name: "VelvetNest" }],
+  authors: [
+    {
+      name: "VelvetNest",
+      url: "https://velvetnestblog.vercel.app",
+    },
+  ],
 
   creator: "VelvetNest",
 
+  publisher: "VelvetNest",
+
+  category: "Lifestyle",
+
+  applicationName: "VelvetNest",
+
   verification: {
-    google: "VNIYacXcf0rmfRE85E2TvSMkC_kWkblDkteJXIMavCk",
+    google:
+      "VNIYacXcf0rmfRE85E2TvSMkC_kWkblDkteJXIMavCk",
+  },
+
+  alternates: {
+    canonical:
+      "https://velvetnestblog.vercel.app",
   },
 
   openGraph: {
     type: "website",
+
     locale: "en_US",
 
-    url: "https://yourdomain.com",
+    url: "https://velvetnestblog.vercel.app",
 
     siteName: "VelvetNest",
 
-    title: "VelvetNest | Luxury Fashion, Home & Lifestyle",
+    title:
+      "VelvetNest | Luxury Fashion, Home & Lifestyle",
 
     description:
       "Curated fashion inspiration, cozy interiors, beauty finds, and elevated everyday living.",
@@ -91,10 +118,13 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
 
-    title: "VelvetNest",
+    title:
+      "VelvetNest | Luxury Fashion, Home & Lifestyle",
 
     description:
       "Fashion, home decor, beauty, and cozy luxury inspiration.",
+
+    creator: "@velvetnestworld",
 
     images: ["/og-image.jpg"],
   },
@@ -102,18 +132,28 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+      "max-snippet": -1,
+    },
   },
 
   icons: {
     icon: [
       {
         url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
+        media:
+          "(prefers-color-scheme: light)",
       },
 
       {
         url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
+        media:
+          "(prefers-color-scheme: dark)",
       },
 
       {
@@ -123,6 +163,8 @@ export const metadata: Metadata = {
     ],
 
     apple: "/apple-icon.png",
+
+    shortcut: "/favicon.ico",
   },
 }
 
@@ -135,22 +177,46 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+
   return (
+
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${cormorant.variable} ${inter.variable}`}
+      className={`
+        ${cormorant.variable}
+        ${inter.variable}
+      `}
     >
-      <body className="bg-background text-foreground antialiased">
-        <GoogleAnalytics />
-        <PageTransition>
-           {children}
-          </PageTransition>
 
-       {process.env.NODE_ENV === "production" && (
-          <Analytics />
-        )}
+      <body
+        className="
+          bg-background
+          text-foreground
+          antialiased
+          overflow-x-hidden
+        "
+      >
+
+        {/* GOOGLE ANALYTICS */}
+
+        <GoogleAnalytics />
+
+        {/* PAGE TRANSITION */}
+
+        <PageTransition>
+
+          {children}
+
+        </PageTransition>
+
+        {/* VERCEL ANALYTICS */}
+
+        {process.env.NODE_ENV ===
+          "production" && <Analytics />}
+
       </body>
+
     </html>
   )
-}
+  }
