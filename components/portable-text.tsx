@@ -8,44 +8,30 @@ import { headingToId } from "@/lib/heading"
 const components: PortableTextComponents = {
   block: {
     normal: ({ children }: any) => {
-      const text =
-        typeof children?.[0] === "string"
-          ? children[0]
-          : ""
+  return (
+    <p
+      className="
+        mb-8
+        text-[18px]
+        leading-[1.95]
+        tracking-[0.01em]
+        text-stone-700
 
-      // Apply drop cap only on long intro paragraphs
-      const shouldDropCap = text.length > 120
-
-      return (
-        <p
-          className={`
-            mb-8
-            text-[18px]
-            leading-[1.95]
-            text-stone-700
-            tracking-[0.01em]
-
-            ${
-              shouldDropCap
-                ? `
-                  first-letter:float-left
-                  first-letter:mr-3
-                  first-letter:mt-1
-                  first-letter:text-6xl
-                  md:first-letter:text-8xl
-                  first-letter:font-serif
-                  first-letter:font-semibold
-                  first-letter:leading-[0.8]
-                  first-letter:text-stone-900
-                `
-                : ""
-            }
-          `}
-        >
-          {children}
-        </p>
-      )
-    },
+        first-letter:float-left
+        first-letter:mr-3
+        first-letter:mt-1
+        first-letter:text-6xl
+        md:first-letter:text-8xl
+        first-letter:font-serif
+        first-letter:font-semibold
+        first-letter:leading-[0.8]
+        first-letter:text-stone-900
+      "
+    >
+      {children}
+    </p>
+  )
+},
 
     h1: ({ children }: any) => {
       const text = children?.[0]
