@@ -33,54 +33,72 @@ export default function TableOfContents({
     useState("")
 
   /* =========================================================
-     SCROLL SPY
+     ACTIVE SECTION TRACKING
   ========================================================= */
 
   useEffect(() => {
 
     const headings =
       items.map((item) =>
-        document.getElementById(item.id)
+        document.getElementById(
+          item.id
+        )
       )
 
     const observer =
       new IntersectionObserver(
+
         (entries) => {
 
-          entries.forEach((entry) => {
+          entries.forEach(
+            (entry) => {
 
-            if (entry.isIntersecting) {
-              setActiveId(
-                entry.target.id
-              )
+              if (
+                entry.isIntersecting
+              ) {
+
+                setActiveId(
+                  entry.target.id
+                )
+
+              }
             }
+          )
 
-          })
         },
+
         {
           rootMargin:
-            "-30% 0px -55% 0px",
-          threshold: 0.1,
+            "-20% 0px -70% 0px",
+          threshold: 0,
         }
       )
 
-    headings.forEach((heading) => {
+    headings.forEach(
+      (heading) => {
 
-      if (heading) {
-        observer.observe(heading)
+        if (heading) {
+          observer.observe(
+            heading
+          )
+        }
+
       }
-
-    })
+    )
 
     return () => {
 
-      headings.forEach((heading) => {
+      headings.forEach(
+        (heading) => {
 
-        if (heading) {
-          observer.unobserve(heading)
+          if (heading) {
+            observer.unobserve(
+              heading
+            )
+          }
+
         }
-
-      })
+      )
 
     }
 
@@ -99,7 +117,6 @@ export default function TableOfContents({
         border-border
         bg-card/80
         p-7
-        shadow-[0_10px_40px_rgba(0,0,0,0.03)]
         backdrop-blur-xl
       "
     >
@@ -158,8 +175,9 @@ export default function TableOfContents({
                   href={`#${item.id}`}
                   className={`
                     group
-                    relative
-                    block
+                    flex
+                    items-start
+                    gap-3
                     transition-all
                     duration-300
                     hover:translate-x-1
@@ -171,7 +189,7 @@ export default function TableOfContents({
                     ${
                       isActive
                         ? "text-foreground"
-                        : "text-[#6f635b]"
+                        : "text-[#7b6f66]"
                     }
                   `}
                 >
@@ -180,17 +198,21 @@ export default function TableOfContents({
 
                   <span
                     className={`
-                      absolute
-                      -left-4
-                      top-[0.7rem]
+                      mt-[11px]
                       h-[1px]
-                      bg-[#9f8873]
                       transition-all
-                      duration-500
+                      duration-300
                       ${
                         isActive
-                          ? "w-2 opacity-100"
-                          : "w-0 opacity-0"
+                          ? `
+                            w-8
+                            bg-foreground
+                          `
+                          : `
+                            w-4
+                            bg-[#c8b7a7]
+                            group-hover:w-6
+                          `
                       }
                     `}
                   />
@@ -198,16 +220,9 @@ export default function TableOfContents({
                   {/* TEXT */}
 
                   <span
-                    className={`
+                    className="
                       leading-7
-                      transition-all
-                      duration-300
-                      ${
-                        isActive
-                          ? "font-medium text-[#2a2420]"
-                          : "group-hover:text-foreground"
-                      }
-                    `}
+                    "
                   >
                     {item.text}
                   </span>
@@ -215,6 +230,7 @@ export default function TableOfContents({
                 </Link>
 
               </li>
+
             )
           })}
 
