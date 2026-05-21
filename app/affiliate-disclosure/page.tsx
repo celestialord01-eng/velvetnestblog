@@ -21,7 +21,7 @@ export default function AffiliateDisclosurePage() {
         {/* Hero Section */}
         <section className="bg-secondary/30 py-12 md:py-16">
           <div className="mx-auto max-w-7xl px-4 text-center">
-            <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">
+            <h1 className="text-4xl font-serif font-semibold tracking-tight md:text-5xl">
               Affiliate Disclosure
             </h1>
             <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
@@ -144,7 +144,7 @@ export default function AffiliateDisclosurePage() {
                 If you have any questions about affiliate links or this disclosure, please don&apos;t 
                 hesitate to reach out. You can contact me through the{" "}
                 <Link href="/contact">Contact Page</Link> or email me at{" "}
-                <a href="mailto:hello@velvetnest.com">hello@velvetnest.com</a>.
+                <a href="mailto:velvetnest.contact@gmail.com">velvetnest.contact@gmail.com</a>.
               </p>
 
               <p className="mt-8 text-sm">
