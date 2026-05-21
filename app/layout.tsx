@@ -33,7 +33,7 @@ const inter = Inter({
 =================================================== */
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://yourdomain.com"),
+  metadataBase: new URL("https://velvetnestblog.vercel.app"),
 
   title: {
     default: "VelvetNest | Luxury Fashion, Home & Lifestyle",
