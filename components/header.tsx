@@ -1,8 +1,9 @@
-                "use client"
+"use client"
 
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
+import { usePathname, useSearchParams } from "next/navigation"
 import { Search, Menu, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -28,93 +29,98 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
 
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const activeCategory = searchParams.get("category")
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-white/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-[#e7e1d8] bg-white/90 backdrop-blur-xl">
       
       <div className="mx-auto max-w-7xl px-4">
         
+        {/* TOP NAVBAR */}
         <div className="flex h-16 items-center justify-between md:h-20">
-          
-          {/* Mobile Menu Button */}
+
+          {/* Mobile Menu */}
           <button
             className="transition-all duration-300 active:scale-90 md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <X className="h-6 w-6" />
+              <X className="h-6 w-6 text-[#2c2520]" />
             ) : (
-              <Menu className="h-6 w-6" />
+              <Menu className="h-6 w-6 text-[#2c2520]" />
             )}
           </button>
 
-          {/* Logo */}
+          {/* LOGO */}
           <Link
             href="/"
             className="transition-all duration-300 hover:opacity-80"
           >
             <div className="flex items-center gap-2">
-              
+
               <Image
                 src="/logo.png"
                 alt="VelvetNest Logo"
-                width={40}
-                height={40}
-                className="transition-transform duration-500 hover:scale-105"
+                width={42}
+                height={42}
+                className="rounded-full transition-transform duration-500 hover:scale-105"
               />
 
-              <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
+              <h1 className="text-2xl font-semibold tracking-tight text-[#2c2520] md:text-3xl">
                 VelvetNest
               </h1>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden items-center gap-8 md:flex">
-            
-            {navLinks.map((link) => (
-              
-              <Link
-                key={link.href}
-                href={link.href}
-                className="
-                  relative
-                  text-sm
-                  font-medium
-                  uppercase
-                  tracking-[0.2em]
-                  text-foreground/80
-                  transition-all
-                  duration-300
-                  hover:text-foreground
-                  after:absolute
-                  after:left-0
-                  after:-bottom-1
-                  after:h-[1px]
-                  after:w-0
-                  after:bg-current
-                  after:transition-all
-                  after:duration-300
-                  hover:after:w-full
-                "
-              >
-                {link.label}
-              </Link>
-            ))}
+          {/* DESKTOP NAV */}
+          <nav className="hidden items-center gap-3 md:flex">
+
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`
+                    rounded-full
+                    px-4
+                    py-2
+                    text-sm
+                    font-medium
+                    uppercase
+                    tracking-[0.18em]
+                    transition-all
+                    duration-300
+                    ${
+                      isActive
+                        ? "bg-[#2c2520] text-white shadow-md"
+                        : "text-[#5e5347] hover:bg-[#f4efe8] hover:text-[#2c2520]"
+                    }
+                  `}
+                >
+                  {link.label}
+                </Link>
+              )
+            })}
           </nav>
 
-          {/* Right Side Icons */}
+          {/* RIGHT SIDE */}
           <div className="flex items-center gap-4">
-            
-            {/* Search */}
+
+            {/* SEARCH */}
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
               className="
-                text-foreground/80
+                text-[#5e5347]
                 transition-all
                 duration-300
-                hover:text-foreground
                 hover:scale-110
+                hover:text-[#2c2520]
                 active:scale-95
               "
               aria-label="Search"
@@ -122,18 +128,18 @@ export function Header() {
               <Search className="h-5 w-5" />
             </button>
 
-            {/* Pinterest */}
+            {/* PINTEREST */}
             <Link
               href="https://pinterest.com/velvetnestworld/"
               target="_blank"
               rel="noopener noreferrer"
               className="
                 hidden
-                text-foreground/80
+                text-[#5e5347]
                 transition-all
                 duration-300
-                hover:text-foreground
                 hover:scale-110
+                hover:text-[#2c2520]
                 active:scale-95
                 md:block
               "
@@ -146,133 +152,147 @@ export function Header() {
           </div>
         </div>
 
-        {/* Search Bar */}
+        {/* SEARCH BAR */}
         {isSearchOpen && (
-          <div className="animate-fade-in border-t border-border py-4">
-            
+          <div className="animate-in fade-in-0 border-t border-[#ece6de] py-4 duration-300">
+
             <form className="mx-auto flex max-w-md gap-2">
-              
+
               <Input
                 type="search"
-                placeholder="Search articles, products..."
+                placeholder="Search articles, beauty tips..."
                 className="
-                  flex-1
-                  border-border
-                  bg-card
-                  transition-all
-                  duration-300
-                  focus:shadow-lg
+                  h-11
+                  border-[#ddd4ca]
+                  bg-[#faf8f5]
+                  focus-visible:ring-[#bca996]
                 "
               />
 
-              <Button type="submit" variant="default">
+              <Button
+                type="submit"
+                className="bg-[#2c2520] text-white hover:bg-[#1f1a16]"
+              >
                 Search
               </Button>
             </form>
           </div>
         )}
 
-        {/* Categories */}
-        <div className="hidden border-t border-border/50 py-3 md:block">
-          
-          <div className="flex items-center justify-center gap-8">
-            
-            {categories.map((category) => (
-              
-              <Link
-                key={category}
-                href={`/blog?category=${category.toLowerCase().replace(" ", "-")}`}
-                className="
-                  relative
-                  text-xs
-                  font-medium
-                  uppercase
-                  tracking-[0.2em]
-                  text-muted-foreground
-                  transition-all
-                  duration-300
-                  hover:text-foreground
-                  after:absolute
-                  after:left-0
-                  after:-bottom-1
-                  after:h-[1px]
-                  after:w-0
-                  after:bg-current
-                  after:transition-all
-                  after:duration-300
-                  hover:after:w-full
-                "
-              >
-                {category}
-              </Link>
-            ))}
+        {/* CATEGORY BAR */}
+        <div className="hidden border-t border-[#ece6de] py-3 md:block">
+
+          <div className="flex items-center justify-center gap-3 flex-wrap">
+
+            {categories.map((category) => {
+              const slug = category.toLowerCase().replace(/\s+/g, "-")
+
+              const isActive = activeCategory === slug
+
+              return (
+                <Link
+                  key={category}
+                  href={`/blog?category=${slug}`}
+                  className={`
+                    rounded-full
+                    px-4
+                    py-2
+                    text-xs
+                    font-medium
+                    uppercase
+                    tracking-[0.18em]
+                    transition-all
+                    duration-300
+                    ${
+                      isActive
+                        ? "bg-[#2c2520] text-white shadow-md"
+                        : "border border-[#ddd4ca] bg-white text-[#5e5347] hover:bg-[#f4efe8]"
+                    }
+                  `}
+                >
+                  {category}
+                </Link>
+              )
+            })}
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* MOBILE MENU */}
       {isMenuOpen && (
-        
-        <div className="animate-fade-in border-t border-border bg-background/95 backdrop-blur-md md:hidden">
-          
-          <nav className="flex flex-col px-4 py-4">
-            
-            {navLinks.map((link) => (
-              
-              <Link
-                key={link.href}
-                href={link.href}
-                className="
-                  border-b
-                  border-border
-                  py-3
-                  text-sm
-                  font-medium
-                  uppercase
-                  tracking-widest
-                  transition-all
-                  duration-300
-                  hover:pl-2
-                "
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
 
-            <div className="mt-4 flex flex-wrap gap-2">
-              
-              {categories.map((category) => (
-                
+        <div className="animate-in fade-in-0 border-t border-[#ece6de] bg-white md:hidden duration-300">
+
+          <nav className="flex flex-col px-4 py-4">
+
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href
+
+              return (
                 <Link
-                  key={category}
-                  href={`/blog?category=${category.toLowerCase().replace(" ", "-")}`}
-                  className="
-                    rounded-full
-                    border
-                    border-border
-                    bg-secondary
-                    px-3
-                    py-1
-                    text-xs
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`
+                    rounded-xl
+                    px-4
+                    py-3
+                    text-sm
                     font-medium
                     uppercase
-                    tracking-wider
+                    tracking-[0.15em]
                     transition-all
                     duration-300
-                    hover:scale-105
-                    hover:shadow-md
-                    active:scale-95
-                  "
-                  onClick={() => setIsMenuOpen(false)}
+                    ${
+                      isActive
+                        ? "bg-[#2c2520] text-white"
+                        : "text-[#4e4439] hover:bg-[#f6f1eb]"
+                    }
+                  `}
                 >
-                  {category}
+                  {link.label}
                 </Link>
-              ))}
+              )
+            })}
+
+            {/* MOBILE CATEGORIES */}
+            <div className="mt-6 flex flex-wrap gap-2">
+
+              {categories.map((category) => {
+                const slug = category.toLowerCase().replace(/\s+/g, "-")
+
+                const isActive = activeCategory === slug
+
+                return (
+                  <Link
+                    key={category}
+                    href={`/blog?category=${slug}`}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`
+                      rounded-full
+                      px-4
+                      py-2
+                      text-xs
+                      font-medium
+                      uppercase
+                      tracking-[0.15em]
+                      transition-all
+                      duration-300
+                      ${
+                        isActive
+                          ? "bg-[#2c2520] text-white"
+                          : "border border-[#ddd4ca] bg-[#faf8f5] text-[#5e5347]"
+                      }
+                    `}
+                  >
+                    {category}
+                  </Link>
+                )
+              })}
             </div>
           </nav>
         </div>
       )}
     </header>
   )
-      }
+}
