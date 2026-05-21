@@ -1,5 +1,7 @@
+import Image from "next/image"
 import { PortableText } from "@portabletext/react"
 import { client } from "@/sanity/lib/client"
+import { urlFor } from "@/sanity/lib/image"
 
 export default async function BlogPostPage({
   params,
@@ -33,18 +35,31 @@ export default async function BlogPostPage({
       </h1>
 
       <PortableText
-        value={post?.body}
-        components={{
-          types: {
-            image: ({ value }: any) => (
-              <img
-                src=""
-                alt="blog"
-              />
-            ),
-          },
-        }}
-      />
-    </div>
-  )
-}
+  value={post?.body}
+  components={{
+    types: {
+      image: ({ value }: any) => (
+
+        <div
+          style={{
+            marginTop: "40px",
+            marginBottom: "40px",
+            position: "relative",
+            width: "100%",
+            height: "500px",
+          }}
+        >
+          <Image
+            src={urlFor(value).url()}
+            alt={value?.alt || "blog"}
+            fill
+            style={{
+              objectFit: "cover",
+              borderRadius: "20px",
+            }}
+          />
+        </div>
+      ),
+    },
+  }}
+/>
