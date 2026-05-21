@@ -7,26 +7,40 @@ import { headingToId } from "@/lib/heading"
 
 const components: PortableTextComponents = {
   block: {
-    normal: ({ children, index }: any) => {
-      const isFirstParagraph = index === 0
+    normal: ({ children }: any) => {
+      const text =
+        typeof children?.[0] === "string"
+          ? children[0]
+          : ""
+
+      // Apply drop cap only on long intro paragraphs
+      const shouldDropCap = text.length > 120
 
       return (
         <p
-          className={`mb-6 text-lg leading-8 text-muted-foreground ${
-            isFirstParagraph
-              ? `
-                first-letter:float-left
-                first-letter:mr-3
-                first-letter:mt-1
-                first-letter:text-6xl
-                md:first-letter:text-8xl
-                first-letter:font-serif
-                first-letter:font-semibold
-                first-letter:leading-[0.8]
-                first-letter:text-foreground
-              `
-              : ""
-          }`}
+          className={`
+            mb-8
+            text-[18px]
+            leading-[1.95]
+            text-stone-700
+            tracking-[0.01em]
+
+            ${
+              shouldDropCap
+                ? `
+                  first-letter:float-left
+                  first-letter:mr-3
+                  first-letter:mt-1
+                  first-letter:text-6xl
+                  md:first-letter:text-8xl
+                  first-letter:font-serif
+                  first-letter:font-semibold
+                  first-letter:leading-[0.8]
+                  first-letter:text-stone-900
+                `
+                : ""
+            }
+          `}
         >
           {children}
         </p>
@@ -42,13 +56,14 @@ const components: PortableTextComponents = {
           id={id}
           className="
             scroll-mt-28
-            mt-14
-            mb-6
+            mt-16
+            mb-8
             font-serif
             text-4xl
             font-semibold
+            leading-tight
             tracking-tight
-            text-foreground
+            text-stone-900
             md:text-5xl
           "
         >
@@ -66,13 +81,14 @@ const components: PortableTextComponents = {
           id={id}
           className="
             scroll-mt-28
-            mt-14
-            mb-5
+            mt-20
+            mb-6
             font-serif
             text-3xl
             font-semibold
+            leading-tight
             tracking-tight
-            text-foreground
+            text-stone-900
             md:text-4xl
           "
         >
@@ -90,13 +106,14 @@ const components: PortableTextComponents = {
           id={id}
           className="
             scroll-mt-28
-            mt-10
-            mb-4
+            mt-14
+            mb-5
             font-serif
             text-2xl
             font-semibold
+            leading-tight
             tracking-tight
-            text-foreground
+            text-stone-900
             md:text-3xl
           "
         >
@@ -108,11 +125,13 @@ const components: PortableTextComponents = {
     blockquote: ({ children }: any) => (
       <blockquote
         className="
-          my-8
+          my-10
           border-l-4
           border-stone-300
           pl-6
+          text-xl
           italic
+          leading-9
           text-stone-600
         "
       >
@@ -123,13 +142,13 @@ const components: PortableTextComponents = {
 
   list: {
     bullet: ({ children }: any) => (
-      <ul className="mb-6 ml-6 list-disc space-y-3 text-muted-foreground">
+      <ul className="mb-8 ml-6 list-disc space-y-4 text-stone-700">
         {children}
       </ul>
     ),
 
     number: ({ children }: any) => (
-      <ol className="mb-6 ml-6 list-decimal space-y-3 text-muted-foreground">
+      <ol className="mb-8 ml-6 list-decimal space-y-4 text-stone-700">
         {children}
       </ol>
     ),
@@ -147,7 +166,7 @@ const components: PortableTextComponents = {
 
   marks: {
     strong: ({ children }: any) => (
-      <strong className="font-semibold text-foreground">
+      <strong className="font-semibold text-stone-900">
         {children}
       </strong>
     ),
@@ -167,11 +186,12 @@ const components: PortableTextComponents = {
           rel={rel}
           className="
             font-medium
-            text-foreground
+            text-stone-900
             underline
             underline-offset-4
-            transition-opacity
-            hover:opacity-70
+            transition-all
+            duration-300
+            hover:opacity-60
           "
         >
           {children}
@@ -182,20 +202,34 @@ const components: PortableTextComponents = {
 
   types: {
     image: ({ value }: any) => {
-      if (!value?.asset?._ref) return null
+      if (!value?.asset?.url) return null
 
       return (
-        <figure className="my-10 overflow-hidden rounded-3xl">
+        <figure className="my-12 overflow-hidden rounded-3xl">
           <Image
             src={value.asset.url}
             alt={value.alt || "Blog image"}
-            width={1200}
-            height={800}
-            className="h-auto w-full object-cover"
+            width={1400}
+            height={900}
+            className="
+              h-auto
+              w-full
+              rounded-3xl
+              object-cover
+              shadow-sm
+            "
           />
 
           {value.caption && (
-            <figcaption className="mt-3 text-center text-sm text-muted-foreground">
+            <figcaption
+              className="
+                mt-4
+                text-center
+                text-sm
+                italic
+                text-stone-500
+              "
+            >
               {value.caption}
             </figcaption>
           )}
@@ -209,8 +243,8 @@ export function CustomPortableText({ value }: any) {
   return (
     <div
       className="
-        prose-neutral
-        max-w-none
+        mx-auto
+        max-w-3xl
       "
     >
       <PortableText
@@ -219,4 +253,4 @@ export function CustomPortableText({ value }: any) {
       />
     </div>
   )
-          }
+}
