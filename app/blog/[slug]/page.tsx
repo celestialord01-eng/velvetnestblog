@@ -460,7 +460,7 @@ const portableTextComponents = {
    SHARE BUTTONS
 ========================================================= */
 
-function ShareButtons({
+import ShareButtons from "./ShareButtons"({
   post,
 }: {
   post: {
