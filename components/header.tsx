@@ -266,7 +266,7 @@ export function Header() {
                 return (
                   <Link
                     key={category}
-                    href={`/blog?category=${slug}`}
+                    href={`/category/${slug}`}
                     onClick={() => setIsMenuOpen(false)}
                     className={`
                       rounded-full
