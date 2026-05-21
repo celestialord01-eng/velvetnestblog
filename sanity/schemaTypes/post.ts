@@ -36,7 +36,7 @@ export default defineType({
         Rule.max(200).warning("Keep excerpt under 200 characters"),
     }),
 
-    // PUBLISH DATE
+    // PUBLISHED DATE
     defineField({
       name: "publishedAt",
       title: "Published At",
@@ -44,34 +44,13 @@ export default defineType({
       initialValue: () => new Date().toISOString(),
     }),
 
-    // CATEGORY
+    // CATEGORY REFERENCE
     defineField({
       name: "category",
       title: "Category",
-      type: "string",
+      type: "reference",
+      to: [{ type: "category" }],
       validation: (Rule) => Rule.required(),
-
-      options: {
-        layout: "dropdown",
-
-        list: [
-          { title: "Fashion", value: "fashion" },
-          { title: "Beauty", value: "beauty" },
-          { title: "Home Decor", value: "home-decor" },
-          { title: "Outfit Ideas", value: "outfit-ideas" },
-          { title: "Self Care", value: "self-care" },
-        ],
-      },
-    }),
-
-    // CATEGORY DESCRIPTION
-    defineField({
-      name: "categoryDescription",
-      title: "Category Description",
-      type: "text",
-      rows: 3,
-      description:
-        "Short SEO/category description used on category pages.",
     }),
 
     // FEATURED POST
@@ -80,7 +59,8 @@ export default defineType({
       title: "Featured Post",
       type: "boolean",
       initialValue: false,
-      description: "Enable to feature this article on homepage/category pages.",
+      description:
+        "Enable this to feature the article on homepage/category pages.",
     }),
 
     // MAIN IMAGE
@@ -144,6 +124,27 @@ export default defineType({
       description: "Optional custom meta description.",
     }),
 
+    // TAGS
+    defineField({
+      name: "tags",
+      title: "Tags",
+      type: "array",
+
+      of: [{ type: "string" }],
+
+      options: {
+        layout: "tags",
+      },
+    }),
+
+    // READING TIME
+    defineField({
+      name: "readingTime",
+      title: "Reading Time",
+      type: "number",
+      description: "Optional manual reading time in minutes.",
+    }),
+
     // BODY CONTENT
     defineField({
       name: "body",
@@ -184,8 +185,8 @@ export default defineType({
                 fields: [
                   defineField({
                     name: "href",
-                    type: "url",
                     title: "URL",
+                    type: "url",
                   }),
                 ],
               },
@@ -204,40 +205,19 @@ export default defineType({
           fields: [
             defineField({
               name: "alt",
-              type: "string",
               title: "Alt Text",
+              type: "string",
               validation: (Rule) => Rule.required(),
             }),
 
             defineField({
               name: "caption",
-              type: "string",
               title: "Caption",
+              type: "string",
             }),
           ],
         },
       ],
-    }),
-
-    // TAGS
-    defineField({
-      name: "tags",
-      title: "Tags",
-      type: "array",
-
-      of: [{ type: "string" }],
-
-      options: {
-        layout: "tags",
-      },
-    }),
-
-    // READING TIME
-    defineField({
-      name: "readingTime",
-      title: "Reading Time",
-      type: "number",
-      description: "Optional manual reading time in minutes.",
     }),
   ],
 
@@ -245,17 +225,17 @@ export default defineType({
     select: {
       title: "title",
       media: "mainImage",
-      subtitle: "category",
+      category: "category.title",
       featured: "featured",
     },
 
     prepare(selection) {
-      const { title, media, subtitle, featured } = selection
+      const { title, media, category, featured } = selection
 
       return {
         title: featured ? `⭐ ${title}` : title,
+        subtitle: category,
         media,
-        subtitle,
       }
     },
   },
