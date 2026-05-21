@@ -94,9 +94,7 @@ function headingToId(text: string) {
   })
 }
 
-function getTableOfContents(
-  body: any[] = []
-) {
+function getTableOfContents(body: any[] = []) {
   return body
     .filter(
       (block) =>
@@ -106,10 +104,7 @@ function getTableOfContents(
     .map((block) => {
       const text =
         block?.children
-          ?.map(
-            (child: any) =>
-              child?.text || ""
-          )
+          ?.map((child: any) => child?.text || "")
           .join("") || ""
 
       return {
@@ -120,16 +115,11 @@ function getTableOfContents(
     })
 }
 
-function getPlainText(
-  blocks: any[] = []
-) {
+function getPlainText(blocks: any[] = []) {
   return blocks
     .map((block) =>
       block?.children
-        ?.map(
-          (child: any) =>
-            child?.text || ""
-        )
+        ?.map((child: any) => child?.text || "")
         .join("") || ""
     )
     .join(" ")
@@ -142,7 +132,6 @@ function getPlainText(
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
-
   const { slug } = await params
 
   const post = await getPost(slug)
@@ -171,19 +160,15 @@ export async function generateMetadata({
 
       type: "article",
 
-      url:
-        `https://velvetnestblog.vercel.app/blog/${post.slug}`,
+      url: `https://velvetnestblog.vercel.app/blog/${post.slug}`,
 
       images:
         post.mainImage?.asset?.url
           ? [
               {
-                url:
-                  post.mainImage.asset.url,
-
+                url: post.mainImage.asset.url,
                 width: 1200,
                 height: 630,
-
                 alt:
                   post.mainImage?.alt ||
                   post.title,
@@ -203,9 +188,7 @@ export async function generateMetadata({
 
       images:
         post.mainImage?.asset?.url
-          ? [
-              post.mainImage.asset.url,
-            ]
+          ? [post.mainImage.asset.url]
           : [],
     },
 
@@ -221,78 +204,65 @@ export async function generateMetadata({
 ========================================================= */
 
 const portableTextComponents = {
-
   types: {
-
     image: ({ value }: any) => (
-
-      <figure className="my-14">
-
+      <figure className="my-16">
         <div
           className="
             relative
-            h-[260px]
-            md:h-[520px]
+            h-[340px]
+            md:h-[640px]
             overflow-hidden
-            rounded-[2rem]
+            rounded-[2.5rem]
           "
         >
-
           <Image
             src={urlFor(value).url()}
             alt={value?.alt || "Blog image"}
             fill
             className="object-cover"
           />
-
         </div>
 
         {value?.caption && (
-
           <figcaption
             className="
-              mt-4
+              mt-5
               text-center
               text-sm
               italic
-              text-[#7a6d64]
+              text-muted-foreground
             "
           >
             {value.caption}
           </figcaption>
-
         )}
-
       </figure>
     ),
   },
 
   block: {
-
     h2: ({ children }: any) => {
-
       const text =
         typeof children?.[0] === "string"
           ? children[0]
           : ""
 
-      const id =
-        headingToId(text)
+      const id = headingToId(text)
 
       return (
-
         <h2
           id={id}
           className="
             scroll-mt-32
-            mt-20
+            mt-24
             mb-8
             font-serif
-            text-[2rem]
-            leading-tight
-            tracking-tight
-            text-[#1f1a17]
-            md:text-5xl
+            text-[2.6rem]
+            leading-[0.98]
+            tracking-[-0.04em]
+            text-foreground
+            md:text-[4.5rem]
           "
         >
           {children}
@@ -301,29 +271,26 @@ const portableTextComponents = {
     },
 
     h3: ({ children }: any) => {
-
       const text =
         typeof children?.[0] === "string"
           ? children[0]
           : ""
 
-      const id =
-        headingToId(text)
+      const id = headingToId(text)
 
       return (
-
         <h3
           id={id}
           className="
             scroll-mt-32
-            mt-14
+            mt-16
             mb-6
             font-serif
-            text-2xl
-            leading-tight
-            tracking-tight
-            text-[#1f1a17]
-            md:text-3xl
+            text-[1.8rem]
+            leading-[1]
+            tracking-[-0.03em]
+            text-foreground
+            md:text-[2.5rem]
           "
         >
           {children}
@@ -332,14 +299,14 @@ const portableTextComponents = {
     },
 
     normal: ({ children }: any) => (
-
       <p
         className="
-          mb-8
-          text-[17px]
-          leading-[2.2]
-          text-[#4b4038]
-          md:text-[19px]
+          mb-9
+          text-[1.12rem]
+          leading-[2.05]
+          tracking-[-0.01em]
+          text-[#4d433d]
+          md:text-[1.2rem]
         "
       >
         {children}
@@ -349,17 +316,16 @@ const portableTextComponents = {
     blockquote: ({
       children,
     }: any) => (
-
       <blockquote
         className="
-          my-12
-          border-l-4
-          border-[#c9b7a3]
+          my-14
+          border-l-[3px]
+          border-[#cbb29a]
           pl-6
-          text-xl
+          text-[1.3rem]
           italic
-          leading-10
-          text-[#5c5048]
+          leading-[2]
+          text-[#5d5148]
         "
       >
         {children}
@@ -368,18 +334,16 @@ const portableTextComponents = {
   },
 
   list: {
-
     bullet: ({
       children,
     }: any) => (
-
       <ul
         className="
-          mb-10
+          mb-12
           ml-6
           list-disc
-          space-y-4
-          text-[#4b4038]
+          space-y-5
+          text-[#4d433d]
         "
       >
         {children}
@@ -389,14 +353,13 @@ const portableTextComponents = {
     number: ({
       children,
     }: any) => (
-
       <ol
         className="
-          mb-10
+          mb-12
           ml-6
           list-decimal
-          space-y-4
-          text-[#4b4038]
+          space-y-5
+          text-[#4d433d]
         "
       >
         {children}
@@ -405,15 +368,13 @@ const portableTextComponents = {
   },
 
   listItem: {
-
     bullet: ({
       children,
     }: any) => (
-
       <li
         className="
-          text-[17px]
-          leading-9
+          text-[1.1rem]
+          leading-[2]
         "
       >
         {children}
@@ -423,11 +384,10 @@ const portableTextComponents = {
     number: ({
       children,
     }: any) => (
-
       <li
         className="
-          text-[17px]
-          leading-9
+          text-[1.1rem]
+          leading-[2]
         "
       >
         {children}
@@ -436,15 +396,13 @@ const portableTextComponents = {
   },
 
   marks: {
-
     strong: ({
       children,
     }: any) => (
-
       <strong
         className="
           font-semibold
-          text-[#1f1a17]
+          text-foreground
         "
       >
         {children}
@@ -463,18 +421,17 @@ const portableTextComponents = {
       children,
       value,
     }: any) => (
-
       <a
         href={value?.href || "#"}
         target="_blank"
         rel="noopener noreferrer"
         className="
           font-medium
-          text-[#8c6b4f]
+          text-[#9d7b5f]
           underline
-          underline-offset-4
+          underline-offset-[5px]
           transition
-          hover:opacity-80
+          hover:opacity-70
         "
       >
         {children}
@@ -488,7 +445,6 @@ const portableTextComponents = {
 ========================================================= */
 
 function ShareButtons() {
-
   const shareLinks = [
     {
       icon: <Pin size={16} />,
@@ -517,12 +473,9 @@ function ShareButtons() {
   ]
 
   return (
-
     <div className="flex flex-wrap gap-4">
-
       {shareLinks.map(
         (item, index) => (
-
           <a
             key={index}
             href={item.href}
@@ -536,13 +489,12 @@ function ShareButtons() {
               justify-center
               rounded-full
               border
-              border-[#e4ddd4]
-              bg-white
-              text-[#3d342f]
+              border-border
+              bg-card
+              text-foreground
               transition-all
               duration-300
               hover:-translate-y-1
-              hover:border-[#cdb9a4]
               hover:shadow-md
             "
           >
@@ -560,19 +512,17 @@ function ShareButtons() {
           justify-center
           rounded-full
           border
-          border-[#e4ddd4]
-          bg-white
-          text-[#3d342f]
+          border-border
+          bg-card
+          text-foreground
           transition-all
           duration-300
           hover:-translate-y-1
-          hover:border-[#cdb9a4]
           hover:shadow-md
         "
       >
         <LinkIcon size={16} />
       </button>
-
     </div>
   )
 }
@@ -584,7 +534,6 @@ function ShareButtons() {
 export default async function BlogPostPage({
   params,
 }: BlogPostPageProps) {
-
   const { slug } = await params
 
   const post =
@@ -612,9 +561,7 @@ export default async function BlogPostPage({
     )
 
   return (
-
-    <div className="min-h-screen bg-[#f8f5f1]">
-
+    <div className="min-h-screen bg-background text-foreground">
       <ReadingProgress />
 
       <Header />
@@ -623,44 +570,41 @@ export default async function BlogPostPage({
 
         {/* HERO */}
 
-        <section className="border-b border-[#ebe4db]">
-
+        <section className="border-b border-border">
           <div
             className="
               mx-auto
               max-w-7xl
               px-5
-              py-14
-              md:py-20
+              py-20
+              md:py-32
             "
           >
 
             <Link
               href="/blog"
               className="
-                mb-10
+                mb-12
                 inline-flex
                 items-center
                 gap-2
                 text-sm
                 font-medium
-                text-[#74675f]
+                text-muted-foreground
                 transition
-                hover:text-black
+                hover:text-foreground
               "
             >
-
               <ArrowLeft className="h-4 w-4" />
 
               Back to Blog
-
             </Link>
 
             <div
               className="
                 grid
-                gap-16
-                lg:grid-cols-[1fr_300px]
+                gap-20
+                lg:grid-cols-[1fr_320px]
               "
             >
 
@@ -675,34 +619,31 @@ export default async function BlogPostPage({
                     items-center
                     gap-5
                     text-sm
-                    text-[#74675f]
+                    text-muted-foreground
                   "
                 >
 
                   {post.category?.title && (
-
                     <span
                       className="
                         rounded-full
                         border
-                        border-[#ddd2c6]
-                        bg-white
+                        border-border
+                        bg-card
                         px-4
                         py-1.5
                         text-xs
                         font-medium
                         uppercase
                         tracking-[0.18em]
-                        text-[#2c2520]
+                        text-foreground
                       "
                     >
                       {post.category.title}
                     </span>
-
                   )}
 
                   <div className="flex items-center gap-2">
-
                     <Calendar className="h-4 w-4" />
 
                     {post.publishedAt
@@ -710,54 +651,48 @@ export default async function BlogPostPage({
                           post.publishedAt
                         ).toDateString()
                       : "Recently Published"}
-
                   </div>
 
                   <div className="flex items-center gap-2">
-
                     <Clock className="h-4 w-4" />
 
                     {stats.text}
-
                   </div>
 
                 </div>
 
                 <h1
                   className="
-                    mt-8
-                    max-w-4xl
+                    mt-10
+                    max-w-5xl
                     font-serif
-                    text-4xl
-                    leading-tight
-                    tracking-tight
-                    text-[#1f1a17]
-                    md:text-6xl
+                    text-[3rem]
+                    leading-[0.95]
+                    tracking-[-0.04em]
+                    text-foreground
+                    md:text-[5.8rem]
                   "
                 >
                   {post.title}
                 </h1>
 
                 {post.excerpt && (
-
                   <p
                     className="
-                      mt-8
+                      mt-10
                       max-w-3xl
-                      text-[20px]
-                      leading-10
-                      text-[#5b5048]
+                      text-[1.2rem]
+                      leading-[2]
+                      text-[#5f534b]
+                      md:text-[1.35rem]
                     "
                   >
                     {post.excerpt}
                   </p>
-
                 )}
 
-                <div className="mt-10">
-
+                <div className="mt-12">
                   <ShareButtons />
-
                 </div>
 
               </div>
@@ -770,18 +705,17 @@ export default async function BlogPostPage({
                   className="
                     sticky
                     top-28
-                    rounded-3xl
+                    rounded-[2rem]
                     border
-                    border-[#e8dfd6]
-                    bg-white
-                    p-6
+                    border-border
+                    bg-card/80
+                    p-7
+                    backdrop-blur
                   "
                 >
-
                   <TableOfContents
                     items={toc}
                   />
-
                 </div>
 
               </aside>
@@ -795,9 +729,7 @@ export default async function BlogPostPage({
         {/* FEATURED IMAGE */}
 
         {post.mainImage?.asset?.url && (
-
-          <section className="py-10">
-
+          <section className="py-12">
             <div
               className="
                 mx-auto
@@ -809,9 +741,10 @@ export default async function BlogPostPage({
               <div
                 className="
                   relative
-                  aspect-[16/9]
+                  aspect-[4/5]
                   overflow-hidden
-                  rounded-[2rem]
+                  rounded-[2.5rem]
+                  md:aspect-[16/8]
                 "
               >
 
@@ -833,7 +766,6 @@ export default async function BlogPostPage({
             </div>
 
           </section>
-
         )}
 
         {/* MOBILE TOC */}
@@ -841,49 +773,34 @@ export default async function BlogPostPage({
         <div
           className="
             mx-auto
-            max-w-3xl
+            max-w-2xl
             px-5
             lg:hidden
           "
         >
-
           <MobileTOC items={toc} />
-
         </div>
 
         {/* ARTICLE */}
 
-        <section className="pb-28 pt-10">
+        <section className="pb-32 pt-12">
 
           <div
             className="
               mx-auto
-              grid
               max-w-7xl
-              gap-16
               px-5
-              lg:grid-cols-[minmax(0,1fr)_300px]
             "
           >
 
-            <article
-              className="
-                max-w-3xl
-              "
-            >
-
+            <article className="mx-auto max-w-2xl">
               <PortableText
                 value={bodyContent}
                 components={
                   portableTextComponents
                 }
               />
-
             </article>
-
-            <aside className="hidden lg:block">
-              <div className="sticky top-28" />
-            </aside>
 
           </div>
 
@@ -892,7 +809,6 @@ export default async function BlogPostPage({
       </main>
 
       <Footer />
-
     </div>
   )
-    }
+      }
