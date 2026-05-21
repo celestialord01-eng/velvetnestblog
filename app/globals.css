@@ -216,17 +216,27 @@ html {
 /* Affiliate Links */
 
 .prose a {
-  color: inherit;
+  color: #6f5d4d;
   text-decoration: none;
-  border-bottom: 1px solid #8d7b6a;
-  padding-bottom: 1px;
-  transition: all 0.25s ease;
+  position: relative;
+  font-weight: 500;
 }
 
-.prose a:hover {
-  color: #8d7b6a;
-  border-bottom-color: #3e342c;
-  opacity: 0.9;
+.prose a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: #cbb8a3;
+  transition: transform 0.3s ease;
+  transform: scaleX(0.4);
+  transform-origin: left;
+}
+
+.prose a:hover::after {
+  transform: scaleX(1);
 }
 
 /* Lists */
@@ -254,17 +264,13 @@ html {
 }
 
 /* Quote Blocks */
-
 .prose blockquote {
-  border-left: 2px solid #8d7b6a;
-  background: #f6f2ec;
-  padding: 1.6rem;
+  border-left: 3px solid #8d7b6a;
+  padding-left: 1.5rem;
   margin: 3rem 0;
-  border-radius: 1rem;
   font-style: italic;
-  color: #4a4037;
-  line-height: 1.9;
-  font-size: 1.15rem;
+  background: transparent;
+  border-radius: 0;
 }
 
 /* Strong Text */
