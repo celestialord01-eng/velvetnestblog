@@ -15,6 +15,8 @@ import {
 
 import { NewsletterPopup } from "@/components/newsletter-popup"
 
+import { Reveal } from "@/components/reveal"
+
 import { Button } from "@/components/ui/button"
 
 import { client } from "@/sanity/lib/client"
@@ -123,285 +125,209 @@ export default async function HomePage() {
           "
         >
 
-          <div
-            className="
-              mx-auto
-              grid
-              max-w-7xl
-              items-center
-              gap-20
-              px-5
-              py-24
-              md:py-36
-              lg:grid-cols-2
-            "
-          >
-
-            {/* LEFT */}
+          <Reveal>
 
             <div
               className="
-                space-y-8
-                text-center
-                lg:text-left
+                mx-auto
+                grid
+                max-w-7xl
+                items-center
+                gap-20
+                px-5
+                py-24
+                md:py-36
+                lg:grid-cols-2
               "
             >
 
-              <p
-                className="
-                  text-[11px]
-                  uppercase
-                  tracking-[0.35em]
-                  text-muted-foreground
-                "
-              >
-                {hero?.eyebrow ||
-                  "Welcome to VelvetNest"}
-              </p>
-
-              <h1
-                className="
-                  font-serif
-                  text-[4rem]
-                  leading-[0.92]
-                  tracking-[-0.06em]
-                  text-foreground
-                  md:text-[5.8rem]
-                  lg:text-[7rem]
-                "
-              >
-
-                {hero?.title1 && (
-                  <span className="block">
-                    {hero.title1}
-                  </span>
-                )}
-
-                {hero?.title2 && (
-                  <span className="block">
-                    {hero.title2}
-                  </span>
-                )}
-
-                {hero?.title3 && (
-                  <span
-                    className="
-                      block
-                      text-[#9b7f66]
-                    "
-                  >
-                    {hero.title3}
-                  </span>
-                )}
-
-              </h1>
-
-              <p
-                className="
-                  mx-auto
-                  max-w-xl
-                  text-[1.15rem]
-                  leading-[2]
-                  text-[#6b6057]
-                  lg:mx-0
-                "
-              >
-                {hero?.description}
-              </p>
-
-              {/* BUTTONS */}
+              {/* LEFT */}
 
               <div
                 className="
-                  flex
-                  flex-col
-                  gap-4
-                  sm:flex-row
-                  sm:justify-center
-                  lg:justify-start
+                  space-y-8
+                  text-center
+                  lg:text-left
                 "
               >
 
-                <Button
-                  asChild
-                  size="lg"
+                <p
                   className="
-                    h-14
-                    rounded-full
-                    bg-[#2c2623]
-                    px-8
-                    text-[12px]
+                    text-[11px]
                     uppercase
-                    tracking-[0.18em]
-                    text-white
-                    hover:bg-black
+                    tracking-[0.35em]
+                    text-muted-foreground
+                  "
+                >
+                  {hero?.eyebrow ||
+                    "Welcome to VelvetNest"}
+                </p>
+
+                <h1
+                  className="
+                    font-serif
+                    text-[4rem]
+                    leading-[0.92]
+                    tracking-[-0.06em]
+                    text-foreground
+                    md:text-[5.8rem]
+                    lg:text-[7rem]
                   "
                 >
 
-                  <Link
-                    href={
-                      hero?.buttonLink ||
-                      "/blog"
-                    }
-                  >
-                    {hero?.buttonText ||
-                      "Explore the Blog"}
-                  </Link>
+                  {hero?.title1 && (
+                    <span className="block">
+                      {hero.title1}
+                    </span>
+                  )}
 
-                </Button>
+                  {hero?.title2 && (
+                    <span className="block">
+                      {hero.title2}
+                    </span>
+                  )}
 
-                <Button
-                  asChild
-                  variant="outline"
-                  size="lg"
+                  {hero?.title3 && (
+                    <span
+                      className="
+                        block
+                        text-[#9b7f66]
+                      "
+                    >
+                      {hero.title3}
+                    </span>
+                  )}
+
+                </h1>
+
+                <p
                   className="
-                    h-14
-                    rounded-full
-                    border-border
-                    bg-card
-                    px-8
-                    text-[12px]
-                    uppercase
-                    tracking-[0.18em]
-                    hover:bg-card
+                    mx-auto
+                    max-w-xl
+                    text-[1.15rem]
+                    leading-[2]
+                    text-[#6b6057]
+                    lg:mx-0
                   "
                 >
+                  {hero?.description}
+                </p>
 
-                  <Link href="/amazon-finds">
-                    Shop Amazon Finds
-                  </Link>
-
-                </Button>
-
-              </div>
-
-            </div>
-
-            {/* HERO IMAGE */}
-
-            <div className="relative">
-
-              <div
-                className="
-                  group
-                  relative
-                  overflow-hidden
-                  rounded-[2.8rem]
-                "
-              >
+                {/* BUTTONS */}
 
                 <div
                   className="
-                    relative
-                    aspect-[4/5]
-                    bg-[#ede7df]
+                    flex
+                    flex-col
+                    gap-4
+                    sm:flex-row
+                    sm:justify-center
+                    lg:justify-start
                   "
                 >
 
-                  {hero?.heroImage && (
+                  <Button
+                    asChild
+                    size="lg"
+                    className="
+                      h-14
+                      rounded-full
+                      bg-[#2c2623]
+                      px-8
+                      text-[12px]
+                      uppercase
+                      tracking-[0.18em]
+                      text-white
+                      hover:bg-black
+                    "
+                  >
 
-                    <Image
-                      src={urlFor(hero.heroImage).width(1600).url()}
-                      alt="VelvetNest Hero"
-                      fill
-                      priority
-                      className="
-                        object-cover
-                        transition-transform
-                        duration-700
-                        group-hover:scale-[1.03]
-                      "
-                    />
+                    <Link
+                      href={
+                        hero?.buttonLink ||
+                        "/blog"
+                      }
+                    >
+                      {hero?.buttonText ||
+                        "Explore the Blog"}
+                    </Link>
 
-                  )}
+                  </Button>
+
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="lg"
+                    className="
+                      h-14
+                      rounded-full
+                      border-border
+                      bg-card
+                      px-8
+                      text-[12px]
+                      uppercase
+                      tracking-[0.18em]
+                      hover:bg-card
+                    "
+                  >
+
+                    <Link href="/amazon-finds">
+                      Shop Amazon Finds
+                    </Link>
+
+                  </Button>
 
                 </div>
 
               </div>
 
-              {/* FLOATING CARD */}
+              {/* HERO IMAGE */}
 
-              <div
-                className="
-                  absolute
-                  -bottom-5
-                  left-5
-                  rounded-[1.8rem]
-                  border
-                  border-border
-                  bg-background/90
-                  p-5
-                  backdrop-blur-xl
-                "
-              >
+              <div className="relative">
 
-                <p
+                <div
                   className="
-                    text-[10px]
-                    uppercase
-                    tracking-[0.22em]
-                    text-muted-foreground
+                    group
+                    relative
+                    overflow-hidden
+                    rounded-[2.8rem]
                   "
                 >
-                  Trending Now
-                </p>
 
-                <p
-                  className="
-                    mt-2
-                    font-serif
-                    text-[1.4rem]
-                    tracking-[-0.03em]
-                  "
-                >
-                  Quiet Luxury Fashion
-                </p>
+                  <div
+                    className="
+                      relative
+                      aspect-[4/5]
+                      bg-[#ede7df]
+                    "
+                  >
 
-              </div>
+                    {hero?.heroImage && (
 
-              {/* FLOATING STATS */}
+                      <Image
+                        src={urlFor(hero.heroImage).width(1600).url()}
+                        alt="VelvetNest Hero"
+                        fill
+                        priority
+                        className="
+                          object-cover
+                          transition-transform
+                          duration-700
+                          group-hover:scale-[1.03]
+                        "
+                      />
 
-              <div
-                className="
-                  absolute
-                  right-5
-                  top-6
-                  rounded-[1.8rem]
-                  border
-                  border-border
-                  bg-background/90
-                  p-5
-                  backdrop-blur-xl
-                "
-              >
+                    )}
 
-                <p
-                  className="
-                    font-serif
-                    text-[2.2rem]
-                    leading-none
-                  "
-                >
-                  500+
-                </p>
+                  </div>
 
-                <p
-                  className="
-                    mt-1
-                    text-[11px]
-                    uppercase
-                    tracking-[0.18em]
-                    text-muted-foreground
-                  "
-                >
-                  Curated Finds
-                </p>
+                </div>
 
               </div>
 
             </div>
 
-          </div>
+          </Reveal>
 
         </section>
 
@@ -419,32 +345,36 @@ export default async function HomePage() {
           "
         >
 
-          <div className="text-center">
+          <Reveal>
 
-            <p
-              className="
-                text-[11px]
-                uppercase
-                tracking-[0.35em]
-                text-muted-foreground
-              "
-            >
-              Browse By Category
-            </p>
+            <div className="text-center">
 
-            <h2
-              className="
-                mt-4
-                font-serif
-                text-[3rem]
-                tracking-[-0.05em]
-                md:text-[5rem]
-              "
-            >
-              Find Your Inspiration
-            </h2>
+              <p
+                className="
+                  text-[11px]
+                  uppercase
+                  tracking-[0.35em]
+                  text-muted-foreground
+                "
+              >
+                Browse By Category
+              </p>
 
-          </div>
+              <h2
+                className="
+                  mt-4
+                  font-serif
+                  text-[3rem]
+                  tracking-[-0.05em]
+                  md:text-[5rem]
+                "
+              >
+                Find Your Inspiration
+              </h2>
+
+            </div>
+
+          </Reveal>
 
           <div
             className="
@@ -457,83 +387,80 @@ export default async function HomePage() {
           >
 
             {categories.map(
-              (category: any) => (
+              (category: any, index: number) => (
 
-                <Link
+                <Reveal
                   key={category._id}
-                  href={`/category/${category.slug}`}
-                  className="
-                    group
-                    relative
-                    aspect-[3/4]
-                    overflow-hidden
-                    rounded-[2.2rem]
-                    bg-[#ece5dc]
-                  "
+                  delay={0.08 * index}
                 >
 
-                  {category?.image && (
-
-                    <Image
-                      src={urlFor(category.image).width(1200).url()}
-                      alt={category.title}
-                      fill
-                      className="
-                        object-cover
-                        transition-transform
-                        duration-700
-                        group-hover:scale-105
-                      "
-                    />
-
-                  )}
-
-                  <div
+                  <Link
+                    href={`/category/${category.slug}`}
                     className="
-                      absolute
-                      inset-0
-                      bg-gradient-to-t
-                      from-black/40
-                      via-black/10
-                      to-transparent
-                    "
-                  />
-
-                  <div
-                    className="
-                      absolute
-                      bottom-0
-                      left-0
-                      right-0
-                      p-6
-                      text-center
+                      group
+                      relative
+                      block
+                      aspect-[3/4]
+                      overflow-hidden
+                      rounded-[2.2rem]
+                      bg-[#ece5dc]
                     "
                   >
 
-                    <h3
+                    {category?.image && (
+
+                      <Image
+                        src={urlFor(category.image).width(1200).url()}
+                        alt={category.title}
+                        fill
+                        className="
+                          object-cover
+                          transition-transform
+                          duration-700
+                          group-hover:scale-105
+                        "
+                      />
+
+                    )}
+
+                    <div
                       className="
-                        font-serif
-                        text-[2rem]
-                        tracking-[-0.03em]
-                        text-white
+                        absolute
+                        inset-0
+                        bg-gradient-to-t
+                        from-black/40
+                        via-black/10
+                        to-transparent
+                      "
+                    />
+
+                    <div
+                      className="
+                        absolute
+                        bottom-0
+                        left-0
+                        right-0
+                        p-6
+                        text-center
                       "
                     >
-                      {category.title}
-                    </h3>
 
-                    <p
-                      className="
-                        mt-1
-                        text-sm
-                        text-white/80
-                      "
-                    >
-                      {category.count || 0} articles
-                    </p>
+                      <h3
+                        className="
+                          font-serif
+                          text-[2rem]
+                          tracking-[-0.03em]
+                          text-white
+                        "
+                      >
+                        {category.title}
+                      </h3>
 
-                  </div>
+                    </div>
 
-                </Link>
+                  </Link>
+
+                </Reveal>
 
               )
             )}
@@ -564,90 +491,79 @@ export default async function HomePage() {
             "
           >
 
-            <div
-              className="
-                flex
-                items-end
-                justify-between
-              "
-            >
+            <Reveal>
 
-              <div>
-
-                <p
-                  className="
-                    text-[11px]
-                    uppercase
-                    tracking-[0.35em]
-                    text-muted-foreground
-                  "
-                >
-                  Latest Articles
-                </p>
-
-                <h2
-                  className="
-                    mt-4
-                    font-serif
-                    text-[3rem]
-                    tracking-[-0.05em]
-                    md:text-[5rem]
-                  "
-                >
-                  Trending on VelvetNest
-                </h2>
-
-              </div>
-
-              <Link
-                href="/blog"
+              <div
                 className="
-                  hidden
-                  items-center
-                  gap-2
-                  text-[12px]
-                  uppercase
-                  tracking-[0.18em]
-                  transition-all
-                  hover:gap-3
-                  md:flex
+                  flex
+                  items-end
+                  justify-between
                 "
               >
 
-                View All
+                <div>
 
-                <ArrowRight className="h-4 w-4" />
+                  <p
+                    className="
+                      text-[11px]
+                      uppercase
+                      tracking-[0.35em]
+                      text-muted-foreground
+                    "
+                  >
+                    Latest Articles
+                  </p>
 
-              </Link>
+                  <h2
+                    className="
+                      mt-4
+                      font-serif
+                      text-[3rem]
+                      tracking-[-0.05em]
+                      md:text-[5rem]
+                    "
+                  >
+                    Trending on VelvetNest
+                  </h2>
 
-            </div>
+                </div>
+
+              </div>
+
+            </Reveal>
 
             <div className="masonry-grid mt-16">
 
               {blogPosts.map(
-                (post: any) => (
+                (post: any, index: number) => (
 
-                  <BlogCard
+                  <Reveal
                     key={post._id}
-                    title={post.title}
-                    excerpt={post.excerpt}
-                    image={
-                      post.mainImage
-                        ? urlFor(post.mainImage).width(1000).url()
-                        : "/placeholder.jpg"
-                    }
-                    category={
-                      post.category ||
-                      "Lifestyle"
-                    }
-                    date={
-                      post.publishedAt
-                        ? new Date(post.publishedAt).toDateString()
-                        : "No date"
-                    }
-                    slug={post.slug}
-                    featured={post.featured}
-                  />
+                    delay={0.08 * index}
+                  >
+
+                    <BlogCard
+                      title={post.title}
+                      excerpt={post.excerpt}
+                      image={
+                        post.mainImage
+                          ? urlFor(post.mainImage).width(1000).url()
+                          : "/placeholder.jpg"
+                      }
+                      category={
+                        post.category ||
+                        "Lifestyle"
+                      }
+                      date={
+                        post.publishedAt
+                          ? new Date(post.publishedAt).toDateString()
+                          : "No date"
+                      }
+                      slug={post.slug}
+                      featured={post.featured}
+                    />
+
+                  </Reveal>
 
                 )
               )}
@@ -658,217 +574,11 @@ export default async function HomePage() {
 
         </section>
 
-        {/* =========================================================
-            AMAZON FINDS
-        ========================================================= */}
+      </main>
 
-        <section
-          className="
-            mx-auto
-            max-w-7xl
-            px-5
-            py-24
-            md:py-32
-          "
-        >
+      <Footer />
+      <NewsletterPopup />
 
-          <div
-            className="
-              flex
-              items-end
-              justify-between
-            "
-          >
-
-            <div>
-
-              <p
-                className="
-                  text-[11px]
-                  uppercase
-                  tracking-[0.35em]
-                  text-muted-foreground
-                "
-              >
-                Curated for You
-              </p>
-
-              <h2
-                className="
-                  mt-4
-                  font-serif
-                  text-[3rem]
-                  tracking-[-0.05em]
-                  md:text-[5rem]
-                "
-              >
-                Amazon Finds
-              </h2>
-
-              <p
-                className="
-                  mt-5
-                  max-w-xl
-                  text-[1.05rem]
-                  leading-8
-                  text-muted-foreground
-                "
-              >
-                Elevated fashion, cozy interiors,
-                beauty favorites, and curated lifestyle finds
-                for modern feminine living.
-              </p>
-
-            </div>
-
-            <Link
-              href="/amazon-finds"
-              className="
-                hidden
-                items-center
-                gap-2
-                text-[12px]
-                uppercase
-                tracking-[0.18em]
-                transition-all
-                hover:gap-3
-                md:flex
-              "
-            >
-
-              Shop All
-
-              <ArrowRight className="h-4 w-4" />
-
-            </Link>
-
-          </div>
-
-          <div className="masonry-grid mt-16">
-
-            {amazonFinds.map(
-              (product: any) => (
-
-                <ProductCard
-                  key={product._id}
-                  title={product.title}
-                  price={product.price}
-                  originalPrice={product.originalPrice}
-                  image={
-                    product.image
-                      ? urlFor(product.image).width(1000).url()
-                      : "/placeholder.jpg"
+    </div>
+  )
                   }
-                  link={
-                    product.affiliateLink ||
-                    "#"
-                  }
-                  category={
-                    product.category ||
-                    "Amazon Find"
-                  }
-                />
-
-              )
-            )}
-
-          </div>
-
-        </section>
-
-        {/* =========================================================
-            ABOUT
-        ========================================================= */}
-
-        <section
-          className="
-            border-t
-            border-border
-            bg-[#f4efe8]/40
-            py-24
-            md:py-32
-          "
-        >
-
-          <div
-            className="
-              mx-auto
-              grid
-              max-w-7xl
-              items-center
-              gap-20
-              px-5
-              lg:grid-cols-2
-            "
-          >
-
-            {/* IMAGE */}
-
-            <div
-              className="
-                group
-                overflow-hidden
-                rounded-[2.5rem]
-              "
-            >
-
-              <div
-                className="
-                  relative
-                  aspect-square
-                  bg-[#e8e0d6]
-                "
-              >
-
-                {about?.image && (
-
-                  <Image
-                    src={urlFor(about.image).width(1600).url()}
-                    alt={
-                      about?.title ||
-                      "About VelvetNest"
-                    }
-                    fill
-                    className="
-                      object-cover
-                      transition-transform
-                      duration-700
-                      group-hover:scale-[1.03]
-                    "
-                  />
-
-                )}
-
-              </div>
-
-            </div>
-
-            {/* CONTENT */}
-
-            <div className="space-y-8">
-
-              <p
-                className="
-                  text-[11px]
-                  uppercase
-                  tracking-[0.35em]
-                  text-muted-foreground
-                "
-              >
-                About VelvetNest
-              </p>
-
-              <h2
-                className="
-                  font-serif
-                  text-[3rem]
-                  leading-[0.95]
-                  tracking-[-0.05em]
-                  md:text-[5rem]
-                "
-              >
-                {about?.title}
-              </h2>
-
-              <p
-                
