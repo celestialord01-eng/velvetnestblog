@@ -733,8 +733,12 @@ export default async function BlogPostPage({
                 <div className="mt-8">
 
                   <ShareButtons
-                    title={post.title}
-                  />
+  post={{
+    title: post.title,
+    image:
+      post.mainImage?.asset?.url || "",
+  }}
+/>
                 </div>
               </div>
 
