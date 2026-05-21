@@ -1,3 +1,4 @@
+import { PortableText } from "@portabletext/react"
 import { client } from "@/sanity/lib/client"
 
 export default async function BlogPostPage({
@@ -11,7 +12,7 @@ export default async function BlogPostPage({
   const post = await client.fetch(
     `*[_type == "post" && slug.current == $slug][0]{
       title,
-      excerpt
+      body
     }`,
     { slug }
   )
@@ -25,19 +26,13 @@ export default async function BlogPostPage({
       <h1
         style={{
           fontSize: "40px",
-          marginBottom: "20px",
+          marginBottom: "30px",
         }}
       >
         {post?.title}
       </h1>
 
-      <p
-        style={{
-          fontSize: "22px",
-        }}
-      >
-        {post?.excerpt}
-      </p>
+      <PortableText value={post?.body} />
     </div>
   )
 }
