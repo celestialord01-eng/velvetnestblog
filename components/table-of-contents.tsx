@@ -2,6 +2,10 @@
 
 import Link from "next/link"
 
+/* =========================================================
+   TYPES
+========================================================= */
+
 interface TOCItem {
   text: string
   level: string
@@ -11,6 +15,10 @@ interface TOCItem {
 interface TableOfContentsProps {
   items?: TOCItem[]
 }
+
+/* =========================================================
+   TABLE OF CONTENTS
+========================================================= */
 
 export default function TableOfContents({
   items = [],
@@ -24,29 +32,48 @@ export default function TableOfContents({
 
     <div
       className="
-        rounded-3xl
+        rounded-[2rem]
         border
-        border-[#ece6de]
-        bg-white
-        p-6
-        shadow-sm
+        border-border
+        bg-card/80
+        p-7
+        backdrop-blur-xl
       "
     >
 
+      {/* LABEL */}
+
+      <p
+        className="
+          text-[10px]
+          uppercase
+          tracking-[0.25em]
+          text-muted-foreground
+        "
+      >
+        Navigate Article
+      </p>
+
+      {/* TITLE */}
+
       <h3
         className="
-          mb-5
-          text-lg
-          font-semibold
-          text-[#2c2520]
+          mt-3
+          font-serif
+          text-[2rem]
+          leading-none
+          tracking-[-0.04em]
+          text-foreground
         "
       >
         Table of Contents
       </h3>
 
-      <nav>
+      {/* NAV */}
 
-        <ul className="space-y-3">
+      <nav className="mt-8">
+
+        <ul className="space-y-5">
 
           {items.map((item) => (
 
@@ -54,27 +81,45 @@ export default function TableOfContents({
               key={item.id}
               className={
                 item.level === "h3"
-                  ? "ml-4"
+                  ? "ml-5"
                   : ""
               }
             >
 
               <Link
                 href={`#${item.id}`}
-                className="
-                  text-sm
-                  leading-6
-                  text-[#6b6258]
-                  transition-colors
-                  hover:text-[#2c2520]
-                "
+                className={`
+                  block
+                  transition-all
+                  duration-300
+                  hover:translate-x-1
+                  ${
+                    item.level === "h3"
+                      ? "text-[0.95rem] text-[#7b6f66]"
+                      : "text-[1rem] text-[#5d524a]"
+                  }
+                `}
               >
-                {item.text}
+
+                <span
+                  className="
+                    leading-7
+                    hover:text-foreground
+                  "
+                >
+                  {item.text}
+                </span>
+
               </Link>
+
             </li>
+
           ))}
+
         </ul>
+
       </nav>
+
     </div>
   )
-                }
+}
