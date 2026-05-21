@@ -33,15 +33,18 @@ export default async function BlogPostPage({
       </h1>
 
       <PortableText
-  value={post?.body}
-  components={{
-    types: {
-      image: ({ value }: any) => (
-        <img
-          src={value?.asset?._ref || ""}
-          alt="blog"
-        />
-      ),
-    },
-  }}
-/>
+        value={post?.body}
+        components={{
+          types: {
+            image: ({ value }: any) => (
+              <img
+                src=""
+                alt="blog"
+              />
+            ),
+          },
+        }}
+      />
+    </div>
+  )
+}
