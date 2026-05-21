@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -10,6 +9,15 @@ import {
   Calendar,
 } from "lucide-react"
 
+import {
+  FaPinterestP,
+  FaFacebookF,
+  FaTelegramPlane,
+  FaWhatsapp,
+  FaInstagram,
+  FaLink,
+} from "react-icons/fa"
+
 import { PortableText } from "@portabletext/react"
 
 import slugify from "slugify"
@@ -17,13 +25,10 @@ import readingTime from "reading-time"
 
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-
 import { ReadingProgress } from "@/components/reading-progress"
 
 import TableOfContents from "@/components/table-of-contents"
 import MobileTOC from "@/components/mobile-toc"
-
-import ShareButtons from "./ShareButtons"
 
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
@@ -39,19 +44,16 @@ interface BlogPostPageProps {
 ========================================================= */
 
 async function getPost(slug: string) {
-
   const query = `
   *[
     _type == "post" &&
     slug.current == $slug
   ][0]{
-
     _id,
     title,
     excerpt,
     publishedAt,
     body,
-
     featured,
     readingTime,
     tags,
@@ -85,25 +87,19 @@ async function getPost(slug: string) {
 }
 
 /* =========================================================
-   TOC ID
+   HELPERS
 ========================================================= */
 
 function headingToId(text: string) {
-
   return slugify(text, {
     lower: true,
     strict: true,
   })
 }
 
-/* =========================================================
-   TABLE OF CONTENTS
-========================================================= */
-
 function getTableOfContents(
   body: any[] = []
 ) {
-
   return body
     .filter(
       (block) =>
@@ -111,7 +107,6 @@ function getTableOfContents(
         ["h2", "h3"].includes(block?.style)
     )
     .map((block) => {
-
       const text =
         block?.children
           ?.map(
@@ -128,14 +123,9 @@ function getTableOfContents(
     })
 }
 
-/* =========================================================
-   PLAIN TEXT
-========================================================= */
-
 function getPlainText(
   blocks: any[] = []
 ) {
-
   return blocks
     .map((block) =>
       block?.children
@@ -155,20 +145,17 @@ function getPlainText(
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
-
   const { slug } = await params
 
   const post = await getPost(slug)
 
   if (!post) {
-
     return {
       title: "Post Not Found | VelvetNest",
     }
   }
 
   return {
-
     title:
       post.seoTitle ||
       `${post.title} | VelvetNest`,
@@ -178,7 +165,6 @@ export async function generateMetadata({
       post.excerpt,
 
     openGraph: {
-
       title: post.title,
 
       description:
@@ -187,8 +173,7 @@ export async function generateMetadata({
 
       type: "article",
 
-      url:
-        `https://velvetnestblog.vercel.app/blog/${post.slug}`,
+      url: `https://velvetnestblog.vercel.app/blog/${post.slug}`,
 
       images:
         post.mainImage?.asset?.url
@@ -196,10 +181,8 @@ export async function generateMetadata({
               {
                 url:
                   post.mainImage.asset.url,
-
                 width: 1200,
                 height: 630,
-
                 alt:
                   post.mainImage?.alt ||
                   post.title,
@@ -209,7 +192,6 @@ export async function generateMetadata({
     },
 
     twitter: {
-
       card: "summary_large_image",
 
       title: post.title,
@@ -227,9 +209,7 @@ export async function generateMetadata({
     },
 
     alternates: {
-
-      canonical:
-        `https://velvetnestblog.vercel.app/blog/${post.slug}`,
+      canonical: `https://velvetnestblog.vercel.app/blog/${post.slug}`,
     },
   }
 }
@@ -239,54 +219,66 @@ export async function generateMetadata({
 ========================================================= */
 
 const portableTextComponents = {
-
   types: {
-
     image: ({ value }: any) => (
+      <figure className="my-14">
+        <div
+          className="
+            relative
+            h-[260px]
+            md:h-[520px]
+            overflow-hidden
+            rounded-[2rem]
+          "
+        >
+          <Image
+            src={urlFor(value).url()}
+            alt={value?.alt || "Blog image"}
+            fill
+            className="object-cover"
+          />
+        </div>
 
-      <div
-        className="
-          my-14
-          relative
-          h-[500px]
-          overflow-hidden
-          rounded-[2rem]
-        "
-      >
-
-        <Image
-          src={urlFor(value).url()}
-          alt={value?.alt || "Blog image"}
-          fill
-          className="object-cover"
-        />
-
-      </div>
+        {value?.caption && (
+          <figcaption
+            className="
+              mt-4
+              text-center
+              text-sm
+              italic
+              text-[#7a6d64]
+            "
+          >
+            {value.caption}
+          </figcaption>
+        )}
+      </figure>
     ),
   },
 
   block: {
-
     h2: ({ children }: any) => {
-
       const text =
-        children?.[0] || ""
+        typeof children?.[0] === "string"
+          ? children[0]
+          : ""
 
       const id =
         headingToId(text)
 
       return (
-
         <h2
           id={id}
           className="
-            scroll-mt-28
-            mt-16
+            scroll-mt-32
+            mt-20
             mb-8
-            text-3xl
-            font-bold
+            font-serif
+            text-[2rem]
+            leading-tight
             tracking-tight
-            md:text-4xl
+            text-[#1f1a17]
+            md:text-5xl
           "
         >
           {children}
@@ -295,24 +287,26 @@ const portableTextComponents = {
     },
 
     h3: ({ children }: any) => {
-
       const text =
-        children?.[0] || ""
+        typeof children?.[0] === "string"
+          ? children[0]
+          : ""
 
       const id =
         headingToId(text)
 
       return (
-
         <h3
           id={id}
           className="
-            scroll-mt-28
-            mt-12
+            scroll-mt-32
+            mt-14
             mb-6
+            font-serif
             text-2xl
-            font-semibold
+            leading-tight
             tracking-tight
+            text-[#1f1a17]
             md:text-3xl
           "
         >
@@ -322,13 +316,13 @@ const portableTextComponents = {
     },
 
     normal: ({ children }: any) => (
-
       <p
         className="
           mb-8
-          text-[1.15rem]
-          leading-10
-          text-foreground/80
+          text-[17px]
+          leading-[2.2]
+          text-[#4b4038]
+          md:text-[19px]
         "
       >
         {children}
@@ -338,17 +332,16 @@ const portableTextComponents = {
     blockquote: ({
       children,
     }: any) => (
-
       <blockquote
         className="
-          my-10
+          my-12
           border-l-4
-          border-primary
+          border-[#c9b7a3]
           pl-6
           text-xl
           italic
-          leading-9
-          text-foreground/70
+          leading-10
+          text-[#5c5048]
         "
       >
         {children}
@@ -357,17 +350,16 @@ const portableTextComponents = {
   },
 
   list: {
-
     bullet: ({
       children,
     }: any) => (
-
       <ul
         className="
-          mb-8
+          mb-10
           ml-6
           list-disc
           space-y-4
+          text-[#4b4038]
         "
       >
         {children}
@@ -377,13 +369,13 @@ const portableTextComponents = {
     number: ({
       children,
     }: any) => (
-
       <ol
         className="
-          mb-8
+          mb-10
           ml-6
           list-decimal
           space-y-4
+          text-[#4b4038]
         "
       >
         {children}
@@ -392,16 +384,13 @@ const portableTextComponents = {
   },
 
   listItem: {
-
     bullet: ({
       children,
     }: any) => (
-
       <li
         className="
-          text-[1.1rem]
+          text-[17px]
           leading-9
-          text-foreground/80
         "
       >
         {children}
@@ -411,12 +400,10 @@ const portableTextComponents = {
     number: ({
       children,
     }: any) => (
-
       <li
         className="
-          text-[1.1rem]
+          text-[17px]
           leading-9
-          text-foreground/80
         "
       >
         {children}
@@ -425,15 +412,13 @@ const portableTextComponents = {
   },
 
   marks: {
-
     strong: ({
       children,
     }: any) => (
-
       <strong
         className="
           font-semibold
-          text-foreground
+          text-[#1f1a17]
         "
       >
         {children}
@@ -452,14 +437,13 @@ const portableTextComponents = {
       children,
       value,
     }: any) => (
-
       <a
         href={value?.href || "#"}
         target="_blank"
         rel="noopener noreferrer"
         className="
           font-medium
-          text-primary
+          text-[#8c6b4f]
           underline
           underline-offset-4
           transition
@@ -473,13 +457,120 @@ const portableTextComponents = {
 }
 
 /* =========================================================
+   SHARE BUTTONS
+========================================================= */
+
+function ShareButtons({
+  post,
+}: {
+  post: {
+    title: string
+    image: string
+  }
+}) {
+  const url =
+    typeof window !== "undefined"
+      ? window.location.href
+      : ""
+
+  const shareLinks = [
+    {
+      icon: <FaPinterestP />,
+      href: `https://pinterest.com/pin/create/button/?url=${url}`,
+    },
+
+    {
+      icon: <FaFacebookF />,
+      href: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+    },
+
+    {
+      icon: <FaWhatsapp />,
+      href: `https://api.whatsapp.com/send?text=${url}`,
+    },
+
+    {
+      icon: <FaTelegramPlane />,
+      href: `https://t.me/share/url?url=${url}`,
+    },
+
+    {
+      icon: <FaInstagram />,
+      href: "https://instagram.com",
+    },
+  ]
+
+  return (
+    <div className="flex flex-wrap gap-4">
+      {shareLinks.map(
+        (item, index) => (
+          <a
+            key={index}
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              flex
+              h-11
+              w-11
+              items-center
+              justify-center
+              rounded-full
+              border
+              border-[#e4ddd4]
+              bg-white
+              text-[#3d342f]
+              transition-all
+              duration-300
+              hover:-translate-y-1
+              hover:border-[#cdb9a4]
+              hover:shadow-md
+            "
+          >
+            <span className="text-[15px]">
+              {item.icon}
+            </span>
+          </a>
+        )
+      )}
+
+      <button
+        onClick={() =>
+          navigator.clipboard.writeText(
+            window.location.href
+          )
+        }
+        className="
+          flex
+          h-11
+          w-11
+          items-center
+          justify-center
+          rounded-full
+          border
+          border-[#e4ddd4]
+          bg-white
+          text-[#3d342f]
+          transition-all
+          duration-300
+          hover:-translate-y-1
+          hover:border-[#cdb9a4]
+          hover:shadow-md
+        "
+      >
+        <FaLink />
+      </button>
+    </div>
+  )
+}
+
+/* =========================================================
    PAGE
 ========================================================= */
 
 export default async function BlogPostPage({
   params,
 }: BlogPostPageProps) {
-
   const { slug } = await params
 
   const post =
@@ -507,8 +598,7 @@ export default async function BlogPostPage({
     )
 
   return (
-
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#f8f5f1]">
 
       <ReadingProgress />
 
@@ -518,19 +608,13 @@ export default async function BlogPostPage({
 
         {/* HERO */}
 
-        <section
-          className="
-            border-b
-            border-border
-            bg-[#f7f4ef]
-          "
-        >
+        <section className="border-b border-[#ebe4db]">
 
           <div
             className="
               mx-auto
-              max-w-6xl
-              px-4
+              max-w-7xl
+              px-5
               py-14
               md:py-20
             "
@@ -545,12 +629,11 @@ export default async function BlogPostPage({
                 gap-2
                 text-sm
                 font-medium
-                text-muted-foreground
+                text-[#74675f]
                 transition
-                hover:text-foreground
+                hover:text-black
               "
             >
-
               <ArrowLeft className="h-4 w-4" />
 
               Back to Blog
@@ -559,12 +642,12 @@ export default async function BlogPostPage({
             <div
               className="
                 grid
-                gap-12
-                lg:grid-cols-[1fr_320px]
+                gap-16
+                lg:grid-cols-[1fr_300px]
               "
             >
 
-              {/* CONTENT */}
+              {/* LEFT */}
 
               <div>
 
@@ -573,18 +656,19 @@ export default async function BlogPostPage({
                     flex
                     flex-wrap
                     items-center
-                    gap-4
+                    gap-5
                     text-sm
-                    text-muted-foreground
+                    text-[#74675f]
                   "
                 >
 
                   {post.category?.title && (
-
                     <span
                       className="
                         rounded-full
-                        bg-[#ede7df]
+                        border
+                        border-[#ddd2c6]
+                        bg-white
                         px-4
                         py-1.5
                         text-xs
@@ -598,14 +682,7 @@ export default async function BlogPostPage({
                     </span>
                   )}
 
-                  <div
-                    className="
-                      flex
-                      items-center
-                      gap-2
-                    "
-                  >
-
+                  <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
 
                     {post.publishedAt
@@ -615,14 +692,7 @@ export default async function BlogPostPage({
                       : "Recently Published"}
                   </div>
 
-                  <div
-                    className="
-                      flex
-                      items-center
-                      gap-2
-                    "
-                  >
-
+                  <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4" />
 
                     {stats.text}
@@ -632,10 +702,12 @@ export default async function BlogPostPage({
                 <h1
                   className="
                     mt-8
+                    max-w-4xl
+                    font-serif
                     text-4xl
-                    font-bold
                     leading-tight
                     tracking-tight
+                    text-[#1f1a17]
                     md:text-6xl
                   "
                 >
@@ -643,14 +715,13 @@ export default async function BlogPostPage({
                 </h1>
 
                 {post.excerpt && (
-
                   <p
                     className="
                       mt-8
                       max-w-3xl
-                      text-xl
-                      leading-9
-                      text-muted-foreground
+                      text-[20px]
+                      leading-10
+                      text-[#5b5048]
                     "
                   >
                     {post.excerpt}
@@ -658,7 +729,6 @@ export default async function BlogPostPage({
                 )}
 
                 <div className="mt-10">
-
                   <ShareButtons
                     post={{
                       title: post.title,
@@ -666,15 +736,25 @@ export default async function BlogPostPage({
                         post.mainImage?.asset?.url || "",
                     }}
                   />
-
                 </div>
+
               </div>
 
-              {/* TOC */}
+              {/* DESKTOP TOC */}
 
               <aside className="hidden lg:block">
 
-                <div className="sticky top-28">
+                <div
+                  className="
+                    sticky
+                    top-28
+                    rounded-3xl
+                    border
+                    border-[#e8dfd6]
+                    bg-white
+                    p-6
+                  "
+                >
 
                   <TableOfContents
                     items={toc}
@@ -683,8 +763,11 @@ export default async function BlogPostPage({
                 </div>
 
               </aside>
+
             </div>
+
           </div>
+
         </section>
 
         {/* FEATURED IMAGE */}
@@ -697,7 +780,7 @@ export default async function BlogPostPage({
               className="
                 mx-auto
                 max-w-6xl
-                px-4
+                px-5
               "
             >
 
@@ -724,30 +807,44 @@ export default async function BlogPostPage({
                 />
 
               </div>
+
             </div>
+
           </section>
+
         )}
+
+        {/* MOBILE TOC */}
+
+        <div
+          className="
+            mx-auto
+            max-w-3xl
+            px-5
+            lg:hidden
+          "
+        >
+          <MobileTOC items={toc} />
+        </div>
 
         {/* ARTICLE */}
 
-        <section className="pb-24">
+        <section className="pb-28 pt-10">
 
           <div
             className="
               mx-auto
               grid
-              max-w-6xl
-              gap-12
-              px-4
-              lg:grid-cols-[1fr_320px]
+              max-w-7xl
+              gap-16
+              px-5
+              lg:grid-cols-[minmax(0,1fr)_300px]
             "
           >
 
             <article
               className="
-                prose
-                prose-neutral
-                max-w-none
+                max-w-3xl
               "
             >
 
@@ -760,17 +857,15 @@ export default async function BlogPostPage({
 
             </article>
 
-            {/* MOBILE TOC */}
+            {/* RIGHT SIDEBAR */}
 
-            <aside className="lg:hidden">
-
-              <MobileTOC
-                items={toc}
-              />
-
+            <aside className="hidden lg:block">
+              <div className="sticky top-28">
+              </div>
             </aside>
 
           </div>
+
         </section>
 
       </main>
@@ -779,4 +874,4 @@ export default async function BlogPostPage({
 
     </div>
   )
-    }
+        }
