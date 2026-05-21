@@ -25,8 +25,7 @@ import {
 
 import { ReadingProgress } from "@/components/reading-progress"
 
-import TableOfContents from "@/components/table-of-contents"
-import MobileTOC from "@/components/mobile-toc"
+
 
 import BlogImage from "@/components/blog-image"
 
@@ -742,17 +741,7 @@ export default async function BlogPostPage({
                 </div>
               </div>
 
-              {/* TOC */}
-
-              <aside className="hidden lg:block">
-
-                <div className="sticky top-28">
-
-                  <TableOfContents
-                    items={toc}
-                  />
-                </div>
-              </aside>
+              
             </div>
           </div>
         </section>
