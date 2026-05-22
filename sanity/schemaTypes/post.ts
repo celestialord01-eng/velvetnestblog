@@ -146,80 +146,84 @@ export default defineType({
     }),
 
     // BODY CONTENT
-    defineField({
-      name: "body",
-      title: "Body",
-      type: "array",
+defineField({
+  name: "body",
+  title: "Body",
+  type: "array",
 
-      of: [
-        // TEXT BLOCKS
-        {
-          type: "block",
+  of: [
+    // TEXT BLOCKS
+    {
+      type: "block",
 
-          styles: [
-            { title: "Normal", value: "normal" },
-            { title: "H1", value: "h1" },
-            { title: "H2", value: "h2" },
-            { title: "H3", value: "h3" },
-            { title: "H4", value: "h4" },
-            { title: "Quote", value: "blockquote" },
-          ],
-
-          lists: [
-            { title: "Bullet", value: "bullet" },
-            { title: "Number", value: "number" },
-          ],
-
-          marks: {
-            decorators: [
-              { title: "Bold", value: "strong" },
-              { title: "Italic", value: "em" },
-            ],
-
-            annotations: [
-              {
-                name: "link",
-                type: "object",
-                title: "URL",
-
-                fields: [
-                  defineField({
-                    name: "href",
-                    title: "URL",
-                    type: "url",
-                  }),
-                ],
-              },
-            ],
-          },
-        },
-
-        // IMAGE BLOCK
-        {
-          type: "image",
-
-          options: {
-            hotspot: true,
-          },
-
-          fields: [
-            defineField({
-              name: "alt",
-              title: "Alt Text",
-              type: "string",
-              validation: (Rule) => Rule.required(),
-            }),
-
-            defineField({
-              name: "caption",
-              title: "Caption",
-              type: "string",
-            }),
-          ],
-        },
+      styles: [
+        { title: "Normal", value: "normal" },
+        { title: "H1", value: "h1" },
+        { title: "H2", value: "h2" },
+        { title: "H3", value: "h3" },
+        { title: "H4", value: "h4" },
+        { title: "Quote", value: "blockquote" },
       ],
-    }),
+
+      lists: [
+        { title: "Bullet", value: "bullet" },
+        { title: "Number", value: "number" },
+      ],
+
+      marks: {
+        decorators: [
+          { title: "Bold", value: "strong" },
+          { title: "Italic", value: "em" },
+        ],
+
+        annotations: [
+          {
+            name: "link",
+            type: "object",
+            title: "URL",
+
+            fields: [
+              defineField({
+                name: "href",
+                title: "URL",
+                type: "url",
+              }),
+            ],
+          },
+        ],
+      },
+    },
+
+    // IMAGE BLOCK
+    {
+      type: "image",
+
+      options: {
+        hotspot: true,
+      },
+
+      fields: [
+        defineField({
+          name: "alt",
+          title: "Alt Text",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        }),
+
+        defineField({
+          name: "caption",
+          title: "Caption",
+          type: "string",
+        }),
+      ],
+    },
+
+    // CALLOUT BOX
+    {
+      type: "callout",
+    },
   ],
+}),
 
   preview: {
     select: {
