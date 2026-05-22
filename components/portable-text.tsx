@@ -275,55 +275,100 @@ const components: PortableTextComponents = {
   },
 
   types: {
-    image: ({ value }: any) => {
-      if (!value?.asset?.url) return null
+  image: ({ value }: any) => {
+    if (!value?.asset?.url) return null
 
-      return (
-        <figure
+    return (
+      <figure
+        className="
+          group
+          my-14 md:my-20
+          overflow-hidden
+          rounded-[30px]
+        "
+      >
+        <div className="overflow-hidden rounded-[30px]">
+          <Image
+            src={value.asset.url}
+            alt={value.alt || "VelvetNest blog image"}
+            width={1400}
+            height={1800}
+            className="
+              h-auto
+              w-full
+              rounded-[30px]
+              object-cover
+              shadow-[0_10px_40px_rgba(0,0,0,0.06)]
+              transition-transform
+              duration-700
+              group-hover:scale-[1.02]
+            "
+          />
+        </div>
+
+        {value.caption && (
+          <figcaption
+            className="
+              mt-5
+              text-center
+              text-sm
+              italic
+              tracking-wide
+              text-stone-500
+            "
+          >
+            {value.caption}
+          </figcaption>
+        )}
+      </figure>
+    )
+  },
+
+  callout: ({ value }: any) => {
+    return (
+      <div
+        className="
+          my-12
+          rounded-[32px]
+          border
+          border-[#e1d7ca]
+          bg-gradient-to-br
+          from-[#f8f5f1]
+          to-[#f1ebe3]
+          px-8
+          py-7
+          shadow-[0_8px_30px_rgba(0,0,0,0.04)]
+        "
+      >
+        {value.title && (
+          <h4
+            className="
+              mb-3
+              font-serif
+              text-[1.5rem]
+              font-semibold
+              tracking-tight
+              text-stone-900
+            "
+          >
+            ✨ {value.title}
+          </h4>
+        )}
+
+        <p
           className="
-            group
-            my-14 md:my-20
-            overflow-hidden
-            rounded-[30px]
+            text-[1.08rem]
+            leading-[1.9]
+            tracking-[0.01em]
+            text-stone-700
           "
         >
-          <div className="overflow-hidden rounded-[30px]">
-            <Image
-              src={value.asset.url}
-              alt={value.alt || "VelvetNest blog image"}
-              width={1400}
-              height={1800}
-              className="
-                h-auto
-                w-full
-                rounded-[30px]
-                object-cover
-                shadow-[0_10px_40px_rgba(0,0,0,0.06)]
-                transition-transform
-                duration-700
-                group-hover:scale-[1.02]
-              "
-            />
-          </div>
-
-          {value.caption && (
-            <figcaption
-              className="
-                mt-5
-                text-center
-                text-sm
-                italic
-                tracking-wide
-                text-stone-500
-              "
-            >
-              {value.caption}
-            </figcaption>
-          )}
-        </figure>
-      )
-    },
+          {value.text}
+        </p>
+      </div>
+    )
   },
+},
 }
 
 export function CustomPortableText({ value }: any) {
