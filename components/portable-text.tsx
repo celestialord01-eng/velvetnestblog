@@ -365,6 +365,33 @@ const components: PortableTextComponents = {
         >
           {value.text}
         </p>
+        {value.products?.length > 0 && (
+  <div className="mt-4 flex flex-wrap gap-2 text-sm">
+    {value.products.map((product: any, index: number) => (
+      <span key={index}>
+
+        <a
+          href={product.link}
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          className="
+            underline
+            underline-offset-4
+            transition
+            hover:text-stone-900
+          "
+        >
+          {product.name}
+        </a>
+
+        {index !== value.products.length - 1 && (
+          <span className="mx-2 text-stone-400">•</span>
+        )}
+
+      </span>
+    ))}
+  </div>
+)}
       </div>
     )
   },
