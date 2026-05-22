@@ -7,31 +7,34 @@ export const callout = defineType({
 
   fields: [
     defineField({
-      name: "type",
-      title: "Type",
+      name: "title",
+      title: "Title",
       type: "string",
-      options: {
-        list: [
-          { title: "Pro Tip", value: "protip" },
-          { title: "Note", value: "note" },
-          { title: "Warning", value: "warning" },
-        ],
-      },
-      initialValue: "protip",
+      description:
+        "Examples: Pro Tip, Shop the Look, Best Finds, Editor’s Pick, Cozy Tip, Styling Advice",
+      validation: (Rule) => Rule.required(),
     }),
 
     defineField({
       name: "text",
       title: "Text",
       type: "text",
-      rows: 4,
+      rows: 6,
+      validation: (Rule) => Rule.required(),
     }),
   ],
 
   preview: {
     select: {
-      title: "text",
-      subtitle: "type",
+      title: "title",
+      subtitle: "text",
+    },
+
+    prepare({ title, subtitle }) {
+      return {
+        title: `✨ ${title || "Callout Box"}`,
+        subtitle,
+      }
     },
   },
 })
