@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-
+export const revalidate = 60
 import {
   ArrowRight,
 } from "lucide-react"
@@ -243,14 +243,17 @@ export default async function HomePage() {
                   >
 
                     <Link
-                      href={
-                        hero?.buttonLink ||
-                        "/blog"
-                      }
-                    >
-                      {hero?.buttonText ||
-                        "Explore the Blog"}
-                    </Link>
+  href={
+    hero?.buttonLink ||
+    "/blog"
+  }
+  className="flex items-center gap-2"
+>
+  {hero?.buttonText ||
+    "Explore the Blog"}
+
+  <ArrowRight className="h-4 w-4" />
+</Link>
 
                   </Button>
 
