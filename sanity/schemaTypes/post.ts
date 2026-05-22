@@ -195,29 +195,10 @@ export default defineType({
         },
 
         // IMAGE BLOCK
-        {
-          type: "image",
-
-          options: {
-            hotspot: true,
-          },
-
-          fields: [
-            defineField({
-              name: "alt",
-              title: "Alt Text",
-              type: "string",
-              validation: (Rule) => Rule.required(),
-            }),
-
-            defineField({
-              name: "caption",
-              title: "Caption",
-              type: "string",
-            }),
-          ],
-        },
-
+        
+{
+  type: "customImage",
+},
         // CALLOUT BOX
         {
           type: "callout",
