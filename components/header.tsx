@@ -1,19 +1,43 @@
-                "use client"
+"use client"
 
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
-import { Search, Menu, X } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import {
+  usePathname,
+} from "next/navigation"
+
+import {
+  useEffect,
+  useState,
+} from "react"
+
+import {
+  Menu,
+  Search,
+  X,
+} from "lucide-react"
+
+import { motion } from "framer-motion"
+
+import { SearchDialog } from "@/components/search-dialog"
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/blog", label: "Blog" },
-  { href: "/amazon-finds", label: "Amazon Finds" },
+  {
+    href: "/amazon-finds",
+    label: "Amazon Finds",
+  },
   { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  {
+    href: "/contact",
+    label: "Contact",
+  },
 ]
 
 const categories = [
@@ -24,255 +48,593 @@ const categories = [
   "Self Care",
 ]
 
+/* =========================================================
+   TEMP SEARCH POSTS
+========================================================= */
+
+const searchPosts = [
+  {
+    title: "Cute Summer Outfit Ideas",
+    slug: "cute-summer-outfit-ideas",
+    category: "Fashion",
+  },
+  {
+    title:
+      "Best Skincare Routine for Glowing Skin",
+    slug:
+      "best-skincare-routine-glowing-skin",
+    category: "Beauty",
+  },
+  {
+    title:
+      "Budget Home Decor Ideas",
+    slug:
+      "budget-home-decor-ideas",
+    category: "Home Decor",
+  },
+  {
+    title:
+      "Sunday Reset Routine",
+    slug:
+      "sunday-reset-routine",
+    category: "Self Care",
+  },
+]
+
+/* =========================================================
+   HEADER
+========================================================= */
+
 export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
+
+  const pathname =
+    usePathname()
+
+  const [isMenuOpen, setIsMenuOpen] =
+    useState(false)
+
+  const [isSearchOpen, setIsSearchOpen] =
+    useState(false)
+
+  const [isScrolled, setIsScrolled] =
+    useState(false)
+
+  /* =========================================================
+     SCROLL EFFECT
+  ========================================================= */
+
+  useEffect(() => {
+
+    const handleScroll = () => {
+
+      setIsScrolled(
+        window.scrollY > 20
+      )
+
+    }
+
+    window.addEventListener(
+      "scroll",
+      handleScroll
+    )
+
+    return () =>
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      )
+
+  }, [])
+
+  /* =========================================================
+     CLOSE MENU ON ROUTE CHANGE
+  ========================================================= */
+
+  useEffect(() => {
+
+    setIsMenuOpen(false)
+
+  }, [pathname])
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-white/80 backdrop-blur-md">
-      
-      <div className="mx-auto max-w-7xl px-4">
-        
-        <div className="flex h-16 items-center justify-between md:h-20">
-          
-          {/* Mobile Menu Button */}
-          <button
-            className="transition-all duration-300 active:scale-90 md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
+
+    <>
+      <motion.header
+        initial={{
+          y: -80,
+          opacity: 0,
+        }}
+        animate={{
+          y: 0,
+          opacity: 1,
+        }}
+        transition={{
+          duration: 0.7,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className={`
+          sticky
+          top-0
+          z-50
+          transition-all
+          duration-500
+          ${
+            isScrolled
+              ? `
+                border-b
+                border-border/60
+                bg-background/75
+                shadow-[0_10px_40px_rgba(0,0,0,0.04)]
+                backdrop-blur-2xl
+              `
+              : `
+                bg-transparent
+              `
+          }
+        `}
+      >
+
+        <div
+          className="
+            mx-auto
+            max-w-7xl
+            px-5
+          "
+        >
+
+          {/* MAIN NAV */}
+
+          <div
+            className={`
+              flex
+              items-center
+              justify-between
+              transition-all
+              duration-500
+              ${
+                isScrolled
+                  ? "h-[74px]"
+                  : "h-[88px] md:h-[96px]"
+              }
+            `}
           >
-            {isMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
 
-          {/* Logo */}
-          <Link
-            href="/"
-            className="transition-all duration-300 hover:opacity-80"
-          >
-            <div className="flex items-center gap-2">
-              
-              <Image
-                src="/logo.png"
-                alt="VelvetNest Logo"
-                width={40}
-                height={40}
-                className="transition-transform duration-500 hover:scale-105"
-              />
+            {/* MOBILE MENU */}
 
-              <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
-                VelvetNest
-              </h1>
-            </div>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden items-center gap-8 md:flex">
-            
-            {navLinks.map((link) => (
-              
-              <Link
-                key={link.href}
-                href={link.href}
-                className="
-                  relative
-                  text-sm
-                  font-medium
-                  uppercase
-                  tracking-[0.2em]
-                  text-foreground/80
-                  transition-all
-                  duration-300
-                  hover:text-foreground
-                  after:absolute
-                  after:left-0
-                  after:-bottom-1
-                  after:h-[1px]
-                  after:w-0
-                  after:bg-current
-                  after:transition-all
-                  after:duration-300
-                  hover:after:w-full
-                "
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Right Side Icons */}
-          <div className="flex items-center gap-4">
-            
-            {/* Search */}
             <button
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              onClick={() =>
+                setIsMenuOpen(
+                  !isMenuOpen
+                )
+              }
+              aria-label="Toggle Menu"
               className="
-                text-foreground/80
-                transition-all
-                duration-300
-                hover:text-foreground
-                hover:scale-110
-                active:scale-95
+                text-foreground
+                transition
+                hover:opacity-70
+                md:hidden
               "
-              aria-label="Search"
             >
-              <Search className="h-5 w-5" />
+
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+
             </button>
 
-            {/* Pinterest */}
+            {/* LOGO */}
+
             <Link
-              href="https://pinterest.com/velvetnestworld/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/"
+              className="
+                transition
+                hover:opacity-80
+              "
+            >
+
+              <div
+                className="
+                  flex
+                  items-center
+                  gap-3
+                "
+              >
+
+                <Image
+                  src="/logo.png"
+                  alt="VelvetNest"
+                  width={44}
+                  height={44}
+                  priority
+                  className="
+                    rounded-full
+                    object-cover
+                  "
+                />
+
+                <div>
+
+                  <h1
+                    className={`
+                      font-serif
+                      font-medium
+                      tracking-[-0.04em]
+                      text-foreground
+                      transition-all
+                      duration-500
+                      ${
+                        isScrolled
+                          ? "text-[1.9rem]"
+                          : "text-[2.2rem] md:text-[2.5rem]"
+                      }
+                    `}
+                  >
+                    VelvetNest
+                  </h1>
+
+                  <p
+                    className="
+                      hidden
+                      text-[10px]
+                      uppercase
+                      tracking-[0.28em]
+                      text-muted-foreground
+                      md:block
+                    "
+                  >
+                    Fashion • Home • Lifestyle
+                  </p>
+
+                </div>
+
+              </div>
+
+            </Link>
+
+            {/* DESKTOP NAV */}
+
+            <nav
               className="
                 hidden
-                text-foreground/80
-                transition-all
-                duration-300
-                hover:text-foreground
-                hover:scale-110
-                active:scale-95
-                md:block
+                items-center
+                gap-8
+                md:flex
               "
-              aria-label="Pinterest"
             >
-              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z" />
-              </svg>
-            </Link>
-          </div>
-        </div>
 
-        {/* Search Bar */}
-        {isSearchOpen && (
-          <div className="animate-fade-in border-t border-border py-4">
-            
-            <form className="mx-auto flex max-w-md gap-2">
-              
-              <Input
-                type="search"
-                placeholder="Search articles, products..."
+              {navLinks.map(
+                (link) => {
+
+                  const isActive =
+                    pathname ===
+                    link.href
+
+                  return (
+
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`
+                        relative
+                        text-[12px]
+                        font-medium
+                        uppercase
+                        tracking-[0.22em]
+                        transition-all
+                        duration-300
+                        hover:opacity-70
+                        ${
+                          isActive
+                            ? "text-foreground"
+                            : "text-muted-foreground hover:text-foreground"
+                        }
+                      `}
+                    >
+
+                      {link.label}
+
+                      {isActive && (
+
+                        <motion.span
+                          layoutId="header-active"
+                          className="
+                            absolute
+                            -bottom-2
+                            left-0
+                            h-[1px]
+                            w-full
+                            bg-foreground
+                          "
+                        />
+
+                      )}
+
+                    </Link>
+
+                  )
+                }
+              )}
+
+            </nav>
+
+            {/* RIGHT */}
+
+            <div
+              className="
+                flex
+                items-center
+                gap-5
+              "
+            >
+
+              {/* SEARCH */}
+
+              <button
+                onClick={() =>
+                  setIsSearchOpen(true)
+                }
+                aria-label="Search"
                 className="
-                  flex-1
-                  border-border
-                  bg-card
-                  transition-all
-                  duration-300
-                  focus:shadow-lg
-                "
-              />
-
-              <Button type="submit" variant="default">
-                Search
-              </Button>
-            </form>
-          </div>
-        )}
-
-        {/* Categories */}
-        <div className="hidden border-t border-border/50 py-3 md:block">
-          
-          <div className="flex items-center justify-center gap-8">
-            
-            {categories.map((category) => (
-              
-              <Link
-                key={category}
-                href={`/blog?category=${category.toLowerCase().replace(" ", "-")}`}
-                className="
-                  relative
-                  text-xs
-                  font-medium
-                  uppercase
-                  tracking-[0.2em]
                   text-muted-foreground
                   transition-all
                   duration-300
+                  hover:scale-110
                   hover:text-foreground
-                  after:absolute
-                  after:left-0
-                  after:-bottom-1
-                  after:h-[1px]
-                  after:w-0
-                  after:bg-current
-                  after:transition-all
-                  after:duration-300
-                  hover:after:w-full
                 "
               >
-                {category}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
 
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        
-        <div className="animate-fade-in border-t border-border bg-background/95 backdrop-blur-md md:hidden">
-          
-          <nav className="flex flex-col px-4 py-4">
-            
-            {navLinks.map((link) => (
-              
+                <Search className="h-5 w-5" />
+
+              </button>
+
+              {/* PINTEREST */}
+
               <Link
-                key={link.href}
-                href={link.href}
+                href="https://pinterest.com/velvetnestworld/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Pinterest"
                 className="
-                  border-b
-                  border-border
-                  py-3
-                  text-sm
-                  font-medium
-                  uppercase
-                  tracking-widest
+                  hidden
+                  text-muted-foreground
                   transition-all
                   duration-300
-                  hover:pl-2
+                  hover:scale-110
+                  hover:text-foreground
+                  md:block
                 "
-                onClick={() => setIsMenuOpen(false)}
               >
-                {link.label}
-              </Link>
-            ))}
 
-            <div className="mt-4 flex flex-wrap gap-2">
-              
-              {categories.map((category) => (
-                
-                <Link
-                  key={category}
-                  href={`/blog?category=${category.toLowerCase().replace(" ", "-")}`}
-                  className="
-                    rounded-full
-                    border
-                    border-border
-                    bg-secondary
-                    px-3
-                    py-1
-                    text-xs
-                    font-medium
-                    uppercase
-                    tracking-wider
-                    transition-all
-                    duration-300
-                    hover:scale-105
-                    hover:shadow-md
-                    active:scale-95
-                  "
-                  onClick={() => setIsMenuOpen(false)}
+                <svg
+                  className="h-5 w-5"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
                 >
-                  {category}
-                </Link>
-              ))}
+
+                  <path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z" />
+
+                </svg>
+
+              </Link>
+
             </div>
-          </nav>
+
+          </div>
+
+          {/* CATEGORY BAR */}
+
+          <div
+            className="
+              hidden
+              border-t
+              border-border/70
+              py-4
+              md:block
+            "
+          >
+
+            <div
+              className="
+                flex
+                flex-wrap
+                items-center
+                justify-center
+                gap-6
+              "
+            >
+
+              {categories.map(
+                (category) => {
+
+                  const slug =
+                    category
+                      .toLowerCase()
+                      .replace(
+                        /\s+/g,
+                        "-"
+                      )
+
+                  const isActive =
+                    pathname ===
+                    `/category/${slug}`
+
+                  return (
+
+                    <Link
+                      key={category}
+                      href={`/category/${slug}`}
+                      className={`
+                        text-[11px]
+                        font-medium
+                        uppercase
+                        tracking-[0.22em]
+                        transition
+                        ${
+                          isActive
+                            ? "text-foreground"
+                            : "text-muted-foreground hover:text-foreground"
+                        }
+                      `}
+                    >
+
+                      {category}
+
+                    </Link>
+
+                  )
+                }
+              )}
+
+            </div>
+
+          </div>
+
         </div>
-      )}
-    </header>
+
+        {/* MOBILE MENU */}
+
+        {isMenuOpen && (
+
+          <motion.div
+            initial={{
+              opacity: 0,
+              y: -10,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            exit={{
+              opacity: 0,
+              y: -10,
+            }}
+            transition={{
+              duration: 0.3,
+            }}
+            className="
+              border-t
+              border-border
+              bg-background
+              md:hidden
+            "
+          >
+
+            <nav
+              className="
+                flex
+                flex-col
+                gap-1
+                px-5
+                py-6
+              "
+            >
+
+              {navLinks.map(
+                (link) => {
+
+                  const isActive =
+                    pathname ===
+                    link.href
+
+                  return (
+
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`
+                        rounded-xl
+                        px-4
+                        py-3
+                        text-sm
+                        uppercase
+                        tracking-[0.16em]
+                        transition
+                        ${
+                          isActive
+                            ? "bg-card text-foreground"
+                            : "text-muted-foreground hover:bg-card"
+                        }
+                      `}
+                    >
+
+                      {link.label}
+
+                    </Link>
+
+                  )
+                }
+              )}
+
+              {/* MOBILE CATEGORIES */}
+
+              <div
+                className="
+                  mt-6
+                  flex
+                  flex-wrap
+                  gap-3
+                "
+              >
+
+                {categories.map(
+                  (category) => {
+
+                    const slug =
+                      category
+                        .toLowerCase()
+                        .replace(
+                          /\s+/g,
+                          "-"
+                        )
+
+                    return (
+
+                      <Link
+                        key={category}
+                        href={`/category/${slug}`}
+                        className="
+                          rounded-full
+                          border
+                          border-border
+                          px-4
+                          py-2
+                          text-[10px]
+                          uppercase
+                          tracking-[0.18em]
+                          text-muted-foreground
+                        "
+                      >
+
+                        {category}
+
+                      </Link>
+
+                    )
+                  }
+                )}
+
+              </div>
+
+            </nav>
+
+          </motion.div>
+
+        )}
+
+      </motion.header>
+
+      {/* SEARCH DIALOG */}
+
+      <SearchDialog
+        open={isSearchOpen}
+        onClose={() =>
+          setIsSearchOpen(false)
+        }
+        posts={searchPosts}
+      />
+
+    </>
   )
-      }
+    }

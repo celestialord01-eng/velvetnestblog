@@ -1,15 +1,32 @@
-    import type { Metadata } from "next"
+import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { ArrowLeft, Clock, Calendar } from "lucide-react"
+
+import {
+  ArrowLeft,
+  Clock,
+  Calendar,
+  Pin,
+  Globe,
+  Send,
+  MessageCircle,
+  Camera,
+  Link as LinkIcon,
+} from "lucide-react"
+
 import { PortableText } from "@portabletext/react"
+
+import slugify from "slugify"
+import readingTime from "reading-time"
 
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { BlogCard, ProductCard } from "@/components/cards"
-import { amazonFinds } from "@/lib/data"
-import ShareButtons from "./ShareButtons"
+import { ReadingProgress } from "@/components/reading-progress"
+
+import TableOfContents from "@/components/table-of-contents"
+import MobileTOC from "@/components/mobile-toc"
+
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 
@@ -19,44 +36,98 @@ interface BlogPostPageProps {
   }>
 }
 
+/* =========================================================
+   GET POST
+========================================================= */
+
 async function getPost(slug: string) {
-  const query = `*[_type == "post" && slug.current == $slug][0]{
+  const query = `
+  *[
+    _type == "post" &&
+    slug.current == $slug
+  ][0]{
     _id,
     title,
     excerpt,
     publishedAt,
     body,
-    "slug": slug.current,
-    mainImage,
-    "category": categories[0]->title
-  }`
+    featured,
+    readingTime,
+    tags,
 
-  return await client.fetch(query, { slug })
-}
-
-async function getRelatedPosts(
-  category: string,
-  currentId: string
-) {
-  const query = `*[
-    _type == "post" &&
-    categories[0]->title == $category &&
-    _id != $currentId
-  ] | order(_createdAt desc)[0...3]{
-    _id,
-    title,
-    excerpt,
-    publishedAt,
     "slug": slug.current,
-    mainImage,
-    "category": categories[0]->title
-  }`
+
+    seoTitle,
+    seoDescription,
+
+    pinterestTitle,
+    pinterestDescription,
+
+    mainImage{
+      asset->{
+        url
+      },
+      alt,
+      caption
+    },
+
+    category->{
+      title,
+      "slug": slug.current
+    }
+  }
+  `
 
   return await client.fetch(query, {
-    category,
-    currentId,
+    slug,
   })
 }
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function headingToId(text: string) {
+  return slugify(text, {
+    lower: true,
+    strict: true,
+  })
+}
+
+function getTableOfContents(body: any[] = []) {
+  return body
+    .filter(
+      (block) =>
+        block?._type === "block" &&
+        ["h2", "h3"].includes(block?.style)
+    )
+    .map((block) => {
+      const text =
+        block?.children
+          ?.map((child: any) => child?.text || "")
+          .join("") || ""
+
+      return {
+        text,
+        level: block.style,
+        id: headingToId(text),
+      }
+    })
+}
+
+function getPlainText(blocks: any[] = []) {
+  return blocks
+    .map((block) =>
+      block?.children
+        ?.map((child: any) => child?.text || "")
+        .join("") || ""
+    )
+    .join(" ")
+}
+
+/* =========================================================
+   SEO
+========================================================= */
 
 export async function generateMetadata({
   params,
@@ -72,109 +143,296 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${post.title} | VelvetNest`,
-    description: post.excerpt,
+    title:
+      post.seoTitle ||
+      `${post.title} | VelvetNest`,
+
+    description:
+      post.seoDescription ||
+      post.excerpt,
+
     openGraph: {
       title: post.title,
-      description: post.excerpt,
+
+      description:
+        post.seoDescription ||
+        post.excerpt,
+
       type: "article",
-      images: [post.image],
+
+      url: `https://velvetnestblog.vercel.app/blog/${post.slug}`,
+
+      images:
+        post.mainImage?.asset?.url
+          ? [
+              {
+                url: post.mainImage.asset.url,
+                width: 1200,
+                height: 630,
+                alt:
+                  post.mainImage?.alt ||
+                  post.title,
+              },
+            ]
+          : [],
+    },
+
+    twitter: {
+      card: "summary_large_image",
+
+      title: post.title,
+
+      description:
+        post.seoDescription ||
+        post.excerpt,
+
+      images:
+        post.mainImage?.asset?.url
+          ? [post.mainImage.asset.url]
+          : [],
+    },
+
+    alternates: {
+      canonical:
+        `https://velvetnestblog.vercel.app/blog/${post.slug}`,
     },
   }
 }
 
+/* =========================================================
+   PORTABLE TEXT
+========================================================= */
+
 const portableTextComponents = {
-  
-types: {
-  image: ({ value }: any) => (
-    <div className="my-10 overflow-hidden rounded-2xl">
-      <Image
-        src={urlFor(value).width(1200).url()}
-        alt={value.alt || "Blog image"}
-        width={1200}
-        height={800}
-        className="h-auto w-full rounded-2xl object-cover"
-      />
-    </div>
-  ),
-},
+  types: {
+    image: ({ value }: any) => (
+      <figure className="my-16">
+        <div
+          className="
+            relative
+            h-[340px]
+            md:h-[640px]
+            overflow-hidden
+            rounded-[2.5rem]
+          "
+        >
+          <Image
+            src={urlFor(value).url()}
+            alt={value?.alt || "Blog image"}
+            fill
+            className="object-cover"
+          />
+        </div>
+
+        {value?.caption && (
+          <figcaption
+            className="
+              mt-5
+              text-center
+              text-sm
+              italic
+              text-muted-foreground
+            "
+          >
+            {value.caption}
+          </figcaption>
+        )}
+      </figure>
+    ),
+  },
+
   block: {
-    h1: ({ children }: any) => (
-      <h1 className="mt-12 mb-6 text-4xl font-bold tracking-tight">
-        {children}
-      </h1>
-    ),
+    h2: ({ children }: any) => {
+      const text =
+        typeof children?.[0] === "string"
+          ? children[0]
+          : ""
 
-    h2: ({ children }: any) => (
-      <h2 className="mt-12 mb-6 text-3xl font-semibold tracking-tight">
-        {children}
-      </h2>
-    ),
+      const id = headingToId(text)
 
-    h3: ({ children }: any) => (
-      <h3 className="mt-10 mb-4 text-2xl font-semibold">
-        {children}
-      </h3>
-    ),
+      return (
+        <h2
+          id={id}
+          className="
+            scroll-mt-32
+            mt-24
+            mb-8
+            font-serif
+            text-[2.6rem]
+            leading-[0.98]
+            tracking-[-0.04em]
+            text-foreground
+            md:text-[4.5rem]
+          "
+        >
+          {children}
+        </h2>
+      )
+    },
+
+    h3: ({ children }: any) => {
+      const text =
+        typeof children?.[0] === "string"
+          ? children[0]
+          : ""
+
+      const id = headingToId(text)
+
+      return (
+        <h3
+          id={id}
+          className="
+            scroll-mt-32
+            mt-16
+            mb-6
+            font-serif
+            text-[1.8rem]
+            leading-[1]
+            tracking-[-0.03em]
+            text-foreground
+            md:text-[2.5rem]
+          "
+        >
+          {children}
+        </h3>
+      )
+    },
 
     normal: ({ children }: any) => (
-      <p className="mb-6 text-lg leading-8 text-muted-foreground">
+      <p
+        className="
+          mb-9
+          text-[1.12rem]
+          leading-[2.05]
+          tracking-[-0.01em]
+          text-[#4d433d]
+          md:text-[1.2rem]
+        "
+      >
         {children}
       </p>
     ),
 
-    blockquote: ({ children }: any) => (
-      <blockquote className="my-8 border-l-4 border-primary pl-6 italic text-muted-foreground">
+    blockquote: ({
+      children,
+    }: any) => (
+      <blockquote
+        className="
+          my-14
+          border-l-[3px]
+          border-[#cbb29a]
+          pl-6
+          text-[1.3rem]
+          italic
+          leading-[2]
+          text-[#5d5148]
+        "
+      >
         {children}
       </blockquote>
     ),
   },
 
   list: {
-    bullet: ({ children }: any) => (
-      <ul className="mb-6 ml-6 list-disc space-y-3">
+    bullet: ({
+      children,
+    }: any) => (
+      <ul
+        className="
+          mb-12
+          ml-6
+          list-disc
+          space-y-5
+          text-[#4d433d]
+        "
+      >
         {children}
       </ul>
     ),
 
-    number: ({ children }: any) => (
-      <ol className="mb-6 ml-6 list-decimal space-y-3">
+    number: ({
+      children,
+    }: any) => (
+      <ol
+        className="
+          mb-12
+          ml-6
+          list-decimal
+          space-y-5
+          text-[#4d433d]
+        "
+      >
         {children}
       </ol>
     ),
   },
 
   listItem: {
-    bullet: ({ children }: any) => (
-      <li className="text-lg leading-8 text-muted-foreground">
+    bullet: ({
+      children,
+    }: any) => (
+      <li
+        className="
+          text-[1.1rem]
+          leading-[2]
+        "
+      >
         {children}
       </li>
     ),
 
-    number: ({ children }: any) => (
-      <li className="text-lg leading-8 text-muted-foreground">
+    number: ({
+      children,
+    }: any) => (
+      <li
+        className="
+          text-[1.1rem]
+          leading-[2]
+        "
+      >
         {children}
       </li>
     ),
   },
 
   marks: {
-    strong: ({ children }: any) => (
-      <strong className="font-semibold text-foreground">
+    strong: ({
+      children,
+    }: any) => (
+      <strong
+        className="
+          font-semibold
+          text-foreground
+        "
+      >
         {children}
       </strong>
     ),
 
-    em: ({ children }: any) => (
-      <em className="italic">{children}</em>
+    em: ({
+      children,
+    }: any) => (
+      <em className="italic">
+        {children}
+      </em>
     ),
 
-    link: ({ children, value }: any) => (
+    link: ({
+      children,
+      value,
+    }: any) => (
       <a
-        href={value.href}
+        href={value?.href || "#"}
         target="_blank"
         rel="noopener noreferrer"
-        className="font-medium text-primary underline underline-offset-4"
+        className="
+          font-medium
+          text-[#9d7b5f]
+          underline
+          underline-offset-[5px]
+          transition
+          hover:opacity-70
+        "
       >
         {children}
       </a>
@@ -182,159 +440,375 @@ types: {
   },
 }
 
+/* =========================================================
+   SHARE BUTTONS
+========================================================= */
+
+function ShareButtons() {
+  const shareLinks = [
+    {
+      icon: <Pin size={16} />,
+      href: "#",
+    },
+
+    {
+      icon: <Globe size={16} />,
+      href: "#",
+    },
+
+    {
+      icon: <MessageCircle size={16} />,
+      href: "#",
+    },
+
+    {
+      icon: <Send size={16} />,
+      href: "#",
+    },
+
+    {
+      icon: <Camera size={16} />,
+      href: "https://instagram.com",
+    },
+  ]
+
+  return (
+    <div className="flex flex-wrap gap-4">
+      {shareLinks.map(
+        (item, index) => (
+          <a
+            key={index}
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              flex
+              h-11
+              w-11
+              items-center
+              justify-center
+              rounded-full
+              border
+              border-border
+              bg-card
+              text-foreground
+              transition-all
+              duration-300
+              hover:-translate-y-1
+              hover:shadow-md
+            "
+          >
+            {item.icon}
+          </a>
+        )
+      )}
+
+      <button
+        className="
+          flex
+          h-11
+          w-11
+          items-center
+          justify-center
+          rounded-full
+          border
+          border-border
+          bg-card
+          text-foreground
+          transition-all
+          duration-300
+          hover:-translate-y-1
+          hover:shadow-md
+        "
+      >
+        <LinkIcon size={16} />
+      </button>
+    </div>
+  )
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
 export default async function BlogPostPage({
   params,
 }: BlogPostPageProps) {
   const { slug } = await params
 
-  const post = await getPost(slug)
+  const post =
+    await getPost(slug)
 
   if (!post) {
     notFound()
   }
 
-  const relatedPosts = await getRelatedPosts(
-    post.category,
-    post._id
-  )
+  const bodyContent =
+    Array.isArray(post?.body)
+      ? post.body
+      : []
 
-  const relatedProducts = amazonFinds
-    .filter((p) =>
-      post.category === "Fashion"
-        ? p.category === "fashion"
-        : post.category === "Home Decor"
-        ? p.category === "home"
-        : post.category === "Beauty"
-        ? p.category === "beauty"
-        : true
+  const toc =
+    getTableOfContents(
+      bodyContent
     )
-    .slice(0, 4)
+
+  const stats =
+    readingTime(
+      getPlainText(
+        bodyContent
+      )
+    )
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
+      <ReadingProgress />
+
       <Header />
 
       <main>
-        <article>
-          <header className="mx-auto max-w-4xl px-4 py-12 md:py-16">
+
+        {/* HERO */}
+
+        <section className="border-b border-border">
+          <div
+            className="
+              mx-auto
+              max-w-7xl
+              px-5
+              py-20
+              md:py-32
+            "
+          >
+
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="
+                mb-12
+                inline-flex
+                items-center
+                gap-2
+                text-sm
+                font-medium
+                text-muted-foreground
+                transition
+                hover:text-foreground
+              "
             >
               <ArrowLeft className="h-4 w-4" />
+
               Back to Blog
             </Link>
 
-            <div className="mt-8">
-              <span className="rounded-full border border-border bg-secondary px-4 py-1 text-xs font-medium uppercase tracking-wider">
-                {post.category}
-              </span>
-            </div>
+            <div
+              className="
+                grid
+                gap-20
+                lg:grid-cols-[1fr_320px]
+              "
+            >
 
-            <h1 className="mt-6 text-4xl font-bold leading-tight tracking-tight md:text-5xl lg:text-6xl">
-              {post.title}
-            </h1>
+              {/* LEFT */}
 
-            <p className="mt-6 text-xl leading-relaxed text-muted-foreground">
-              {post.excerpt}
-            </p>
+              <div>
 
-            <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                {post.publishedAt
-                  ? new Date(post.publishedAt).toDateString()
-                  : "No date"}
+                <div
+                  className="
+                    flex
+                    flex-wrap
+                    items-center
+                    gap-5
+                    text-sm
+                    text-muted-foreground
+                  "
+                >
+
+                  {post.category?.title && (
+                    <span
+                      className="
+                        rounded-full
+                        border
+                        border-border
+                        bg-card
+                        px-4
+                        py-1.5
+                        text-xs
+                        font-medium
+                        uppercase
+                        tracking-[0.18em]
+                        text-foreground
+                      "
+                    >
+                      {post.category.title}
+                    </span>
+                  )}
+
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+
+                    {post.publishedAt
+                      ? new Date(
+                          post.publishedAt
+                        ).toDateString()
+                      : "Recently Published"}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4" />
+
+                    {stats.text}
+                  </div>
+
+                </div>
+
+                <h1
+                  className="
+                    mt-10
+                    max-w-5xl
+                    font-serif
+                    text-[3rem]
+                    leading-[0.95]
+                    tracking-[-0.04em]
+                    text-foreground
+                    md:text-[5.8rem]
+                  "
+                >
+                  {post.title}
+                </h1>
+
+                {post.excerpt && (
+                  <p
+                    className="
+                      mt-10
+                      max-w-3xl
+                      text-[1.2rem]
+                      leading-[2]
+                      text-[#5f534b]
+                      md:text-[1.35rem]
+                    "
+                  >
+                    {post.excerpt}
+                  </p>
+                )}
+
+                <div className="mt-12">
+                  <ShareButtons />
+                </div>
+
               </div>
 
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                5 min read
-              </div>
-            </div>
-          </header>
+              {/* DESKTOP TOC */}
 
-          <div className="relative mx-auto aspect-[21/9] max-w-6xl overflow-hidden rounded-3xl">
-            <Image
-  src={urlFor(post.mainImage).width(1200).url()}
-  alt={post.title}
-  width={1200}
-  height={800}
-/>
+              <aside className="hidden lg:block">
+
+                <div
+                  className="
+                    sticky
+                    top-28
+                    rounded-[2rem]
+                    border
+                    border-border
+                    bg-card/80
+                    p-7
+                    backdrop-blur
+                  "
+                >
+                  <TableOfContents
+                    items={toc}
+                  />
+                </div>
+
+              </aside>
+
+            </div>
+
           </div>
 
-          <div className="mx-auto max-w-3xl px-4 py-12 md:py-16">
-            <ShareButtons post={post} />
+        </section>
 
-            <div className="mt-12">
+        {/* FEATURED IMAGE */}
+
+        {post.mainImage?.asset?.url && (
+          <section className="py-12">
+            <div
+              className="
+                mx-auto
+                max-w-6xl
+                px-5
+              "
+            >
+
+              <div
+                className="
+                  relative
+                  aspect-[4/5]
+                  overflow-hidden
+                  rounded-[2.5rem]
+                  md:aspect-[16/8]
+                "
+              >
+
+                <Image
+                  src={
+                    post.mainImage.asset.url
+                  }
+                  alt={
+                    post.mainImage?.alt ||
+                    post.title
+                  }
+                  fill
+                  priority
+                  className="object-cover"
+                />
+
+              </div>
+
+            </div>
+
+          </section>
+        )}
+
+        {/* MOBILE TOC */}
+
+        <div
+          className="
+            mx-auto
+            max-w-2xl
+            px-5
+            lg:hidden
+          "
+        >
+          <MobileTOC items={toc} />
+        </div>
+
+        {/* ARTICLE */}
+
+        <section className="pb-32 pt-12">
+
+          <div
+            className="
+              mx-auto
+              max-w-7xl
+              px-5
+            "
+          >
+
+            <article className="mx-auto max-w-2xl">
               <PortableText
-                value={post.body}
-                components={portableTextComponents}
+                value={bodyContent}
+                components={
+                  portableTextComponents
+                }
               />
-            </div>
+            </article>
 
-            <div className="mt-16">
-              <ShareButtons post={post} />
-            </div>
           </div>
-        </article>
 
-        {relatedProducts.length > 0 && (
-          <section className="border-t border-border bg-secondary/30 py-16">
-            <div className="mx-auto max-w-7xl px-4">
-              <h2 className="text-center text-2xl font-semibold tracking-tight md:text-3xl">
-                Shop the Look
-              </h2>
+        </section>
 
-              <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {relatedProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    title={product.title}
-                    price={product.price}
-                    originalPrice={product.originalPrice}
-                    image={product.image}
-                    link={product.link}
-                    category={product.category}
-                  />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {relatedPosts.length > 0 && (
-          <section className="py-16 md:py-24">
-            <div className="mx-auto max-w-7xl px-4">
-              <h2 className="text-center text-2xl font-semibold tracking-tight md:text-3xl">
-                You Might Also Like
-              </h2>
-
-              <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {relatedPosts.map((relatedPost: any) => (
-                  <BlogCard
-                    key={relatedPost._id}
-                    title={relatedPost.title}
-                    excerpt={relatedPost.excerpt}
-                    image={relatedPost.image}
-                    category={relatedPost.category}
-                    date={
-                      relatedPost.publishedAt
-                        ? new Date(
-                            relatedPost.publishedAt
-                          ).toDateString()
-                        : "No date"
-                    }
-                    slug={relatedPost.slug}
-                  />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
       </main>
 
       <Footer />
     </div>
   )
-            }
+      }

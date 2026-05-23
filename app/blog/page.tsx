@@ -1,36 +1,49 @@
-        import type { Metadata } from "next"
+           import type { Metadata } from "next"
+
 import Link from "next/link"
 import Image from "next/image"
 
+import {
+  ArrowRight,
+} from "lucide-react"
+
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+
 import { BlogCard } from "@/components/cards"
+
 import { Button } from "@/components/ui/button"
 
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 
+/* =========================================================
+   METADATA
+========================================================= */
+
 export const metadata: Metadata = {
-  title: "Blog | VelvetNest - Fashion, Home & Lifestyle",
+  title:
+    "Blog | VelvetNest",
+
   description:
-    "Explore our latest articles on fashion, home decor, beauty, self-care, and lifestyle.",
+    "Explore fashion inspiration, elevated interiors, beauty favorites, and lifestyle ideas curated for beautiful living.",
 }
 
-async function getPosts(category?: string) {
+/* =========================================================
+   FETCH POSTS
+========================================================= */
+
+async function getPosts(
+  category?: string
+) {
+
   const query = category
+
     ? `*[
         _type == "post" &&
         categories[0]->slug.current == $category
-      ] | order(_createdAt desc){
-        _id,
-        title,
-        excerpt,
-        publishedAt,
-        "slug": slug.current,
-        mainImage,
-        "category": categories[0]->title
-      }`
-    : `*[_type == "post"] | order(_createdAt desc){
+      ]
+      | order(_createdAt desc){
         _id,
         title,
         excerpt,
@@ -40,8 +53,26 @@ async function getPosts(category?: string) {
         "category": categories[0]->title
       }`
 
-  return await client.fetch(query, { category })
+    : `*[_type == "post"]
+      | order(_createdAt desc){
+        _id,
+        title,
+        excerpt,
+        publishedAt,
+        "slug": slug.current,
+        mainImage,
+        "category": categories[0]->title
+      }`
+
+  return await client.fetch(
+    query,
+    { category }
+  )
 }
+
+/* =========================================================
+   TYPES
+========================================================= */
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -49,214 +80,518 @@ interface BlogPageProps {
   }>
 }
 
+/* =========================================================
+   PAGE
+========================================================= */
+
 export default async function BlogPage({
   searchParams,
 }: BlogPageProps) {
-  const { category } = await searchParams
 
-  const posts = await getPosts(category)
+  const {
+    category,
+  } = await searchParams
 
-  const featuredPost = posts[0]
-  const remainingPosts = posts.slice(1)
+  const posts =
+    await getPosts(category)
+
+  const featuredPost =
+    posts[0]
+
+  const remainingPosts =
+    posts.slice(1)
 
   return (
-    <div className="min-h-screen">
+
+    <div className="min-h-screen bg-background">
+
       <Header />
 
       <main>
-        {/* Hero Section */}
-        <section className="bg-secondary/30 py-16 md:py-24">
-          <div className="mx-auto max-w-7xl px-4 text-center">
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              The VelvetNest Blog
+
+        {/* =========================================================
+            HERO
+        ========================================================= */}
+
+        <section
+          className="
+            border-b
+            border-border
+            py-24
+            md:py-36
+          "
+        >
+
+          <div
+            className="
+              mx-auto
+              max-w-5xl
+              px-5
+              text-center
+            "
+          >
+
+            <p
+              className="
+                text-[11px]
+                uppercase
+                tracking-[0.35em]
+                text-muted-foreground
+              "
+            >
+              The VelvetNest Journal
             </p>
 
-            <h1 className="mt-2 text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl">
-              Stories & Inspiration
+            <h1
+              className="
+                mt-5
+                font-serif
+                text-[4rem]
+                leading-[0.92]
+                tracking-[-0.06em]
+                text-foreground
+                md:text-[6rem]
+                lg:text-[7rem]
+              "
+            >
+              Stories &
+              Inspiration
             </h1>
 
-            <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
-              Discover curated fashion inspiration, cozy home decor ideas,
-              beauty tips, and lifestyle wisdom.
+            <p
+              className="
+                mx-auto
+                mt-8
+                max-w-2xl
+                text-[1.15rem]
+                leading-[2]
+                text-[#6b6057]
+              "
+            >
+              Discover curated fashion inspiration,
+              elevated interiors,
+              beauty rituals,
+              self-care ideas,
+              and lifestyle stories designed for intentional living.
             </p>
+
           </div>
+
         </section>
 
-        {/* Category Pills */}
-        <section className="border-b border-border bg-background py-6">
-          <div className="mx-auto max-w-7xl px-4">
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <Link
-                href="/blog"
-                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-secondary"
-              >
-                All Posts
-              </Link>
+        {/* =========================================================
+            CATEGORY NAV
+        ========================================================= */}
 
-              <Link
-                href="/blog?category=fashion"
-                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-secondary"
-              >
-                Fashion
-              </Link>
+        <section
+          className="
+            border-b
+            border-border
+            py-6
+          "
+        >
 
-              <Link
-                href="/blog?category=beauty"
-                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-secondary"
-              >
-                Beauty
-              </Link>
+          <div
+            className="
+              mx-auto
+              flex
+              max-w-7xl
+              flex-wrap
+              items-center
+              justify-center
+              gap-6
+              px-5
+            "
+          >
 
-              <Link
-                href="/blog?category=home-decor"
-                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-secondary"
-              >
-                Home Decor
-              </Link>
+            {[
+              {
+                href: "/blog",
+                label: "All Posts",
+              },
 
-              <Link
-                href="/blog?category=outfit-ideas"
-                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-secondary"
-              >
-                Outfit Ideas
-              </Link>
+              {
+                href: "/blog?category=fashion",
+                label: "Fashion",
+              },
 
-              <Link
-                href="/blog?category=self-care"
-                className="rounded-full border px-4 py-2 text-sm font-medium hover:bg-secondary"
-              >
-                Self Care
-              </Link>
-            </div>
+              {
+                href: "/blog?category=beauty",
+                label: "Beauty",
+              },
+
+              {
+                href: "/blog?category=home-decor",
+                label: "Home Decor",
+              },
+
+              {
+                href: "/blog?category=outfit-ideas",
+                label: "Outfit Ideas",
+              },
+
+              {
+                href: "/blog?category=self-care",
+                label: "Self Care",
+              },
+            ].map((item) => {
+
+              const isActive =
+                item.href === "/blog"
+                  ? !category
+                  : item.href.includes(
+                      category || ""
+                    )
+
+              return (
+
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`
+                    text-[11px]
+                    uppercase
+                    tracking-[0.22em]
+                    transition
+                    ${
+                      isActive
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    }
+                  `}
+                >
+
+                  {item.label}
+
+                </Link>
+
+              )
+            })}
+
           </div>
+
         </section>
 
-        {/* Featured Post */}
+        {/* =========================================================
+            FEATURED ARTICLE
+        ========================================================= */}
+
         {featuredPost && (
-          <section className="mx-auto max-w-7xl px-4 py-16">
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+
+          <section
+            className="
+              mx-auto
+              max-w-7xl
+              px-5
+              py-24
+            "
+          >
+
+            <p
+              className="
+                text-[11px]
+                uppercase
+                tracking-[0.35em]
+                text-muted-foreground
+              "
+            >
               Featured Article
             </p>
 
             <Link
               href={`/blog/${featuredPost.slug}`}
-              className="group mt-6 block"
+              className="
+                group
+                mt-10
+                block
+              "
             >
-              <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+
+              <div
+                className="
+                  grid
+                  gap-14
+                  lg:grid-cols-2
+                  lg:gap-20
+                "
+              >
+
+                {/* IMAGE */}
+
+                <div
+                  className="
+                    relative
+                    aspect-[4/5]
+                    overflow-hidden
+                    rounded-[2.8rem]
+                  "
+                >
+
                   <Image
                     src={
                       featuredPost.mainImage
-                        ? urlFor(featuredPost.mainImage)
-                            .width(1200)
-                            .height(800)
+                        ? urlFor(
+                            featuredPost.mainImage
+                          )
+                            .width(1600)
                             .url()
                         : "/placeholder.jpg"
                     }
                     alt={featuredPost.title}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
                     priority
+                    className="
+                      object-cover
+                      transition-transform
+                      duration-700
+                      group-hover:scale-[1.03]
+                    "
                   />
 
-                  <div className="absolute left-4 top-4">
-                    <span className="rounded-full bg-card/90 px-3 py-1 text-xs font-medium uppercase tracking-wider backdrop-blur-sm">
+                  <div
+                    className="
+                      absolute
+                      left-5
+                      top-5
+                    "
+                  >
+
+                    <span
+                      className="
+                        rounded-full
+                        bg-background/85
+                        px-4
+                        py-2
+                        text-[10px]
+                        uppercase
+                        tracking-[0.22em]
+                        text-foreground
+                        backdrop-blur-md
+                      "
+                    >
                       {featuredPost.category}
                     </span>
+
                   </div>
+
                 </div>
 
-                <div className="flex flex-col justify-center">
-                  <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
+                {/* CONTENT */}
+
+                <div
+                  className="
+                    flex
+                    flex-col
+                    justify-center
+                  "
+                >
+
+                  <p
+                    className="
+                      text-[11px]
+                      uppercase
+                      tracking-[0.22em]
+                      text-muted-foreground
+                    "
+                  >
                     {featuredPost.publishedAt
                       ? new Date(
                           featuredPost.publishedAt
                         ).toDateString()
-                      : "No date"}
+                      : "Recently Published"}
                   </p>
 
-                  <h2 className="mt-3 text-3xl font-semibold leading-tight tracking-tight transition-colors group-hover:text-accent md:text-4xl">
+                  <h2
+                    className="
+                      mt-5
+                      font-serif
+                      text-[3.2rem]
+                      leading-[0.95]
+                      tracking-[-0.05em]
+                      text-foreground
+                      transition
+                      group-hover:opacity-70
+                      md:text-[4.8rem]
+                    "
+                  >
                     {featuredPost.title}
                   </h2>
 
-                  <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+                  <p
+                    className="
+                      mt-8
+                      max-w-xl
+                      text-[1.08rem]
+                      leading-9
+                      text-[#6b6057]
+                    "
+                  >
                     {featuredPost.excerpt}
                   </p>
 
-                  <div className="mt-6">
-                    <span className="inline-flex items-center gap-2 border-b border-foreground pb-1 font-medium transition-colors group-hover:border-accent group-hover:text-accent">
+                  <div className="mt-10">
+
+                    <span
+                      className="
+                        inline-flex
+                        items-center
+                        gap-2
+                        text-[12px]
+                        uppercase
+                        tracking-[0.18em]
+                        transition-all
+                        duration-300
+                        group-hover:gap-3
+                      "
+                    >
+
                       Read Article
+
+                      <ArrowRight className="h-4 w-4" />
+
                     </span>
+
                   </div>
+
                 </div>
+
               </div>
+
             </Link>
+
           </section>
+
         )}
 
-        {/* All Posts */}
-        <section className="border-t border-border bg-secondary/30 py-16 md:py-24">
-          <div className="mx-auto max-w-7xl px-4">
-            <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
-              Latest Articles
-            </h2>
+        {/* =========================================================
+            ALL POSTS
+        ========================================================= */}
 
-            <div className="masonry-grid mt-12">
-              {remainingPosts.map((post: any) => (
-                <BlogCard
-                  key={post._id}
-                  title={post.title}
-                  excerpt={post.excerpt}
-                  image={post.mainImage}
-                  category={post.category}
-                  date={
-                    post.publishedAt
-                      ? new Date(post.publishedAt).toDateString()
-                      : "No date"
-                  }
-                  slug={post.slug}
-                />
-              ))}
+        <section
+          className="
+            border-t
+            border-border
+            bg-[#f4efe8]/40
+            py-24
+            md:py-32
+          "
+        >
+
+          <div
+            className="
+              mx-auto
+              max-w-7xl
+              px-5
+            "
+          >
+
+            <div
+              className="
+                flex
+                items-end
+                justify-between
+              "
+            >
+
+              <div>
+
+                <p
+                  className="
+                    text-[11px]
+                    uppercase
+                    tracking-[0.35em]
+                    text-muted-foreground
+                  "
+                >
+                  Latest Stories
+                </p>
+
+                <h2
+                  className="
+                    mt-4
+                    font-serif
+                    text-[3rem]
+                    tracking-[-0.05em]
+                    md:text-[5rem]
+                  "
+                >
+                  Explore Articles
+                </h2>
+
+              </div>
+
             </div>
 
-            <div className="mt-12 text-center">
-              <Button variant="outline" size="lg">
+            {/* POSTS GRID */}
+
+            <div className="masonry-grid mt-16">
+
+              {remainingPosts.map(
+                (post: any) => (
+
+                  <BlogCard
+                    key={post._id}
+                    title={post.title}
+                    excerpt={post.excerpt}
+                    image={
+                      post.mainImage
+                        ? urlFor(
+                            post.mainImage
+                          )
+                            .width(1000)
+                            .url()
+                        : "/placeholder.jpg"
+                    }
+                    category={
+                      post.category
+                    }
+                    date={
+                      post.publishedAt
+                        ? new Date(
+                            post.publishedAt
+                          ).toDateString()
+                        : "No date"
+                    }
+                    slug={post.slug}
+                  />
+
+                )
+              )}
+
+            </div>
+
+            {/* LOAD MORE */}
+
+            <div className="mt-20 text-center">
+
+              <Button
+                variant="outline"
+                size="lg"
+                className="
+                  h-14
+                  rounded-full
+                  border-border
+                  bg-card
+                  px-8
+                  text-[12px]
+                  uppercase
+                  tracking-[0.18em]
+                  hover:bg-card
+                "
+              >
                 Load More Articles
               </Button>
+
             </div>
+
           </div>
+
         </section>
 
-        {/* Newsletter */}
-        <section className="bg-primary py-16 text-primary-foreground md:py-20">
-          <div className="mx-auto max-w-7xl px-4 text-center">
-            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-              Never Miss a Post
-            </h2>
-
-            <p className="mx-auto mt-4 max-w-md text-primary-foreground/80">
-              Subscribe to get the latest articles and inspiration delivered
-              straight to your inbox.
-            </p>
-
-            <form className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 rounded-lg border-0 bg-primary-foreground/10 px-4 py-3 text-primary-foreground placeholder:text-primary-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary-foreground/30"
-                required
-              />
-
-              <Button variant="secondary" size="lg" type="submit">
-                Subscribe
-              </Button>
-            </form>
-          </div>
-        </section>
       </main>
 
       <Footer />
+
     </div>
   )
-}
+} 

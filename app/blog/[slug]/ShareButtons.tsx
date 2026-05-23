@@ -1,77 +1,211 @@
 "use client"
 
+import {
+  Pin,
+  Globe,
+  Send,
+  MessageCircle,
+  Camera,
+  Link as LinkIcon,
+  Check,
+} from "lucide-react"
+
+import { useState } from "react"
+
 interface ShareButtonsProps {
-  post: {
-    title: string
-    image: string
-  }
+  title: string
 }
 
 export default function ShareButtons({
-  post,
+  title,
 }: ShareButtonsProps) {
-  const currentUrl =
+
+  const [copied, setCopied] =
+    useState(false)
+
+  const url =
     typeof window !== "undefined"
       ? window.location.href
       : ""
 
+  const encodedUrl =
+    encodeURIComponent(url)
+
+  const encodedTitle =
+    encodeURIComponent(title)
+
+  const shareLinks = [
+    {
+      name: "Pinterest",
+
+      icon: (
+        <Pin size={17} />
+      ),
+
+      href:
+        `https://pinterest.com/pin/create/button/?url=${encodedUrl}&description=${encodedTitle}`,
+    },
+
+    {
+      name: "Facebook",
+
+      icon: (
+        <Globe size={17} />
+      ),
+
+      href:
+        `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    },
+
+    {
+      name: "WhatsApp",
+
+      icon: (
+        <MessageCircle size={17} />
+      ),
+
+      href:
+        `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`,
+    },
+
+    {
+      name: "Telegram",
+
+      icon: (
+        <Send size={17} />
+      ),
+
+      href:
+        `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`,
+    },
+
+    {
+      name: "Instagram",
+
+      icon: (
+        <Camera size={17} />
+      ),
+
+      href:
+        "https://instagram.com",
+    },
+  ]
+
+  async function handleCopy() {
+
+    try {
+
+      await navigator.clipboard.writeText(
+        url
+      )
+
+      setCopied(true)
+
+      setTimeout(() => {
+        setCopied(false)
+      }, 2000)
+
+    } catch (error) {
+
+      console.error(
+        "Copy failed",
+        error
+      )
+    }
+  }
+
   return (
-    <div className="flex flex-wrap items-center justify-center gap-4">
-      <button
-        onClick={() => {
-          window.open(
-            `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(
-              currentUrl
-            )}&media=${encodeURIComponent(
-              post.image
-            )}&description=${encodeURIComponent(post.title)}`,
-            "_blank",
-            "width=750,height=600"
-          )
-        }}
-        className="rounded-full border border-border px-4 py-2 transition-colors hover:bg-secondary"
-      >
-        Pinterest
-      </button>
+
+    <div className="flex flex-wrap items-center gap-3">
+
+      {shareLinks.map(
+        (item) => (
+
+          <a
+            key={item.name}
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Share on ${item.name}`}
+            className="
+              group
+              flex
+              h-11
+              w-11
+              items-center
+              justify-center
+              rounded-full
+              border
+              border-[#e4ddd4]
+              bg-white
+              text-[#3d342f]
+              shadow-sm
+              transition-all
+              duration-300
+              hover:-translate-y-1
+              hover:border-[#cdb9a4]
+              hover:bg-[#f8f3ee]
+              hover:shadow-md
+            "
+          >
+
+            <span
+              className="
+                transition-transform
+                duration-300
+                group-hover:scale-110
+              "
+            >
+              {item.icon}
+            </span>
+
+          </a>
+        )
+      )}
 
       <button
-        onClick={() => {
-          window.open(
-            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-              currentUrl
-            )}`,
-            "_blank",
-            "width=600,height=400"
-          )
-        }}
-        className="rounded-full border border-border px-4 py-2 transition-colors hover:bg-secondary"
+        onClick={handleCopy}
+        aria-label="Copy link"
+        className="
+          group
+          flex
+          h-11
+          w-11
+          items-center
+          justify-center
+          rounded-full
+          border
+          border-[#e4ddd4]
+          bg-white
+          text-[#3d342f]
+          shadow-sm
+          transition-all
+          duration-300
+          hover:-translate-y-1
+          hover:border-[#cdb9a4]
+          hover:bg-[#f8f3ee]
+          hover:shadow-md
+        "
       >
-        Facebook
+
+        <span
+          className="
+            transition-transform
+            duration-300
+            group-hover:scale-110
+          "
+        >
+
+          {copied ? (
+            <Check size={17} />
+          ) : (
+            <LinkIcon size={17} />
+          )}
+
+        </span>
+
       </button>
 
-      <button
-        onClick={() => {
-          window.open(
-            `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-              currentUrl
-            )}&text=${encodeURIComponent(post.title)}`,
-            "_blank",
-            "width=600,height=400"
-          )
-        }}
-        className="rounded-full border border-border px-4 py-2 transition-colors hover:bg-secondary"
-      >
-        X
-      </button>
-
-      <button
-        onClick={() => {
-          navigator.clipboard.writeText(currentUrl)
-        }}
-        className="rounded-full border border-border px-4 py-2 transition-colors hover:bg-secondary"
-      >
-        Copy Link
-      </button>
     </div>
   )
 }
