@@ -68,7 +68,7 @@ export default async function HomePage() {
         title,
         excerpt,
         publishedAt,
-        "slug": slug.current,
+        slug,
         mainImage,
         featured,
         "category": category->title
@@ -108,7 +108,7 @@ export default async function HomePage() {
 
     <div className="min-h-screen bg-background text-foreground">
 
-      <Header />
+      <Header posts={blogPosts} />
 
       <main>
 
