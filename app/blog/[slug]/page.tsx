@@ -288,6 +288,33 @@ const portableTextComponents = {
             {value.text}
           </p>
         )}
+        {value?.buttonText && value?.buttonLink && (
+  <div className="mt-6">
+    <a
+      href={value.buttonLink}
+      target="_blank"
+      rel="noopener noreferrer sponsored"
+      className="
+        inline-flex
+        items-center
+        justify-center
+        rounded-full
+        bg-stone-900
+        px-6
+        py-3
+        text-sm
+        font-medium
+        text-white
+        transition-all
+        duration-300
+        hover:opacity-90
+        hover:scale-[1.02]
+      "
+    >
+      {value.buttonText}
+    </a>
+  </div>
+)}
 
         {value?.products?.length > 0 && (
           <div className="mt-5 flex flex-wrap gap-2">
