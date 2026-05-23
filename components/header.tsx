@@ -23,6 +23,20 @@ import { motion } from "framer-motion"
 import { SearchDialog } from "@/components/search-dialog"
 
 /* =========================================================
+   TYPES
+========================================================= */
+
+interface HeaderProps {
+  posts: {
+    title: string
+    slug: {
+      current: string
+    }
+    category?: string
+  }[]
+}
+
+/* =========================================================
    NAVIGATION
 ========================================================= */
 
@@ -49,43 +63,12 @@ const categories = [
 ]
 
 /* =========================================================
-   TEMP SEARCH POSTS
-========================================================= */
-
-const searchPosts = [
-  {
-    title: "Cute Summer Outfit Ideas",
-    slug: "cute-summer-outfit-ideas",
-    category: "Fashion",
-  },
-  {
-    title:
-      "Best Skincare Routine for Glowing Skin",
-    slug:
-      "best-skincare-routine-glowing-skin",
-    category: "Beauty",
-  },
-  {
-    title:
-      "Budget Home Decor Ideas",
-    slug:
-      "budget-home-decor-ideas",
-    category: "Home Decor",
-  },
-  {
-    title:
-      "Sunday Reset Routine",
-    slug:
-      "sunday-reset-routine",
-    category: "Self Care",
-  },
-]
-
-/* =========================================================
    HEADER
 ========================================================= */
 
-export function Header() {
+export function Header({
+  posts,
+}: HeaderProps) {
 
   const pathname =
     usePathname()
@@ -423,205 +406,7 @@ export function Header() {
 
           </div>
 
-          {/* CATEGORY BAR */}
-
-          <div
-            className="
-              hidden
-              border-t
-              border-border/70
-              py-4
-              md:block
-            "
-          >
-
-            <div
-              className="
-                flex
-                flex-wrap
-                items-center
-                justify-center
-                gap-6
-              "
-            >
-
-              {categories.map(
-                (category) => {
-
-                  const slug =
-                    category
-                      .toLowerCase()
-                      .replace(
-                        /\s+/g,
-                        "-"
-                      )
-
-                  const isActive =
-                    pathname ===
-                    `/category/${slug}`
-
-                  return (
-
-                    <Link
-                      key={category}
-                      href={`/category/${slug}`}
-                      className={`
-                        text-[11px]
-                        font-medium
-                        uppercase
-                        tracking-[0.22em]
-                        transition
-                        ${
-                          isActive
-                            ? "text-foreground"
-                            : "text-muted-foreground hover:text-foreground"
-                        }
-                      `}
-                    >
-
-                      {category}
-
-                    </Link>
-
-                  )
-                }
-              )}
-
-            </div>
-
-          </div>
-
         </div>
-
-        {/* MOBILE MENU */}
-
-        {isMenuOpen && (
-
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: -10,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            exit={{
-              opacity: 0,
-              y: -10,
-            }}
-            transition={{
-              duration: 0.3,
-            }}
-            className="
-              border-t
-              border-border
-              bg-background
-              md:hidden
-            "
-          >
-
-            <nav
-              className="
-                flex
-                flex-col
-                gap-1
-                px-5
-                py-6
-              "
-            >
-
-              {navLinks.map(
-                (link) => {
-
-                  const isActive =
-                    pathname ===
-                    link.href
-
-                  return (
-
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={`
-                        rounded-xl
-                        px-4
-                        py-3
-                        text-sm
-                        uppercase
-                        tracking-[0.16em]
-                        transition
-                        ${
-                          isActive
-                            ? "bg-card text-foreground"
-                            : "text-muted-foreground hover:bg-card"
-                        }
-                      `}
-                    >
-
-                      {link.label}
-
-                    </Link>
-
-                  )
-                }
-              )}
-
-              {/* MOBILE CATEGORIES */}
-
-              <div
-                className="
-                  mt-6
-                  flex
-                  flex-wrap
-                  gap-3
-                "
-              >
-
-                {categories.map(
-                  (category) => {
-
-                    const slug =
-                      category
-                        .toLowerCase()
-                        .replace(
-                          /\s+/g,
-                          "-"
-                        )
-
-                    return (
-
-                      <Link
-                        key={category}
-                        href={`/category/${slug}`}
-                        className="
-                          rounded-full
-                          border
-                          border-border
-                          px-4
-                          py-2
-                          text-[10px]
-                          uppercase
-                          tracking-[0.18em]
-                          text-muted-foreground
-                        "
-                      >
-
-                        {category}
-
-                      </Link>
-
-                    )
-                  }
-                )}
-
-              </div>
-
-            </nav>
-
-          </motion.div>
-
-        )}
 
       </motion.header>
 
@@ -632,9 +417,13 @@ export function Header() {
         onClose={() =>
           setIsSearchOpen(false)
         }
-        posts={searchPosts}
+        posts={posts.map((post) => ({
+          title: post.title,
+          slug: post.slug.current,
+          category: post.category,
+        }))}
       />
 
     </>
   )
-    }
+  }
