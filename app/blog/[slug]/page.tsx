@@ -68,6 +68,9 @@ async function getPost(slug: string) {
 
       _type == "callout" => {
         ...,
+        buttonText,
+        buttonLink,
+        
         products[]{
           name,
           link
