@@ -117,7 +117,7 @@ function getTableOfContents(body: any[] = []) {
     .filter(
       (block) =>
         block?._type === "block" &&
-        ["h2", "h3"].includes(block?.style)
+        block?.style === "h2"
     )
     .map((block) => {
       const text =
@@ -127,7 +127,7 @@ function getTableOfContents(body: any[] = []) {
 
       return {
         text,
-        level: block.style,
+        level: "h2",
         id: headingToId(text),
       }
     })
