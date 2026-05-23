@@ -20,7 +20,7 @@ import { ReadingProgress } from "@/components/reading-progress"
 
 import TableOfContents from "@/components/table-of-contents"
 import MobileTOC from "@/components/mobile-toc"
-import ShareButtons from "./sharebutton"
+import ShareButtons from "./ShareButtons"
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 
