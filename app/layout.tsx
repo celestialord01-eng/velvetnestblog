@@ -81,9 +81,14 @@ export const metadata: Metadata = {
   applicationName: "VelvetNest",
 
   verification: {
-    google:
-      "VNIYacXcf0rmfRE85E2TvSMkC_kWkblDkteJXIMavCk",
+  google:
+    "VNIYacXcf0rmfRE85E2TvSMkC_kWkblDkteJXIMavCk",
+
+  other: {
+    "p:domain_verify":
+      "69d7bd25e2bed4760b6ebd58e1dee5ff",
   },
+},
 
   alternates: {
     canonical:
