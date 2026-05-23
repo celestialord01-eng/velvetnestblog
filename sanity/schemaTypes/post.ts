@@ -44,7 +44,7 @@ export default defineType({
       initialValue: () => new Date().toISOString(),
     }),
 
-    // CATEGORY REFERENCE
+    // CATEGORY
     defineField({
       name: "category",
       title: "Category",
@@ -53,14 +53,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
 
-    // FEATURED POST
+    // FEATURED
     defineField({
       name: "featured",
       title: "Featured Post",
       type: "boolean",
       initialValue: false,
-      description:
-        "Enable this to feature the article on homepage/category pages.",
     }),
 
     // MAIN IMAGE
@@ -96,7 +94,6 @@ export default defineType({
       name: "pinterestTitle",
       title: "Pinterest Title",
       type: "string",
-      description: "Optimized title for Pinterest sharing.",
     }),
 
     // PINTEREST DESCRIPTION
@@ -112,7 +109,6 @@ export default defineType({
       name: "seoTitle",
       title: "SEO Title",
       type: "string",
-      description: "Optional custom SEO title.",
     }),
 
     // SEO DESCRIPTION
@@ -121,7 +117,6 @@ export default defineType({
       title: "SEO Description",
       type: "text",
       rows: 3,
-      description: "Optional custom meta description.",
     }),
 
     // TAGS
@@ -142,10 +137,9 @@ export default defineType({
       name: "readingTime",
       title: "Reading Time",
       type: "number",
-      description: "Optional manual reading time in minutes.",
     }),
 
-    // BODY CONTENT
+    // BODY
     defineField({
       name: "body",
       title: "Body",
@@ -175,31 +169,62 @@ export default defineType({
               { title: "Bold", value: "strong" },
               { title: "Italic", value: "em" },
             ],
-
-            annotations: [
-              {
-                name: "link",
-                type: "object",
-                title: "URL",
-
-                fields: [
-                  defineField({
-                    name: "href",
-                    title: "URL",
-                    type: "url",
-                  }),
-                ],
-              },
-            ],
           },
         },
 
         // IMAGE BLOCK
-        
-{
-  type: "customImage",
-},
-        // CALLOUT BOX
+        {
+          type: "image",
+
+          options: {
+            hotspot: true,
+          },
+
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Alt Text",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            }),
+
+            defineField({
+              name: "caption",
+              title: "Caption",
+              type: "string",
+            }),
+          ],
+        },
+
+        // LINK BLOCK
+        {
+          name: "linkBlock",
+          title: "Link Button",
+          type: "object",
+
+          fields: [
+            defineField({
+              name: "text",
+              title: "Link Text",
+              type: "string",
+            }),
+
+            defineField({
+              name: "url",
+              title: "URL",
+              type: "url",
+            }),
+          ],
+
+          preview: {
+            select: {
+              title: "text",
+              subtitle: "url",
+            },
+          },
+        },
+
+        // CALLOUT
         {
           type: "callout",
         },
