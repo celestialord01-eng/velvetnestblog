@@ -10,8 +10,6 @@ export const callout = defineType({
       name: "title",
       title: "Title",
       type: "string",
-      description:
-        "Examples: Pro Tip, Shop the Look, Best Finds, Editor’s Pick",
       validation: (Rule) => Rule.required(),
     }),
 
@@ -23,37 +21,15 @@ export const callout = defineType({
     }),
 
     defineField({
-      name: "products",
-      title: "Affiliate Products",
-      type: "array",
+      name: "buttonText",
+      title: "Button Text",
+      type: "string",
+    }),
 
-      of: [
-        {
-          type: "object",
-
-          fields: [
-            defineField({
-              name: "name",
-              title: "Product Name",
-              type: "string",
-              validation: (Rule) => Rule.required(),
-            }),
-
-            defineField({
-              name: "link",
-              title: "Affiliate Link",
-              type: "url",
-              validation: (Rule) => Rule.required(),
-            }),
-          ],
-
-          preview: {
-            select: {
-              title: "name",
-            },
-          },
-        },
-      ],
+    defineField({
+      name: "buttonLink",
+      title: "Button Link",
+      type: "url",
     }),
   ],
 
