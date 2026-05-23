@@ -50,7 +50,6 @@ async function getPost(slug: string) {
     title,
     excerpt,
     publishedAt,
-    body,
     featured,
     readingTime,
     tags,
@@ -62,6 +61,25 @@ async function getPost(slug: string) {
 
     pinterestTitle,
     pinterestDescription,
+
+    body[]{
+      ...,
+
+      _type == "image" => {
+        ...,
+        asset->{
+          url
+        }
+      },
+
+      _type == "callout" => {
+        ...,
+        products[]{
+          name,
+          link
+        }
+      }
+    },
 
     mainImage{
       asset->{
@@ -238,6 +256,73 @@ const portableTextComponents = {
           </figcaption>
         )}
       </figure>
+    ),
+
+    callout: ({ value }: any) => (
+      <div
+        className="
+          my-12
+          rounded-[2rem]
+          border
+          border-[#e3d7ca]
+          bg-[#f8f3ee]
+          p-7
+          shadow-sm
+        "
+      >
+        {value?.title && (
+          <h4
+            className="
+              mb-3
+              font-serif
+              text-2xl
+              text-foreground
+            "
+          >
+            ✨ {value.title}
+          </h4>
+        )}
+
+        {value?.text && (
+          <p
+            className="
+              text-[1.08rem]
+              leading-[1.9]
+              text-[#5b5148]
+            "
+          >
+            {value.text}
+          </p>
+        )}
+
+        {value?.products?.length > 0 && (
+          <div className="mt-5 flex flex-wrap gap-2">
+            {value.products.map(
+              (product: any, index: number) => (
+                <a
+                  key={index}
+                  href={product.link}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="
+                    rounded-full
+                    border
+                    border-border
+                    bg-white
+                    px-4
+                    py-2
+                    text-sm
+                    transition
+                    hover:bg-stone-100
+                  "
+                >
+                  {product.name}
+                </a>
+              )
+            )}
+          </div>
+        )}
+      </div>
     ),
   },
 
@@ -438,377 +523,4 @@ const portableTextComponents = {
       </a>
     ),
   },
-}
-
-/* =========================================================
-   SHARE BUTTONS
-========================================================= */
-
-function ShareButtons() {
-  const shareLinks = [
-    {
-      icon: <Pin size={16} />,
-      href: "#",
-    },
-
-    {
-      icon: <Globe size={16} />,
-      href: "#",
-    },
-
-    {
-      icon: <MessageCircle size={16} />,
-      href: "#",
-    },
-
-    {
-      icon: <Send size={16} />,
-      href: "#",
-    },
-
-    {
-      icon: <Camera size={16} />,
-      href: "https://instagram.com",
-    },
-  ]
-
-  return (
-    <div className="flex flex-wrap gap-4">
-      {shareLinks.map(
-        (item, index) => (
-          <a
-            key={index}
-            href={item.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="
-              flex
-              h-11
-              w-11
-              items-center
-              justify-center
-              rounded-full
-              border
-              border-border
-              bg-card
-              text-foreground
-              transition-all
-              duration-300
-              hover:-translate-y-1
-              hover:shadow-md
-            "
-          >
-            {item.icon}
-          </a>
-        )
-      )}
-
-      <button
-        className="
-          flex
-          h-11
-          w-11
-          items-center
-          justify-center
-          rounded-full
-          border
-          border-border
-          bg-card
-          text-foreground
-          transition-all
-          duration-300
-          hover:-translate-y-1
-          hover:shadow-md
-        "
-      >
-        <LinkIcon size={16} />
-      </button>
-    </div>
-  )
-}
-
-/* =========================================================
-   PAGE
-========================================================= */
-
-export default async function BlogPostPage({
-  params,
-}: BlogPostPageProps) {
-  const { slug } = await params
-
-  const post =
-    await getPost(slug)
-
-  if (!post) {
-    notFound()
-  }
-
-  const bodyContent =
-    Array.isArray(post?.body)
-      ? post.body
-      : []
-
-  const toc =
-    getTableOfContents(
-      bodyContent
-    )
-
-  const stats =
-    readingTime(
-      getPlainText(
-        bodyContent
-      )
-    )
-
-  return (
-    <div className="min-h-screen bg-background text-foreground">
-      <ReadingProgress />
-
-      <Header />
-
-      <main>
-
-        {/* HERO */}
-
-        <section className="border-b border-border">
-          <div
-            className="
-              mx-auto
-              max-w-7xl
-              px-5
-              py-20
-              md:py-32
-            "
-          >
-
-            <Link
-              href="/blog"
-              className="
-                mb-12
-                inline-flex
-                items-center
-                gap-2
-                text-sm
-                font-medium
-                text-muted-foreground
-                transition
-                hover:text-foreground
-              "
-            >
-              <ArrowLeft className="h-4 w-4" />
-
-              Back to Blog
-            </Link>
-
-            <div
-              className="
-                grid
-                gap-20
-                lg:grid-cols-[1fr_320px]
-              "
-            >
-
-              {/* LEFT */}
-
-              <div>
-
-                <div
-                  className="
-                    flex
-                    flex-wrap
-                    items-center
-                    gap-5
-                    text-sm
-                    text-muted-foreground
-                  "
-                >
-
-                  {post.category?.title && (
-                    <span
-                      className="
-                        rounded-full
-                        border
-                        border-border
-                        bg-card
-                        px-4
-                        py-1.5
-                        text-xs
-                        font-medium
-                        uppercase
-                        tracking-[0.18em]
-                        text-foreground
-                      "
-                    >
-                      {post.category.title}
-                    </span>
-                  )}
-
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4" />
-
-                    {post.publishedAt
-                      ? new Date(
-                          post.publishedAt
-                        ).toDateString()
-                      : "Recently Published"}
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4" />
-
-                    {stats.text}
-                  </div>
-
-                </div>
-
-                <h1
-                  className="
-                    mt-10
-                    max-w-5xl
-                    font-serif
-                    text-[3rem]
-                    leading-[0.95]
-                    tracking-[-0.04em]
-                    text-foreground
-                    md:text-[5.8rem]
-                  "
-                >
-                  {post.title}
-                </h1>
-
-                {post.excerpt && (
-                  <p
-                    className="
-                      mt-10
-                      max-w-3xl
-                      text-[1.2rem]
-                      leading-[2]
-                      text-[#5f534b]
-                      md:text-[1.35rem]
-                    "
-                  >
-                    {post.excerpt}
-                  </p>
-                )}
-
-                <div className="mt-12">
-                  <ShareButtons />
-                </div>
-
-              </div>
-
-              {/* DESKTOP TOC */}
-
-              <aside className="hidden lg:block">
-
-                <div
-                  className="
-                    sticky
-                    top-28
-                    rounded-[2rem]
-                    border
-                    border-border
-                    bg-card/80
-                    p-7
-                    backdrop-blur
-                  "
-                >
-                  <TableOfContents
-                    items={toc}
-                  />
-                </div>
-
-              </aside>
-
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* FEATURED IMAGE */}
-
-        {post.mainImage?.asset?.url && (
-          <section className="py-12">
-            <div
-              className="
-                mx-auto
-                max-w-6xl
-                px-5
-              "
-            >
-
-              <div
-                className="
-                  relative
-                  aspect-[4/5]
-                  overflow-hidden
-                  rounded-[2.5rem]
-                  md:aspect-[16/8]
-                "
-              >
-
-                <Image
-                  src={
-                    post.mainImage.asset.url
-                  }
-                  alt={
-                    post.mainImage?.alt ||
-                    post.title
-                  }
-                  fill
-                  priority
-                  className="object-cover"
-                />
-
-              </div>
-
-            </div>
-
-          </section>
-        )}
-
-        {/* MOBILE TOC */}
-
-        <div
-          className="
-            mx-auto
-            max-w-2xl
-            px-5
-            lg:hidden
-          "
-        >
-          <MobileTOC items={toc} />
-        </div>
-
-        {/* ARTICLE */}
-
-        <section className="pb-32 pt-12">
-
-          <div
-            className="
-              mx-auto
-              max-w-7xl
-              px-5
-            "
-          >
-
-            <article className="mx-auto max-w-2xl">
-              <PortableText
-                value={bodyContent}
-                components={
-                  portableTextComponents
-                }
-              />
-            </article>
-
-          </div>
-
-        </section>
-
-      </main>
-
-      <Footer />
-    </div>
-  )
-      }
+                 }
