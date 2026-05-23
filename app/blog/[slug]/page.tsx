@@ -356,32 +356,23 @@ const portableTextComponents = {
     },
 
     h3: ({ children }: any) => {
-      const text =
-        typeof children?.[0] === "string"
-          ? children[0]
-          : ""
-
-      const id = headingToId(text)
-
-      return (
-        <h3
-          id={id}
-          className="
-            scroll-mt-32
-            mt-16
-            mb-6
-            font-serif
-            text-[1.8rem]
-            leading-[1]
-            tracking-[-0.03em]
-            text-foreground
-            md:text-[2.5rem]
-          "
-        >
-          {children}
-        </h3>
-      )
-    },
+  return (
+    <h3
+      className="
+        mt-16
+        mb-6
+        font-serif
+        text-[1.8rem]
+        leading-[1]
+        tracking-[-0.03em]
+        text-foreground
+        md:text-[2.5rem]
+      "
+    >
+      {children}
+    </h3>
+  )
+},
 
     normal: ({ children }: any) => (
       <p
