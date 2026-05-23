@@ -27,7 +27,7 @@ import { SearchDialog } from "@/components/search-dialog"
 ========================================================= */
 
 interface HeaderProps {
-  posts: {
+  posts?: {
     title: string
     slug: {
       current: string
@@ -417,7 +417,7 @@ export function Header({
         onClose={() =>
           setIsSearchOpen(false)
         }
-        posts={posts.map((post) => ({
+        posts={(posts || []).map((post) => ({
           title: post.title,
           slug: post.slug.current,
           category: post.category,
