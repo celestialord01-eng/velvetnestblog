@@ -7,12 +7,6 @@ import {
   ArrowLeft,
   Clock,
   Calendar,
-  Pin,
-  Globe,
-  Send,
-  MessageCircle,
-  Camera,
-  Link as LinkIcon,
 } from "lucide-react"
 
 import { PortableText } from "@portabletext/react"
@@ -356,23 +350,23 @@ const portableTextComponents = {
     },
 
     h3: ({ children }: any) => {
-  return (
-    <h3
-      className="
-        mt-16
-        mb-6
-        font-serif
-        text-[1.8rem]
-        leading-[1]
-        tracking-[-0.03em]
-        text-foreground
-        md:text-[2.5rem]
-      "
-    >
-      {children}
-    </h3>
-  )
-},
+      return (
+        <h3
+          className="
+            mt-16
+            mb-6
+            font-serif
+            text-[1.8rem]
+            leading-[1]
+            tracking-[-0.03em]
+            text-foreground
+            md:text-[2.5rem]
+          "
+        >
+          {children}
+        </h3>
+      )
+    },
 
     normal: ({ children }: any) => (
       <p
@@ -514,4 +508,223 @@ const portableTextComponents = {
       </a>
     ),
   },
-                 }
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+export default async function BlogPostPage({
+  params,
+}: BlogPostPageProps) {
+  const { slug } = await params
+
+  const post = await getPost(slug)
+
+  if (!post) {
+    notFound()
+  }
+
+  const toc = getTableOfContents(post.body || [])
+
+  const plainText = getPlainText(post.body || [])
+
+  const stats = readingTime(plainText)
+
+  return (
+    <>
+      <ReadingProgress />
+
+      <Header />
+
+      <main className="bg-[#fdfaf7]">
+        <section className="border-b border-[#ece3da]">
+          <div className="mx-auto max-w-7xl px-6 py-16 md:px-10 md:py-24">
+            <Link
+              href="/blog"
+              className="
+                mb-10
+                inline-flex
+                items-center
+                gap-2
+                text-sm
+                text-muted-foreground
+                transition
+                hover:text-foreground
+              "
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Blog
+            </Link>
+
+            <div className="grid gap-16 lg:grid-cols-[1fr_320px]">
+              <div>
+                {post.category && (
+                  <div className="mb-6">
+                    <span
+                      className="
+                        rounded-full
+                        bg-[#efe4d8]
+                        px-4
+                        py-2
+                        text-xs
+                        font-medium
+                        uppercase
+                        tracking-[0.2em]
+                        text-[#7a5f49]
+                      "
+                    >
+                      {post.category.title}
+                    </span>
+                  </div>
+                )}
+
+                <h1
+                  className="
+                    max-w-4xl
+                    font-serif
+                    text-[3.5rem]
+                    leading-[0.95]
+                    tracking-[-0.06em]
+                    text-foreground
+                    md:text-[6rem]
+                  "
+                >
+                  {post.title}
+                </h1>
+
+                {post.excerpt && (
+                  <p
+                    className="
+                      mt-8
+                      max-w-3xl
+                      text-[1.2rem]
+                      leading-[2]
+                      text-[#5f554d]
+                      md:text-[1.35rem]
+                    "
+                  >
+                    {post.excerpt}
+                  </p>
+                )}
+
+                <div
+                  className="
+                    mt-10
+                    flex
+                    flex-wrap
+                    items-center
+                    gap-6
+                    text-sm
+                    text-muted-foreground
+                  "
+                >
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+
+                    {new Date(
+                      post.publishedAt
+                    ).toLocaleDateString()}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4" />
+
+                    {Math.ceil(stats.minutes)} min read
+                  </div>
+                </div>
+              </div>
+
+              <div className="hidden lg:block">
+                <div className="sticky top-32">
+                  <TableOfContents items={toc} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {post.mainImage?.asset?.url && (
+          <section className="py-12">
+            <div className="mx-auto max-w-7xl px-6 md:px-10">
+              <div
+                className="
+                  relative
+                  overflow-hidden
+                  rounded-[2.5rem]
+                  aspect-[16/9]
+                "
+              >
+                <Image
+                  src={post.mainImage.asset.url}
+                  alt={
+                    post.mainImage.alt ||
+                    post.title
+                  }
+                  fill
+                  priority
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          </section>
+        )}
+
+        <section className="pb-24 pt-8">
+          <div className="mx-auto max-w-4xl px-6 md:px-10">
+            <div className="mb-14 lg:hidden">
+              <MobileTOC items={toc} />
+            </div>
+
+            <article className="prose prose-neutral max-w-none">
+              <PortableText
+                value={post.body}
+                components={portableTextComponents}
+              />
+            </article>
+
+            {post.tags?.length > 0 && (
+              <div className="mt-20">
+                <h3
+                  className="
+                    mb-5
+                    font-serif
+                    text-2xl
+                  "
+                >
+                  Tags
+                </h3>
+
+                <div className="flex flex-wrap gap-3">
+                  {post.tags.map(
+                    (
+                      tag: string,
+                      index: number
+                    ) => (
+                      <span
+                        key={index}
+                        className="
+                          rounded-full
+                          border
+                          border-border
+                          bg-white
+                          px-4
+                          py-2
+                          text-sm
+                        "
+                      >
+                        #{tag}
+                      </span>
+                    )
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </>
+  )
+    }
