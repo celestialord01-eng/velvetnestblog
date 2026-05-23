@@ -409,6 +409,140 @@ export function Header({
         </div>
 
       </motion.header>
+      {/* MOBILE MENU PANEL */}
+
+{isMenuOpen && (
+
+  <motion.div
+    initial={{
+      opacity: 0,
+      y: -20,
+    }}
+    animate={{
+      opacity: 1,
+      y: 0,
+    }}
+    exit={{
+      opacity: 0,
+      y: -20,
+    }}
+    transition={{
+      duration: 0.3,
+    }}
+    className="
+      fixed
+      top-[88px]
+      left-0
+      z-40
+      w-full
+      border-b
+      border-border
+      bg-background
+      px-6
+      py-8
+      shadow-2xl
+      md:hidden
+    "
+  >
+
+    <nav
+      className="
+        flex
+        flex-col
+        gap-6
+      "
+    >
+
+      {navLinks.map((link) => {
+
+        const isActive =
+          pathname === link.href
+
+        return (
+
+          <Link
+            key={link.href}
+            href={link.href}
+            className={`
+              text-lg
+              font-medium
+              transition
+              ${
+                isActive
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              }
+            `}
+            onClick={() =>
+              setIsMenuOpen(false)
+            }
+          >
+            {link.label}
+          </Link>
+
+        )
+
+      })}
+
+    </nav>
+
+    {/* CATEGORIES */}
+
+    <div
+      className="
+        mt-8
+        border-t
+        border-border
+        pt-6
+      "
+    >
+
+      <p
+        className="
+          mb-4
+          text-xs
+          uppercase
+          tracking-[0.25em]
+          text-muted-foreground
+        "
+      >
+        Categories
+      </p>
+
+      <div
+        className="
+          flex
+          flex-wrap
+          gap-3
+        "
+      >
+
+        {categories.map((category) => (
+
+          <span
+            key={category}
+            className="
+              rounded-full
+              border
+              border-border
+              px-4
+              py-2
+              text-sm
+              text-muted-foreground
+            "
+          >
+            {category}
+          </span>
+
+        ))}
+
+      </div>
+
+    </div>
+
+  </motion.div>
+
+)}
 
       {/* SEARCH DIALOG */}
 
