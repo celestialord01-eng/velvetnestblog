@@ -3,22 +3,34 @@
 import Script from 'next/script'
 
 export default function GoogleAnalytics() {
+
+  const GA_ID =
+    process.env.NEXT_PUBLIC_GA_ID
+
+  if (!GA_ID) return null
+
   return (
     <>
       <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-B05YP84NEW"
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
         strategy="afterInteractive"
       />
 
-      <Script id="google-analytics" strategy="afterInteractive">
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+      >
         {`
-          window.dataLayer = window.dataLayer || [];
+          window.dataLayer =
+            window.dataLayer || [];
 
-          function gtag(){dataLayer.push(arguments);}
+          function gtag(){
+            dataLayer.push(arguments);
+          }
 
           gtag('js', new Date());
 
-          gtag('config', 'G-B05YP84NEW');
+          gtag('config', '${GA_ID}');
         `}
       </Script>
     </>
