@@ -82,7 +82,7 @@ export const metadata: Metadata = {
 
   verification: {
   google:
-    "VNIYacXcf0rmfRE85E2TvSMkC_kWkblDkteJXIMavCk",
+    "Nxjp-fOBqHLoS2smYE_TIJzSf_dh0_URnb-AZu3JeGg",
 
   other: {
     "p:domain_verify":
