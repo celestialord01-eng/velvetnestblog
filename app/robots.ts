@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://velvet-blog.vercel.app/sitemap.xml',
+    sitemap: 'https://velvetnestblog.vercel.app/sitemap.xml',
   }
 }
