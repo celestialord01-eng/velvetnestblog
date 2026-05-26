@@ -4,7 +4,7 @@ import { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://velvet-blog.vercel.app',
+      url: 'https://velvetnestblog.vercel.app',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
