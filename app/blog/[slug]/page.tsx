@@ -225,8 +225,7 @@ const portableTextComponents = {
         <div
           className="
             relative
-            h-[340px]
-            md:h-[640px]
+            aspect-[2/3]
             overflow-hidden
             rounded-[2.5rem]
           "
