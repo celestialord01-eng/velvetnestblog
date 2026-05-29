@@ -22,6 +22,28 @@ export default defineType({
       title: "Caption",
       type: "string",
     }),
+
+    defineField({
+      name: "layout",
+      title: "Image Layout",
+      type: "string",
+      initialValue: "pinterest",
+
+      options: {
+        list: [
+          {
+            title: "Pinterest (2:3)",
+            value: "pinterest",
+          },
+          {
+            title: "Full Width",
+            value: "fullWidth",
+          },
+        ],
+
+        layout: "radio",
+      },
+    }),
   ],
 
   preview: {
