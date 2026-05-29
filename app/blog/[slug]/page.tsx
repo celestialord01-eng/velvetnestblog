@@ -220,7 +220,43 @@ export async function generateMetadata({
 
 const portableTextComponents = {
   types: {
-    image: ({ value }: any) => (
+  image: ({ value }: any) => {
+    const layout =
+      value?.layout || "pinterest"
+
+    if (layout === "fullWidth") {
+      return (
+        <figure className="my-16">
+          <Image
+            src={urlFor(value).url()}
+            alt={value?.alt || "Blog image"}
+            width={1200}
+            height={800}
+            className="
+              w-full
+              h-auto
+              rounded-[2.5rem]
+            "
+          />
+
+          {value?.caption && (
+            <figcaption
+              className="
+                mt-5
+                text-center
+                text-sm
+                italic
+                text-muted-foreground
+              "
+            >
+              {value.caption}
+            </figcaption>
+          )}
+        </figure>
+      )
+    }
+
+    return (
       <figure className="my-16">
         <div
           className="
@@ -234,7 +270,7 @@ const portableTextComponents = {
             src={urlFor(value).url()}
             alt={value?.alt || "Blog image"}
             fill
-            className="object-contain"
+            className="object-cover"
           />
         </div>
 
@@ -252,7 +288,8 @@ const portableTextComponents = {
           </figcaption>
         )}
       </figure>
-    ),
+    )
+  },
 
     callout: ({ value }: any) => (
       <div
