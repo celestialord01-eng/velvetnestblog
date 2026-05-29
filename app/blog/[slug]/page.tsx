@@ -234,7 +234,7 @@ const portableTextComponents = {
             src={urlFor(value).url()}
             alt={value?.alt || "Blog image"}
             fill
-            className="object-cover"
+            className="object-contain"
           />
         </div>
 
