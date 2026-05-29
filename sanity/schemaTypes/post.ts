@@ -173,28 +173,51 @@ export default defineType({
         },
 
         // IMAGE BLOCK
-        {
-          type: "image",
+{
+  type: "image",
 
-          options: {
-            hotspot: true,
+  options: {
+    hotspot: true,
+  },
+
+  fields: [
+    defineField({
+      name: "alt",
+      title: "Alt Text",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+
+    defineField({
+      name: "caption",
+      title: "Caption",
+      type: "string",
+    }),
+
+    defineField({
+      name: "layout",
+      title: "Image Layout",
+      type: "string",
+
+      initialValue: "pinterest",
+
+      options: {
+        list: [
+          {
+            title: "Pinterest (2:3)",
+            value: "pinterest",
           },
+          {
+            title: "Full Width",
+            value: "fullWidth",
+          },
+        ],
 
-          fields: [
-            defineField({
-              name: "alt",
-              title: "Alt Text",
-              type: "string",
-              validation: (Rule) => Rule.required(),
-            }),
-
-            defineField({
-              name: "caption",
-              title: "Caption",
-              type: "string",
-            }),
-          ],
-        },
+        layout: "radio",
+      },
+    }),
+  ],
+},
 
         // LINK BLOCK
         {
