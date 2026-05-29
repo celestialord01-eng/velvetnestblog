@@ -22,7 +22,11 @@ export default defineType({
       title: "Caption",
       type: "string",
     }),
-
+defineField({
+  name: "testField",
+  title: "🚨 TEST FIELD 🚨",
+  type: "string",
+}),
     defineField({
       name: "layout",
       title: "Image Layout",
