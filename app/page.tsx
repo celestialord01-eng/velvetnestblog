@@ -115,225 +115,150 @@ export default async function HomePage() {
         {/* =========================================================
             HERO
         ========================================================= */}
+<section className="relative overflow-hidden">
 
-        <section
-          className="
-            relative
-            overflow-hidden
-            border-b
-            border-border
-          "
-        >
+  <div className="relative h-[85vh] min-h-[650px]">
 
-          <Reveal>
+    {/* Background Image */}
 
-            <div
+    {hero?.heroImage && (
+
+      <Image
+        src={urlFor(hero.heroImage).width(2200).url()}
+        alt="VelvetNest Hero"
+        fill
+        priority
+        className="object-cover"
+      />
+
+    )}
+
+    {/* Dark Luxury Overlay */}
+
+    <div className="absolute inset-0 bg-black/45" />
+
+    {/* Content */}
+
+    <div className="absolute inset-0 flex items-center">
+
+      <div className="mx-auto w-full max-w-7xl px-6">
+
+        <Reveal>
+
+          <div className="max-w-3xl">
+
+            <p
               className="
-                mx-auto
-                grid
-                max-w-7xl
-                items-center
-                gap-20
-                px-5
-                py-24
-                md:py-36
-                lg:grid-cols-2
+                mb-6
+                text-xs
+                uppercase
+                tracking-[0.45em]
+                text-[#d6b06f]
               "
             >
+              {hero?.eyebrow || "Welcome To VelvetNest"}
+            </p>
 
-              {/* LEFT */}
+            <h1
+              className="
+                font-serif
+                text-5xl
+                leading-[1]
+                text-white
+                md:text-7xl
+                lg:text-8xl
+              "
+            >
+              {hero?.title1}
 
-              <div
+              <br />
+
+              {hero?.title2}
+
+              <span className="italic text-[#d6b06f]">
+                {" "}
+                {hero?.title3}
+              </span>
+
+            </h1>
+
+            <p
+              className="
+                mt-8
+                max-w-xl
+                text-lg
+                leading-relaxed
+                text-white/80
+              "
+            >
+              {hero?.description}
+            </p>
+
+            <div className="mt-10 flex flex-wrap gap-4">
+
+              <Button
+                asChild
+                size="lg"
                 className="
-                  space-y-8
-                  text-center
-                  lg:text-left
+                  h-14
+                  rounded-none
+                  bg-[#d6b06f]
+                  px-10
+                  text-black
+                  uppercase
+                  tracking-[0.2em]
+                  hover:opacity-90
                 "
               >
-
-                <p
-                  className="
-                    text-[11px]
-                    uppercase
-                    tracking-[0.35em]
-                    text-muted-foreground
-                  "
+                <Link
+                  href={
+                    hero?.buttonLink ||
+                    "/blog"
+                  }
                 >
-                  {hero?.eyebrow ||
-                    "Welcome to VelvetNest"}
-                </p>
+                  {hero?.buttonText ||
+                    "Explore Blog"}
+                </Link>
+              </Button>
 
-                <h1
-                  className="
-                    font-serif
-                    text-[4rem]
-                    leading-[0.92]
-                    tracking-[-0.06em]
-                    text-foreground
-                    md:text-[5.8rem]
-                    lg:text-[7rem]
-                  "
-                >
-
-                  {hero?.title1 && (
-                    <span className="block">
-                      {hero.title1}
-                    </span>
-                  )}
-
-                  {hero?.title2 && (
-                    <span className="block">
-                      {hero.title2}
-                    </span>
-                  )}
-
-                  {hero?.title3 && (
-                    <span
-                      className="
-                        block
-                        text-[#9b7f66]
-                      "
-                    >
-                      {hero.title3}
-                    </span>
-                  )}
-
-                </h1>
-
-                <p
-                  className="
-                    mx-auto
-                    max-w-xl
-                    text-[1.15rem]
-                    leading-[2]
-                    text-[#6b6057]
-                    lg:mx-0
-                  "
-                >
-                  {hero?.description}
-                </p>
-
-                {/* BUTTONS */}
-
-                <div
-                  className="
-                    flex
-                    flex-col
-                    gap-4
-                    sm:flex-row
-                    sm:justify-center
-                    lg:justify-start
-                  "
-                >
-
-                  <Button
-                    asChild
-                    size="lg"
-                    className="
-                      h-14
-                      rounded-full
-                      bg-[#2c2623]
-                      px-8
-                      text-[12px]
-                      uppercase
-                      tracking-[0.18em]
-                      text-white
-                      hover:bg-black
-                    "
-                  >
-
-                    <Link
-  href={
-    hero?.buttonLink ||
-    "/blog"
-  }
-  className="flex items-center gap-2"
->
-  {hero?.buttonText ||
-    "Explore the Blog"}
-
-  <ArrowRight className="h-4 w-4" />
-</Link>
-
-                  </Button>
-
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="
-                      h-14
-                      rounded-full
-                      border-border
-                      bg-card
-                      px-8
-                      text-[12px]
-                      uppercase
-                      tracking-[0.18em]
-                      hover:bg-card
-                    "
-                  >
-
-                    <Link href="/amazon-finds">
-                      Shop Amazon Finds
-                    </Link>
-
-                  </Button>
-
-                </div>
-
-              </div>
-
-              {/* HERO IMAGE */}
-
-              <div className="relative">
-
-                <div
-                  className="
-                    group
-                    relative
-                    overflow-hidden
-                    rounded-[2.8rem]
-                  "
-                >
-
-                  <div
-                    className="
-                      relative
-                      aspect-[4/5]
-                      bg-[#ede7df]
-                    "
-                  >
-
-                    {hero?.heroImage && (
-
-                      <Image
-                        src={urlFor(hero.heroImage).width(1600).url()}
-                        alt="VelvetNest Hero"
-                        fill
-                        priority
-                        className="
-                          object-cover
-                          transition-transform
-                          duration-700
-                          group-hover:scale-[1.03]
-                        "
-                      />
-
-                    )}
-
-                  </div>
-
-                </div>
-
-              </div>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="
+                  h-14
+                  rounded-none
+                  border-white
+                  bg-transparent
+                  px-10
+                  uppercase
+                  tracking-[0.2em]
+                  text-white
+                  hover:bg-white
+                  hover:text-black
+                "
+              >
+                <Link href="/amazon-finds">
+                  Amazon Finds
+                </Link>
+              </Button>
 
             </div>
 
-          </Reveal>
+          </div>
 
-        </section>
+        </Reveal>
 
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+  
+                
+                  
         {/* =========================================================
             CATEGORIES
         ========================================================= */}
