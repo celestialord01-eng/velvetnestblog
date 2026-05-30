@@ -715,6 +715,111 @@ text-[#f7f3ee]
           </div>
 
         </section>
+        {/* Amazon store front */}
+        <section
+  className="
+    mx-auto
+    max-w-7xl
+    px-5
+    py-24
+  "
+>
+
+  <div
+    className="
+      overflow-hidden
+      rounded-[2rem]
+      bg-[#2a2420]
+      text-white
+    "
+  >
+
+    <div
+      className="
+        grid
+        items-center
+        lg:grid-cols-2
+      "
+    >
+
+      {/* IMAGE */}
+
+      <div className="relative aspect-[4/3]">
+
+        <Image
+          src="/storefront-banner.jpg"
+          alt="Curated Favorites"
+          fill
+          className="object-cover"
+        />
+
+      </div>
+
+      {/* CONTENT */}
+
+      <div className="p-10 md:p-16">
+
+        <p
+          className="
+            text-xs
+            uppercase
+            tracking-[0.4em]
+            text-[#d6b06f]
+          "
+        >
+          Curated Favorites
+        </p>
+
+        <h2
+          className="
+            mt-6
+            font-serif
+            text-4xl
+            md:text-6xl
+          "
+        >
+          Shop My Monthly Picks
+        </h2>
+
+        <p
+          className="
+            mt-6
+            max-w-lg
+            text-white/70
+            leading-relaxed
+          "
+        >
+          Discover the fashion, home decor,
+          beauty and lifestyle finds I'm
+          loving right now.
+        </p>
+
+        <a
+          href="YOUR-AMAZON-STOREFRONT-LINK"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="
+            mt-8
+            inline-flex
+            bg-[#d6b06f]
+            px-8
+            py-4
+            text-sm
+            uppercase
+            tracking-[0.2em]
+            text-black
+          "
+        >
+          Visit My Storefront
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
       </main>
 
