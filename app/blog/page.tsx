@@ -132,50 +132,99 @@ export default async function BlogPage({
           >
 
             <p
-              className="
-                text-[11px]
-                uppercase
-                tracking-[0.35em]
-                text-muted-foreground
-              "
-            >
-              The VelvetNest Journal
-            </p>
+  className="
+    text-[11px]
+    uppercase
+    tracking-[0.35em]
+    text-muted-foreground
+  "
+>
+  The VelvetNest Journal
+</p>
 
-            <h1
-              className="
-                mt-5
-                font-serif
-                text-[4rem]
-                leading-[0.92]
-                tracking-[-0.06em]
-                text-foreground
-                md:text-[6rem]
-                lg:text-[7rem]
-              "
-            >
-              Stories &
-              Inspiration
-            </h1>
+<h1
+  className="
+    mt-5
+    font-serif
+    text-[4rem]
+    leading-[0.92]
+    tracking-[-0.06em]
+    md:text-[6rem]
+    lg:text-[7rem]
+  "
+>
+  Stories &
+  Inspiration
+</h1>
 
-            <p
-              className="
-                mx-auto
-                mt-8
-                max-w-2xl
-                text-[1.15rem]
-                leading-[2]
-                text-[#6b6057]
-              "
-            >
-              Discover curated fashion inspiration,
-              elevated interiors,
-              beauty rituals,
-              self-care ideas,
-              and lifestyle stories designed for intentional living.
-            </p>
+<p
+  className="
+    mx-auto
+    mt-8
+    max-w-3xl
+    text-[1.15rem]
+    leading-9
+    text-[#6b6057]
+  "
+>
+  Fashion inspiration, beautiful homes,
+  self-care rituals and intentional living—
+  thoughtfully curated for modern women.
+</p>
 
-          </div>
+<div
+  className="
+    mt-12
+    flex
+    flex-wrap
+    justify-center
+    gap-4
+  "
+>
+
+  <Link
+    href="/category/fashion"
+    className="
+      border
+      px-6
+      py-3
+      text-xs
+      uppercase
+      tracking-[0.2em]
+    "
+  >
+    Fashion
+  </Link>
+
+  <Link
+    href="/category/home-decor"
+    className="
+      border
+      px-6
+      py-3
+      text-xs
+      uppercase
+      tracking-[0.2em]
+    "
+  >
+    Home Decor
+  </Link>
+
+  <Link
+    href="/category/beauty"
+    className="
+      border
+      px-6
+      py-3
+      text-xs
+      uppercase
+      tracking-[0.2em]
+    "
+  >
+    Beauty
+  </Link>
+
+</div>
 
         </section>
 
@@ -249,13 +298,17 @@ export default async function BlogPage({
                   key={item.href}
                   href={item.href}
                   className={`
-                    text-[11px]
+                    text-xs
                     uppercase
                     tracking-[0.22em]
                     transition
                     ${
                       isActive
-                        ? "text-foreground"
+                        ? "bg-[#d6b06f]
+text-black
+px-5
+py-2
+rounded-full"
                         : "text-muted-foreground hover:text-foreground"
                     }
                   `}
@@ -311,7 +364,7 @@ export default async function BlogPage({
                 className="
                   grid
                   gap-14
-                  lg:grid-cols-2
+                  lg:grid-cols-[1.2fr_0.8fr]
                   lg:gap-20
                 "
               >
@@ -321,7 +374,7 @@ export default async function BlogPage({
                 <div
                   className="
                     relative
-                    aspect-[4/5]
+                    aspect-[16/10]
                     overflow-hidden
                     rounded-[2.8rem]
                   "
@@ -462,6 +515,237 @@ export default async function BlogPage({
           </section>
 
         )}
+                   <section
+  className="
+    border-t
+    border-border
+    py-24
+  "
+>
+
+  <div
+    className="
+      mx-auto
+      max-w-7xl
+      px-5
+    "
+  >
+
+    <div
+      className="
+        overflow-hidden
+        rounded-[2rem]
+        bg-[#2a2420]
+        text-white
+      "
+    >
+
+      <div
+        className="
+          grid
+          items-center
+          lg:grid-cols-2
+        "
+      >
+
+        <div
+          className="
+            relative
+            aspect-[4/3]
+          "
+        >
+
+          {storefrontCTA?.image && (
+
+            <Image
+              src={urlFor(storefrontCTA.image).width(1600).url()}
+              alt={storefrontCTA.title}
+              fill
+              className="object-cover"
+            />
+
+          )}
+
+        </div>
+
+        <div className="p-10 md:p-16">
+
+          <p
+            className="
+              text-xs
+              uppercase
+              tracking-[0.4em]
+              text-[#d6b06f]
+            "
+          >
+            SHOP MY FAVORITES
+          </p>
+
+          <h2
+            className="
+              mt-5
+              font-serif
+              text-4xl
+              md:text-6xl
+            "
+          >
+            Curated Finds I Actually Love
+          </h2>
+
+          <p
+            className="
+              mt-6
+              max-w-lg
+              text-white/70
+              leading-relaxed
+            "
+          >
+            Discover fashion essentials,
+            cozy home decor,
+            beauty favorites and lifestyle finds
+            personally selected for VelvetNest readers.
+          </p>
+
+          <a
+            href={storefrontCTA?.buttonLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              mt-8
+              inline-flex
+              bg-[#d6b06f]
+              px-8
+              py-4
+              text-sm
+              uppercase
+              tracking-[0.2em]
+              text-black
+            "
+          >
+            Visit Storefront
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+                   <section
+  className="
+    py-28
+  "
+>
+
+  <div
+    className="
+      mx-auto
+      max-w-7xl
+      px-5
+    "
+  >
+
+    <div
+      className="
+        grid
+        gap-16
+        items-center
+        lg:grid-cols-2
+      "
+    >
+
+      <div
+        className="
+          relative
+          aspect-[4/5]
+          overflow-hidden
+          rounded-[2rem]
+        "
+      >
+
+        {about?.image && (
+
+          <Image
+            src={urlFor(about.image).width(1200).url()}
+            alt="About VelvetNest"
+            fill
+            className="object-cover"
+          />
+
+        )}
+
+      </div>
+
+      <div>
+
+        <p
+          className="
+            text-xs
+            uppercase
+            tracking-[0.35em]
+            text-[#d6b06f]
+          "
+        >
+          About VelvetNest
+        </p>
+
+        <h2
+          className="
+            mt-5
+            font-serif
+            text-5xl
+            md:text-6xl
+          "
+        >
+          Beautiful Living,
+          Curated Daily.
+        </h2>
+
+        <p
+          className="
+            mt-8
+            max-w-xl
+            text-lg
+            leading-relaxed
+            text-muted-foreground
+          "
+        >
+          VelvetNest was created to inspire
+          women to build a life filled with
+          style, beauty and intention.
+          From fashion inspiration and home decor
+          ideas to self-care rituals and curated finds,
+          every piece of content is designed to help
+          you create your most beautiful everyday life.
+        </p>
+
+        <Link
+          href="/about"
+          className="
+            mt-8
+            inline-flex
+            border
+            border-[#d6b06f]
+            px-8
+            py-4
+            text-sm
+            uppercase
+            tracking-[0.2em]
+          "
+        >
+          Read Our Story
+        </Link>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
         {/* =========================================================
             ALL POSTS
@@ -503,7 +787,7 @@ export default async function BlogPage({
                     text-muted-foreground
                   "
                 >
-                  Latest Stories
+                  Editor's Selection
                 </p>
 
                 <h2
@@ -515,7 +799,7 @@ export default async function BlogPage({
                     md:text-[5rem]
                   "
                 >
-                  Explore Articles
+                  Fresh Inspiration
                 </h2>
 
               </div>
