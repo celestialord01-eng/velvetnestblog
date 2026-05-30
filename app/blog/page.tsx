@@ -241,7 +241,7 @@ const storefrontCTA =
   >
     Beauty
   </Link>
-
+</div>
 </div>
 
         </section>
