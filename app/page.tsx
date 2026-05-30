@@ -276,7 +276,7 @@ md:min-h-[650px]">
                   text-muted-foreground
                 "
               >
-                Browse By Category
+                Explore VelvetNest
               </p>
 
               <h2
@@ -288,7 +288,7 @@ md:min-h-[650px]">
                   md:text-[5rem]
                 "
               >
-                Find Your Inspiration
+                Curated For Every Part Of Your Lifestyle
               </h2>
 
             </div>
@@ -296,14 +296,13 @@ md:min-h-[650px]">
           </Reveal>
 
           <div
-            className="
-              mt-16
-              grid
-              gap-5
-              sm:grid-cols-2
-              lg:grid-cols-5
-            "
-          >
+  className="
+    mt-16
+    grid
+    gap-5
+    md:grid-cols-2
+  "
+>
 
             {categories.map(
               (category: any, index: number) => (
@@ -315,15 +314,18 @@ md:min-h-[650px]">
 
                   <Link
                     href={`/category/${category.slug}`}
-                    className="
-                      group
-                      relative
-                      block
-                      aspect-[3/4]
-                      overflow-hidden
-                      rounded-[2.2rem]
-                      bg-[#ece5dc]
-                    "
+                    className={`
+  group
+  relative
+  block
+  overflow-hidden
+  bg-[#ece5dc]
+  ${
+    index === 4
+      ? "aspect-[21/9] md:col-span-2"
+      : "aspect-[4/3]"
+  }
+`}
                   >
 
                     {category?.image && (
@@ -346,32 +348,32 @@ md:min-h-[650px]">
                       className="
                         absolute
                         inset-0
-                        bg-gradient-to-t
-                        from-black/40
-                        via-black/10
-                        to-transparent
+                        bg-black/35
+transition-opacity
+duration-500
+group-hover:bg-black/20
                       "
                     />
 
                     <div
                       className="
                         absolute
-                        bottom-0
-                        left-0
-                        right-0
-                        p-6
-                        text-center
+bottom-0
+left-0
+p-8
+md:p-10
                       "
                     >
 
                       <h3
-                        className="
-                          font-serif
-                          text-[2rem]
-                          tracking-[-0.03em]
-                          text-white
-                        "
-                      >
+  className="
+    font-serif
+    text-3xl
+    md:text-5xl
+    tracking-[-0.04em]
+    text-white
+  "
+>
                         {category.title}
                       </h3>
 
