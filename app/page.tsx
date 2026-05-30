@@ -115,7 +115,8 @@ const hero =
         ========================================================= */}
 <section className="relative overflow-hidden">
 
-  <div className="relative h-[85vh] min-h-[650px]">
+  <div className="relative h-[80vh] min-h-[550px]
+md:min-h-[650px]">
 
     {/* Background Image */}
 
@@ -143,7 +144,7 @@ const hero =
 
         <Reveal>
 
-          <div className="max-w-3xl">
+          <div className="max-w-2xl">
 
             <p
               className="
@@ -158,27 +159,17 @@ const hero =
             </p>
 
             <h1
-              className="
-                font-serif
-                text-5xl
-                leading-[1]
-                text-white
-                md:text-7xl
-                lg:text-8xl
-              "
-            >
-              {hero?.title1}
-
-              <br />
-
-              {hero?.title2}
-
-              <span className="italic text-[#d6b06f]">
-                {" "}
-                {hero?.title3}
-              </span>
-
-            </h1>
+  className="
+    font-serif
+    text-5xl
+    leading-[1]
+    text-white
+    md:text-7xl
+    lg:text-8xl
+  "
+>
+  {hero?.title}
+</h1>
 
             <p
               className="
