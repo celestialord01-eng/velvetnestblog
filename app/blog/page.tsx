@@ -249,9 +249,7 @@ export default async function BlogPage({
 
         </section>
 
-        {/* =========================================================
-            CATEGORY NAV
-        ========================================================= */}
+        
 
         <section
           className="
