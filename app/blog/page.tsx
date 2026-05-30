@@ -63,7 +63,25 @@ async function getPosts(
         mainImage,
         "category": categories[0]->title
       }`
-
+const storefrontCTA =
+  await client.fetch(`
+    *[_type == "storefrontCTA"][0]{
+      title,
+      description,
+      buttonText,
+      buttonLink,
+      image
+    }
+  `)
+           const about =
+  await client.fetch(`
+    *[_type == "aboutPage"][0]{
+      title,
+      subtitle,
+      description,
+      image
+    }
+  `)
   return await client.fetch(
     query,
     { category }
@@ -304,11 +322,7 @@ export default async function BlogPage({
                     transition
                     ${
                       isActive
-                        ? "bg-[#d6b06f]
-text-black
-px-5
-py-2
-rounded-full"
+                        ? "bg-[#d6b06f] text-black px-5 py-2 rounded-full"
                         : "text-muted-foreground hover:text-foreground"
                     }
                   `}
@@ -848,23 +862,21 @@ rounded-full"
 
             <div className="mt-20 text-center">
 
-              <Button
-                variant="outline"
-                size="lg"
-                className="
-                  h-14
-                  rounded-full
-                  border-border
-                  bg-card
-                  px-8
-                  text-[12px]
-                  uppercase
-                  tracking-[0.18em]
-                  hover:bg-card
-                "
-              >
-                Load More Articles
-              </Button>
+              <Link
+  href="/archives"
+  className="
+    inline-flex
+    border
+    border-[#2c2623]
+    px-12
+    py-5
+    text-sm
+    uppercase
+    tracking-[0.25em]
+  "
+>
+  Browse All Articles →
+</Link>
 
             </div>
 
