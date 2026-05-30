@@ -524,7 +524,7 @@ text-[#f7f3ee]
     "
   >
 
-    <div className="aspect-[16/7] relative">
+    <div className="aspect-[16/6] relative">
 
       <Image
         src={
@@ -616,52 +616,69 @@ text-[#f7f3ee]
       >
 
         <div
-          className="
-            relative
-            aspect-[4/3]
-            overflow-hidden
-          "
-        >
+  className="
+    relative
+    aspect-[4/3]
+    overflow-hidden
+    rounded-[1rem]
+  "
+>
 
           <Image
-            src={
-              post.mainImage
-                ? urlFor(post.mainImage)
-                    .width(800)
-                    .url()
-                : "/placeholder.jpg"
-            }
-            alt={post.title}
-            fill
-            className="object-cover"
-          />
+  src={
+    post.mainImage
+      ? urlFor(post.mainImage)
+          .width(800)
+          .url()
+      : "/placeholder.jpg"
+  }
+  alt={post.title}
+  fill
+  className="
+    object-cover
+    rounded-[1rem]
+  "
+/>
 
         </div>
 
         <div>
 
-          <p
-            className="
-              text-xs
-              uppercase
-              tracking-[0.3em]
-              text-muted-foreground
-            "
-          >
-            {post.category}
-          </p>
+  <p
+    className="
+      text-xs
+      uppercase
+      tracking-[0.3em]
+      text-muted-foreground
+    "
+  >
+    {post.category}
+  </p>
 
-          <h3
-            className="
-              mt-3
-              font-serif
-              text-3xl
-            "
-          >
-            {post.title}
-          </h3>
+  <h3
+    className="
+      mt-3
+      font-serif
+      text-2xl
+      md:text-4xl
+    "
+  >
+    {post.title}
+  </h3>
 
-        </div>
+  <p
+    className="
+      mt-4
+      text-xs
+      uppercase
+      tracking-[0.2em]
+      text-muted-foreground
+    "
+  >
+    {new Date(post.publishedAt).toDateString()}
+  </p>
+
+</div>
 
       </Link>
 
