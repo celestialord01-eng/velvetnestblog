@@ -40,17 +40,18 @@ async function getPosts(
   const query = category
 
     ? `*[
-        _type == "post" &&
-        categories[0]->slug.current == $category
-      ]
+  _type == "post" &&
+  category->slug.current == $category
+]
       | order(_createdAt desc){
         _id,
         title,
         excerpt,
         publishedAt,
-        "slug": slug.current,
-        mainImage,
-        "category": categories[0]->title
+readingTime,
+"slug": slug.current,
+mainImage,
+"category": category->title
       }`
 
     : `*[_type == "post"]
@@ -59,9 +60,10 @@ async function getPosts(
         title,
         excerpt,
         publishedAt,
-        "slug": slug.current,
-        mainImage,
-        "category": categories[0]->title
+readingTime,
+"slug": slug.current,
+mainImage,
+"category": category->title
       }`
 const storefrontCTA =
   await client.fetch(`
@@ -362,7 +364,7 @@ export default async function BlogPage({
                 text-muted-foreground
               "
             >
-              Featured Article
+              Editor's Pick
             </p>
 
             <Link
