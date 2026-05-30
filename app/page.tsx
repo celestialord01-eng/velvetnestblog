@@ -79,17 +79,8 @@ const hero =
     }
   `)
 
-  /* ABOUT */
+  
 
-  const about =
-    await client.fetch(`
-      *[_type == "aboutPage"][0]{
-        title,
-        subtitle,
-        description,
-        image
-      }
-    `)
 const featuredPost =
   blogPosts.find((post: any) => post.featured) ||
   blogPosts[0]
@@ -773,57 +764,65 @@ text-[#f7f3ee]
       <div className="p-10 md:p-16">
 
         <p
-          className="
-            text-xs
-            uppercase
-            tracking-[0.4em]
-            text-[#d6b06f]
-          "
-        >
-          {storefrontCTA?.title}
-        </p>
+  className="
+    text-xs
+    uppercase
+    tracking-[0.4em]
+    text-[#d6b06f]
+  "
+>
+  Curated Favorites
+</p>
 
-        <h2
-          className="
-            mt-6
-            font-serif
-            text-4xl
-            md:text-6xl
-          "
-        >
-          {storefrontCTA?.description}
-        </h2>
-
+<h2
+  className="
+    mt-6
+    font-serif
+    text-4xl
+    md:text-6xl
+  "
+>
+  {storefrontCTA?.title}
+</h2>
         <p
-          className="
-            mt-6
-            max-w-lg
-            text-white/70
-            leading-relaxed
-          "
-        >
-          {storefrontCTA?.buttonText}
-          
-        </p>
-
-        <a
-          href="https://a.co/d/05Q1rDqQ"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="
-            mt-8
-            inline-flex
-            bg-[#d6b06f]
-            px-8
-            py-4
-            text-sm
-            uppercase
-            tracking-[0.2em]
-            text-black
-          "
-        >
-          href={storefrontCTA?.buttonLink}
-        </a>
+  className="
+    mt-6
+    max-w-lg
+    text-white/70
+    leading-relaxed
+  "
+>
+  {storefrontCTA?.description}
+</p>
+        <p
+  className="
+    mt-6
+    max-w-lg
+    text-white/70
+    leading-relaxed
+  "
+>
+  {storefrontCTA?.description}
+</p>
+        
+<a
+  href={storefrontCTA?.buttonLink}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="
+    mt-8
+    inline-flex
+    bg-[#d6b06f]
+    px-8
+    py-4
+    text-sm
+    uppercase
+    tracking-[0.2em]
+    text-black
+  "
+>
+  {storefrontCTA?.buttonText}
+</a>
 
       </div>
 
