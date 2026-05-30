@@ -79,7 +79,15 @@ const hero =
     }
   `)
 
-  
+  const about =
+  await client.fetch(`
+    *[_type == "aboutPage"][0]{
+      title,
+      subtitle,
+      description,
+      image
+    }
+  `)
 
 const featuredPost =
   blogPosts.find((post: any) => post.featured) ||
@@ -831,7 +839,130 @@ text-[#f7f3ee]
   </div>
 
 </section>
+{/* =========================================================
+    ABOUT VELVETNEST
+========================================================= */}
 
+<section
+  className="
+    mx-auto
+    max-w-7xl
+    px-5
+    py-24
+    md:py-32
+  "
+>
+
+  <Reveal>
+
+    <div
+      className="
+        grid
+        items-center
+        gap-16
+        lg:grid-cols-2
+      "
+    >
+
+      {/* IMAGE */}
+
+      <div
+        className="
+          relative
+          aspect-[4/5]
+          overflow-hidden
+          rounded-[2rem]
+          bg-[#ece5dc]
+        "
+      >
+
+        {about?.image && (
+
+          <Image
+            src={urlFor(about.image).width(1200).url()}
+            alt="About VelvetNest"
+            fill
+            className="object-cover"
+          />
+
+        )}
+
+      </div>
+
+      {/* CONTENT */}
+
+      <div>
+
+        <p
+          className="
+            text-xs
+            uppercase
+            tracking-[0.4em]
+            text-[#d6b06f]
+          "
+        >
+          About VelvetNest
+        </p>
+
+        <h2
+          className="
+            mt-6
+            font-serif
+            text-4xl
+            md:text-6xl
+            tracking-[-0.04em]
+          "
+        >
+          {about?.title}
+        </h2>
+
+        <p
+          className="
+            mt-6
+            text-lg
+            text-muted-foreground
+          "
+        >
+          {about?.subtitle}
+        </p>
+
+        <p
+          className="
+            mt-6
+            max-w-xl
+            leading-relaxed
+            text-[#6b6057]
+          "
+        >
+          {about?.description}
+        </p>
+
+        <Link
+          href="/about"
+          className="
+            mt-8
+            inline-flex
+            bg-[#2a2420]
+            px-8
+            py-4
+            text-sm
+            uppercase
+            tracking-[0.2em]
+            text-white
+            transition
+            hover:bg-black
+          "
+        >
+          Read My Story
+        </Link>
+
+      </div>
+
+    </div>
+
+  </Reveal>
+
+</section>
       </main>
 
       <Footer />
