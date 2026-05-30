@@ -807,7 +807,7 @@ text-[#f7f3ee]
         </p>
 
         <a
-          href="YOUR-AMAZON-STOREFRONT-LINK"
+          href="https://a.co/d/05Q1rDqQ"
           target="_blank"
           rel="noopener noreferrer"
           className="
