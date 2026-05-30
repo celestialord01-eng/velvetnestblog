@@ -7,6 +7,8 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem("post").title("Posts"),
       S.documentTypeListItem("category").title("Categories"),
       S.documentTypeListItem("amazonFind").title("Amazon Finds"),
+      S.documentTypeListItem("storefrontCTA")
+  .title("Storefront CTA"),
       S.documentTypeListItem("hero").title("Homepage Hero"),
       S.documentTypeListItem("aboutPage").title("About Page"),
     ])
