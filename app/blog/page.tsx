@@ -94,7 +94,7 @@ export default async function BlogPage({
 
   const posts =
     await getPosts(category)
-           const storefrontCTA =
+const storefrontCTA =
   await client.fetch(`
     *[_type == "storefrontCTA"][0]{
       title,
@@ -104,7 +104,7 @@ export default async function BlogPage({
       image
     }
   `)
-           const about =
+ const about =
   await client.fetch(`
     *[_type == "aboutPage"][0]{
       title,
