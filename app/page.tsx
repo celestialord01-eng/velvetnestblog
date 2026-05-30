@@ -161,11 +161,11 @@ md:min-h-[650px]">
             <h1
   className="
     font-serif
-    text-5xl
+    text-4xl
     leading-[1]
-    text-white
-    md:text-7xl
-    lg:text-8xl
+     sm:text-5xl
+     md:text-7xl
+     lg:text-8xl
   "
 >
   {hero?.title}
