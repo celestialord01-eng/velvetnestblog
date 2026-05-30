@@ -68,7 +68,16 @@ const hero =
 }
     `)
 
-  
+  const storefrontCTA =
+  await client.fetch(`
+    *[_type == "storefrontCTA"][0]{
+      title,
+      description,
+      buttonText,
+      buttonLink,
+      image
+    }
+  `)
 
   /* ABOUT */
 
@@ -744,16 +753,20 @@ text-[#f7f3ee]
 
       {/* IMAGE */}
 
-      <div className="relative aspect-[4/3]">
+<div className="relative aspect-[4/3]">
 
-        <Image
-          src="/storefront-banner.jpg"
-          alt="Curated Favorites"
-          fill
-          className="object-cover"
-        />
+  {storefrontCTA?.image && (
 
-      </div>
+    <Image
+      src={urlFor(storefrontCTA.image).width(1600).url()}
+      alt={storefrontCTA?.title || "Storefront"}
+      fill
+      className="object-cover"
+    />
+
+  )}
+
+</div>
 
       {/* CONTENT */}
 
@@ -767,7 +780,7 @@ text-[#f7f3ee]
             text-[#d6b06f]
           "
         >
-          Curated Favorites
+          {storefrontCTA?.title}
         </p>
 
         <h2
@@ -778,7 +791,7 @@ text-[#f7f3ee]
             md:text-6xl
           "
         >
-          Shop My Monthly Picks
+          {storefrontCTA?.description}
         </h2>
 
         <p
@@ -789,9 +802,8 @@ text-[#f7f3ee]
             leading-relaxed
           "
         >
-          Discover the fashion, home decor,
-          beauty and lifestyle finds I'm
-          loving right now.
+          {storefrontCTA?.buttonText}
+          
         </p>
 
         <a
@@ -810,7 +822,7 @@ text-[#f7f3ee]
             text-black
           "
         >
-          Visit My Storefront
+          href={storefrontCTA?.buttonLink}
         </a>
 
       </div>
