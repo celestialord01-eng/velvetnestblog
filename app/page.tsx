@@ -134,11 +134,11 @@ md:min-h-[650px]">
 
     {/* Dark Luxury Overlay */}
 
-    <div className="absolute inset-0 bg-black/30" />
+    <div className="absolute inset-0 bg-black/40" />
 
     {/* Content */}
 
-    <div className="absolute inset-0 flex items-center">
+    <div className="absolute inset-0 flex items-center pt-12 md:pt-0">
 
       <div className="mx-auto w-full max-w-7xl px-6">
 
@@ -162,10 +162,12 @@ md:min-h-[650px]">
   className="
     font-serif
     text-4xl
+    sm:text-5xl
+    md:text-7xl
+    lg:text-8xl
     leading-[1]
-     sm:text-5xl
-     md:text-7xl
-     lg:text-8xl
+    text-white
+    drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]
   "
 >
   {hero?.title}
@@ -174,10 +176,10 @@ md:min-h-[650px]">
             <p
               className="
                 mt-8
-                max-w-xl
+                max-w-md
                 text-lg
                 leading-relaxed
-                text-white/80
+                text-white/90
               "
             >
               {hero?.subtitle}
@@ -189,7 +191,7 @@ md:min-h-[650px]">
                 asChild
                 size="lg"
                 className="
-                  h-14
+                  h-12 md:h-14
                   rounded-none
                   bg-[#d6b06f]
                   px-10
@@ -215,7 +217,7 @@ md:min-h-[650px]">
                 variant="outline"
                 size="lg"
                 className="
-                  h-14
+                  h-12 md:h-14
                   rounded-none
                   border-white
                   bg-transparent
