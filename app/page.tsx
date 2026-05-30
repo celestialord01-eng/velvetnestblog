@@ -521,8 +521,8 @@ md:p-10
       group
       block
       overflow-hidden
-      bg-[#1f1a17]
-      text-white
+      bg-[#2a2420]
+text-[#f7f3ee]
     "
   >
 
