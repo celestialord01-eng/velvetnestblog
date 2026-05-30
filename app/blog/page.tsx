@@ -172,7 +172,7 @@ const storefrontCTA =
     lg:text-[7rem]
   "
 >
-  Stories &amp; Inspiration
+  Stories & Inspiration
 </h1>
 
 <p
