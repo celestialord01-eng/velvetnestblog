@@ -516,7 +516,7 @@ md:p-10
   {/* FEATURED ARTICLE */}
 
   <Link
-    href={`/blog/${featuredPost.slug.current}`}
+    href={`/blog/${featuredPost.slug}`}
     className="
       group
       block
@@ -526,7 +526,7 @@ md:p-10
     "
   >
 
-    <div className="aspect-[16/8] relative">
+    <div className="aspect-[16/7] relative">
 
       <Image
         src={
