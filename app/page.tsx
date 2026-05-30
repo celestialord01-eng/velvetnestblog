@@ -8,8 +8,6 @@ import {
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
-import {} from "@/components/cards"
-
 import { NewsletterPopup } from "@/components/newsletter-popup"
 
 import { Reveal } from "@/components/reveal"
@@ -607,7 +605,7 @@ text-[#f7f3ee]
 
       <Link
         key={post._id}
-        href={`/blog/${post.slug.current}`}
+        href={`/blog/${post.slug}`}
         className="
           grid
           gap-6
