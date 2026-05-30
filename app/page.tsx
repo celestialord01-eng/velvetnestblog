@@ -8,10 +8,7 @@ import {
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
-import {
-  BlogCard,
-  ProductCard,
-} from "@/components/cards"
+import {} from "@/components/cards"
 
 import { NewsletterPopup } from "@/components/newsletter-popup"
 
@@ -61,34 +58,19 @@ const hero =
   const blogPosts =
     await client.fetch(`
       *[_type == "post"]
-      | order(featured desc, publishedAt desc)[0...6]{
-        _id,
-        title,
-        excerpt,
-        publishedAt,
-        slug,
-        mainImage,
-        featured,
-        "category": category->title
-      }
+| order(featured desc, publishedAt desc)[0...6]{
+  _id,
+  title,
+  excerpt,
+  publishedAt,
+  "slug": slug.current,
+  mainImage,
+  featured,
+  "category": category->title
+}
     `)
 
-  /* AMAZON FINDS */
-
-  const amazonFinds =
-    await client.fetch(`
-      *[_type == "amazonFind"]
-      | order(featured desc, _createdAt desc)[0...4]{
-        _id,
-        title,
-        price,
-        originalPrice,
-        affiliateLink,
-        image,
-        featured,
-        "category": category->title
-      }
-    `)
+  
 
   /* ABOUT */
 
