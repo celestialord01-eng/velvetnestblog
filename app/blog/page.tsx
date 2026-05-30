@@ -12,8 +12,6 @@ import { Footer } from "@/components/footer"
 
 import { BlogCard } from "@/components/cards"
 
-import { Button } from "@/components/ui/button"
-
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 
@@ -174,8 +172,7 @@ export default async function BlogPage({
     lg:text-[7rem]
   "
 >
-  Stories &
-  Inspiration
+  Stories &amp; Inspiration
 </h1>
 
 <p
