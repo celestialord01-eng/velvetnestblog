@@ -65,25 +65,7 @@ readingTime,
 mainImage,
 "category": category->title
       }`
-const storefrontCTA =
-  await client.fetch(`
-    *[_type == "storefrontCTA"][0]{
-      title,
-      description,
-      buttonText,
-      buttonLink,
-      image
-    }
-  `)
-           const about =
-  await client.fetch(`
-    *[_type == "aboutPage"][0]{
-      title,
-      subtitle,
-      description,
-      image
-    }
-  `)
+
   return await client.fetch(
     query,
     { category }
@@ -114,6 +96,25 @@ export default async function BlogPage({
 
   const posts =
     await getPosts(category)
+           const storefrontCTA =
+  await client.fetch(`
+    *[_type == "storefrontCTA"][0]{
+      title,
+      description,
+      buttonText,
+      buttonLink,
+      image
+    }
+  `)
+           const about =
+  await client.fetch(`
+    *[_type == "aboutPage"][0]{
+      title,
+      subtitle,
+      description,
+      image
+    }
+  `)
 
   const featuredPost =
     posts[0]
