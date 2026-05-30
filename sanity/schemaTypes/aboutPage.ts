@@ -13,9 +13,16 @@ export default defineType({
     }),
 
     defineField({
+      name: "subtitle",
+      title: "Subtitle",
+      type: "text",
+    }),
+
+    defineField({
       name: "description",
       title: "Description",
       type: "text",
+      rows: 6,
     }),
 
     defineField({
