@@ -30,19 +30,17 @@ export default async function HomePage() {
 
   /* HERO */
 
-  const hero =
-    await client.fetch(`
-      *[_type == "hero"][0]{
-        eyebrow,
-        title1,
-        title2,
-        title3,
-        description,
-        buttonText,
-        buttonLink,
-        heroImage
-      }
-    `)
+const hero =
+  await client.fetch(`
+    *[_type == "hero"][0]{
+      eyebrow,
+      title,
+      subtitle,
+      buttonText,
+      buttonLink,
+      heroImage
+    }
+  `)
 
   /* CATEGORIES */
 
@@ -135,7 +133,7 @@ export default async function HomePage() {
 
     {/* Dark Luxury Overlay */}
 
-    <div className="absolute inset-0 bg-black/45" />
+    <div className="absolute inset-0 bg-black/30" />
 
     {/* Content */}
 
@@ -191,7 +189,7 @@ export default async function HomePage() {
                 text-white/80
               "
             >
-              {hero?.description}
+              {hero?.subtitle}
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
