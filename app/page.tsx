@@ -288,7 +288,7 @@ md:min-h-[650px]">
                   md:text-[5rem]
                 "
               >
-                Curated For Every Part Of Your Lifestyle
+                Explore The World Of VelvetNest
               </h2>
 
             </div>
@@ -319,6 +319,7 @@ md:min-h-[650px]">
   relative
   block
   overflow-hidden
+  rounded-[2rem]
   bg-[#ece5dc]
   ${
     index === 4
@@ -338,7 +339,7 @@ md:min-h-[650px]">
                           object-cover
                           transition-transform
                           duration-700
-                          group-hover:scale-105
+                          group-hover:scale-110
                         "
                       />
 
@@ -364,7 +365,18 @@ p-8
 md:p-10
                       "
                     >
-
+                      <p
+  className="
+    mb-2
+    text-[10px]
+    uppercase
+    tracking-[0.4em]
+    text-white/70
+  "
+>
+  Category
+</p>
+       
                       <h3
   className="
     font-serif
