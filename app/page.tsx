@@ -101,7 +101,14 @@ const hero =
         image
       }
     `)
+const featuredPost =
+  blogPosts.find((post: any) => post.featured) ||
+  blogPosts[0]
 
+const regularPosts =
+  blogPosts
+    .filter((post: any) => post._id !== featuredPost._id)
+    .slice(0, 3)
   return (
 
     <div className="min-h-screen bg-background text-foreground">
@@ -458,50 +465,255 @@ md:p-10
                   >
                     Trending on VelvetNest
                   </h2>
+<div className="mt-10 flex flex-wrap gap-4">
 
+  <button
+    className="
+      bg-[#1f1a17]
+      px-8
+      py-4
+      text-sm
+      uppercase
+      tracking-[0.2em]
+      text-[#d6b06f]
+    "
+  >
+    All
+  </button>
+
+  <button
+    className="
+      border
+      border-[#d6b06f]
+      px-8
+      py-4
+      text-sm
+      uppercase
+      tracking-[0.2em]
+    "
+  >
+    Fashion
+  </button>
+
+  <button
+    className="
+      border
+      border-[#d6b06f]
+      px-8
+      py-4
+      text-sm
+      uppercase
+      tracking-[0.2em]
+    "
+  >
+    Home Decor
+  </button>
+
+  <button
+    className="
+      border
+      border-[#d6b06f]
+      px-8
+      py-4
+      text-sm
+      uppercase
+      tracking-[0.2em]
+    "
+  >
+    Beauty
+  </button>
+
+</div>
                 </div>
 
               </div>
 
             </Reveal>
+            <div className="mt-16">
 
-            <div className="masonry-grid mt-16">
+  {/* FEATURED ARTICLE */}
 
-              {blogPosts.map(
-                (post: any, index: number) => (
+  <Link
+    href={`/blog/${featuredPost.slug.current}`}
+    className="
+      group
+      block
+      overflow-hidden
+      bg-[#1f1a17]
+      text-white
+    "
+  >
 
-                  <Reveal
-                    key={post._id}
-                    delay={0.08 * index}
-                  >
+    <div className="aspect-[16/8] relative">
 
-                    <BlogCard
-                      title={post.title}
-                      excerpt={post.excerpt}
-                      image={
-                        post.mainImage
-                          ? urlFor(post.mainImage).width(1000).url()
-                          : "/placeholder.jpg"
-                      }
-                      category={
-                        post.category ||
-                        "Lifestyle"
-                      }
-                      date={
-                        post.publishedAt
-                          ? new Date(post.publishedAt).toDateString()
-                          : "No date"
-                      }
-                      slug={post.slug}
-                      featured={post.featured}
-                    />
+      <Image
+        src={
+          featuredPost.mainImage
+            ? urlFor(featuredPost.mainImage)
+                .width(1600)
+                .url()
+            : "/placeholder.jpg"
+        }
+        alt={featuredPost.title}
+        fill
+        className="
+          object-cover
+          opacity-70
+          transition-transform
+          duration-700
+          group-hover:scale-105
+        "
+      />
 
-                  </Reveal>
+    </div>
 
-                )
-              )}
+    <div className="p-10 md:p-14">
 
-            </div>
+      <div
+        className="
+          inline-block
+          bg-[#d6b06f]
+          px-4
+          py-2
+          text-xs
+          uppercase
+          tracking-[0.3em]
+          text-black
+        "
+      >
+        Featured
+      </div>
+
+      <h3
+        className="
+          mt-6
+          font-serif
+          text-4xl
+          md:text-6xl
+        "
+      >
+        {featuredPost.title}
+      </h3>
+
+      <p
+        className="
+          mt-6
+          max-w-2xl
+          text-white/70
+        "
+      >
+        {featuredPost.excerpt}
+      </p>
+
+    </div>
+
+  </Link>
+
+  {/* ARTICLE LIST */}
+
+  <div
+    className="
+      mt-12
+      divide-y
+      divide-border
+      border-t
+      border-b
+    "
+  >
+
+    {regularPosts.map((post: any) => (
+
+      <Link
+        key={post._id}
+        href={`/blog/${post.slug.current}`}
+        className="
+          grid
+          gap-6
+          py-8
+          md:grid-cols-[260px_1fr]
+          items-center
+        "
+      >
+
+        <div
+          className="
+            relative
+            aspect-[4/3]
+            overflow-hidden
+          "
+        >
+
+          <Image
+            src={
+              post.mainImage
+                ? urlFor(post.mainImage)
+                    .width(800)
+                    .url()
+                : "/placeholder.jpg"
+            }
+            alt={post.title}
+            fill
+            className="object-cover"
+          />
+
+        </div>
+
+        <div>
+
+          <p
+            className="
+              text-xs
+              uppercase
+              tracking-[0.3em]
+              text-muted-foreground
+            "
+          >
+            {post.category}
+          </p>
+
+          <h3
+            className="
+              mt-3
+              font-serif
+              text-3xl
+            "
+          >
+            {post.title}
+          </h3>
+
+        </div>
+
+      </Link>
+
+    ))}
+
+  </div>
+
+  {/* VIEW ALL */}
+
+  <div className="mt-12 text-center">
+
+    <Link
+      href="/blog"
+      className="
+        inline-flex
+        border
+        border-[#2c2623]
+        px-12
+        py-5
+        text-sm
+        uppercase
+        tracking-[0.25em]
+      "
+    >
+      View All Articles →
+    </Link>
+
+  </div>
+
+</div>
+
+            
 
           </div>
 
