@@ -866,7 +866,7 @@ export default async function BlogPage({
             <div className="mt-20 text-center">
 
               <Link
-  href="/archives"
+  href="/blog"
   className="
     inline-flex
     border
