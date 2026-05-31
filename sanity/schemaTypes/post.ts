@@ -174,7 +174,10 @@ export default defineType({
 
 // Image Block
 {
-  type: "customImage",
+  type: "image",
+  options: {
+    hotspot: true,
+  },
 },
         // LINK BLOCK
         {
