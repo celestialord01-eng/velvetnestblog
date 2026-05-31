@@ -220,7 +220,7 @@ export async function generateMetadata({
 
 const portableTextComponents = {
   types: {
-  customImage: ({ value }: any) => {
+    image: ({ value }: any) => {
     const layout =
       value?.layout || "pinterest"
 
