@@ -569,19 +569,27 @@ const storefrontCTA =
                     text-muted-foreground
                   "
                 >
-                  Editor's Selection
+                  Curated For You
                 </p>
 
                 <h2
                   className="
-                    mt-4
+                    mt-6
                     font-serif
                     text-[3rem]
                     tracking-[-0.05em]
                     md:text-[5rem]
                   "
                 >
-                  Fresh Inspiration
+                  Latest Stories
+                           <div
+  className="
+    mt-8
+    h-px
+    w-24
+    bg-[#d6b06f]
+  "
+/>
                 </h2>
 
               </div>
