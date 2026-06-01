@@ -348,7 +348,8 @@ const storefrontCTA =
               mx-auto
               max-w-7xl
               px-5
-              py-24
+              pt-24
+              pb-32
             "
           >
 
@@ -386,7 +387,7 @@ const storefrontCTA =
                 <div
                   className="
                     relative
-                    aspect-[16/10]
+                    aspect-[5/4]
                     overflow-hidden
                     rounded-[2.8rem]
                   "
@@ -537,7 +538,6 @@ const storefrontCTA =
           className="
             border-t
             border-border
-            bg-[#f4efe8]/40
             py-24
             md:py-32
           "
@@ -572,17 +572,19 @@ const storefrontCTA =
                   Curated For You
                 </p>
 
-                <h2
-                  className="
-                    mt-6
-                    font-serif
-                    text-[3rem]
-                    tracking-[-0.05em]
-                    md:text-[5rem]
-                  "
-                >
-                  Latest Stories
-                           <div
+                         <h2
+  className="
+    mt-6
+    font-serif
+    text-[3rem]
+    tracking-[-0.05em]
+    md:text-[5rem]
+  "
+>
+  Latest Stories
+</h2>
+
+<div
   className="
     mt-8
     h-px
@@ -590,7 +592,6 @@ const storefrontCTA =
     bg-[#d6b06f]
   "
 />
-                </h2>
 
               </div>
 
@@ -602,7 +603,8 @@ const storefrontCTA =
   className="
     mt-16
     grid
-    gap-12
+    gap-x-12
+    gap-y-20
     md:grid-cols-2
     xl:grid-cols-3
   "
@@ -678,7 +680,7 @@ const storefrontCTA =
   <div
     className="
       mx-auto
-      max-w-7xl
+      max-w-6xl
       px-5
     "
   >
@@ -741,7 +743,7 @@ const storefrontCTA =
               md:text-6xl
             "
           >
-            Curated Finds I Actually Love
+            {storefrontCTA?.title}
           </h2>
 
           <p
@@ -752,10 +754,7 @@ const storefrontCTA =
               leading-relaxed
             "
           >
-            Discover fashion essentials,
-            cozy home decor,
-            beauty favorites and lifestyle finds
-            personally selected for VelvetNest readers.
+            {storefrontCTA?.description}
           </p>
 
           <a
@@ -774,7 +773,7 @@ const storefrontCTA =
               text-black
             "
           >
-            Visit Storefront
+            {storefrontCTA?.buttonText}
           </a>
 
         </div>
@@ -853,8 +852,7 @@ const storefrontCTA =
             md:text-6xl
           "
         >
-          Beautiful Living,
-          Curated Daily.
+          {about?.title}
         </h2>
 
         <p
@@ -866,13 +864,7 @@ const storefrontCTA =
             text-muted-foreground
           "
         >
-          VelvetNest was created to inspire
-          women to build a life filled with
-          style, beauty and intention.
-          From fashion inspiration and home decor
-          ideas to self-care rituals and curated finds,
-          every piece of content is designed to help
-          you create your most beautiful everyday life.
+          {about?.description}
         </p>
 
         <Link
