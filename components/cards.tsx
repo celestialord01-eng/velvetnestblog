@@ -190,7 +190,9 @@ export function BlogCard({
             <span
               className="
                 rounded-full
-                bg-background/85
+                bg-white/90
+                border
+                border-white/20
                 px-4
                 py-2
                 text-[10px]
@@ -237,35 +239,6 @@ export function BlogCard({
 
           )}
 
-          {/* PINTEREST BUTTON */}
-
-          <button
-            type="button"
-            aria-label="Save to Pinterest"
-            onClick={handlePinterestShare}
-            className="
-              absolute
-              bottom-5
-              right-5
-              flex
-              h-11
-              w-11
-              items-center
-              justify-center
-              rounded-full
-              bg-background/90
-              text-foreground
-              shadow-lg
-              backdrop-blur-md
-              transition-all
-              duration-300
-              hover:scale-110
-              md:translate-y-4
-              md:opacity-0
-              md:group-hover:translate-y-0
-              md:group-hover:opacity-100
-            "
-          >
 
             <svg
               className="h-4 w-4"
@@ -330,7 +303,8 @@ export function BlogCard({
           <h3
             className="
               font-serif
-              text-[2rem]
+              text-[1.75rem]
+              md:text-[1.9rem]
               leading-[1]
               tracking-[-0.04em]
               text-foreground
@@ -349,7 +323,7 @@ export function BlogCard({
             <p
               className="
                 mt-5
-                line-clamp-3
+                line-clamp-2
                 text-[1rem]
                 leading-8
                 text-[#685d55]
