@@ -527,7 +527,139 @@ const storefrontCTA =
           </section>
 
         )}
-                   <section
+
+
+        {/* =========================================================
+            ALL POSTS
+        ========================================================= */}
+
+        <section
+          className="
+            border-t
+            border-border
+            bg-[#f4efe8]/40
+            py-24
+            md:py-32
+          "
+        >
+
+          <div
+            className="
+              mx-auto
+              max-w-7xl
+              px-5
+            "
+          >
+
+            <div
+              className="
+                flex
+                items-end
+                justify-between
+              "
+            >
+
+              <div>
+
+                <p
+                  className="
+                    text-[11px]
+                    uppercase
+                    tracking-[0.35em]
+                    text-muted-foreground
+                  "
+                >
+                  Editor's Selection
+                </p>
+
+                <h2
+                  className="
+                    mt-4
+                    font-serif
+                    text-[3rem]
+                    tracking-[-0.05em]
+                    md:text-[5rem]
+                  "
+                >
+                  Fresh Inspiration
+                </h2>
+
+              </div>
+
+            </div>
+
+            {/* POSTS GRID */}
+
+            <div
+  className="
+    mt-16
+    grid
+    gap-12
+    md:grid-cols-2
+    xl:grid-cols-3
+  "
+>
+
+              {remainingPosts.map(
+                (post: any) => (
+
+                  <BlogCard
+                    key={post._id}
+                    title={post.title}
+                    excerpt={post.excerpt}
+                    image={
+                      post.mainImage
+                        ? urlFor(
+                            post.mainImage
+                          )
+                            .width(1000)
+                            .url()
+                        : "/placeholder.jpg"
+                    }
+                    category={
+                      post.category
+                    }
+                    date={
+                      post.publishedAt
+                        ? new Date(
+                            post.publishedAt
+                          ).toDateString()
+                        : "No date"
+                    }
+                    slug={post.slug}
+                  />
+
+                )
+              )}
+
+            </div>
+
+            {/* LOAD MORE */}
+
+            <div className="mt-20 text-center">
+
+              <Link
+  href="/blog"
+  className="
+    inline-flex
+    border
+    border-[#2c2623]
+    px-12
+    py-5
+    text-sm
+    uppercase
+    tracking-[0.25em]
+  "
+>
+  Browse All Articles →
+</Link>
+
+            </div>
+
+          </div>
+
+        </section>
+                 <section
   className="
     border-t
     border-border
@@ -646,6 +778,7 @@ const storefrontCTA =
   </div>
 
 </section>
+                                    
                    <section
   className="
     py-28
@@ -758,129 +891,6 @@ const storefrontCTA =
   </div>
 
 </section>
-
-        {/* =========================================================
-            ALL POSTS
-        ========================================================= */}
-
-        <section
-          className="
-            border-t
-            border-border
-            bg-[#f4efe8]/40
-            py-24
-            md:py-32
-          "
-        >
-
-          <div
-            className="
-              mx-auto
-              max-w-7xl
-              px-5
-            "
-          >
-
-            <div
-              className="
-                flex
-                items-end
-                justify-between
-              "
-            >
-
-              <div>
-
-                <p
-                  className="
-                    text-[11px]
-                    uppercase
-                    tracking-[0.35em]
-                    text-muted-foreground
-                  "
-                >
-                  Editor's Selection
-                </p>
-
-                <h2
-                  className="
-                    mt-4
-                    font-serif
-                    text-[3rem]
-                    tracking-[-0.05em]
-                    md:text-[5rem]
-                  "
-                >
-                  Fresh Inspiration
-                </h2>
-
-              </div>
-
-            </div>
-
-            {/* POSTS GRID */}
-
-            <div className="masonry-grid mt-16">
-
-              {remainingPosts.map(
-                (post: any) => (
-
-                  <BlogCard
-                    key={post._id}
-                    title={post.title}
-                    excerpt={post.excerpt}
-                    image={
-                      post.mainImage
-                        ? urlFor(
-                            post.mainImage
-                          )
-                            .width(1000)
-                            .url()
-                        : "/placeholder.jpg"
-                    }
-                    category={
-                      post.category
-                    }
-                    date={
-                      post.publishedAt
-                        ? new Date(
-                            post.publishedAt
-                          ).toDateString()
-                        : "No date"
-                    }
-                    slug={post.slug}
-                  />
-
-                )
-              )}
-
-            </div>
-
-            {/* LOAD MORE */}
-
-            <div className="mt-20 text-center">
-
-              <Link
-  href="/blog"
-  className="
-    inline-flex
-    border
-    border-[#2c2623]
-    px-12
-    py-5
-    text-sm
-    uppercase
-    tracking-[0.25em]
-  "
->
-  Browse All Articles →
-</Link>
-
-            </div>
-
-          </div>
-
-        </section>
 
       </main>
 
