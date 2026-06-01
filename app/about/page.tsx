@@ -18,19 +18,19 @@ export const metadata: Metadata = {
 const values = [
   {
     title: "Intentional Living",
-    description: "I believe in choosing quality over quantity—whether that&apos;s in our closets, our homes, or our daily routines.",
+    description: "I believe in choosing quality over quantity—whether that's in our closets, our homes, or our daily routines.",
   },
   {
     title: "Accessible Style",
-    description: "Looking put-together shouldn&apos;t break the bank. I share affordable finds alongside investment pieces.",
+    description: "Looking put-together shouldn't break the bank. I share affordable finds alongside investment pieces.",
   },
   {
     title: "Authentic Recommendations",
-    description: "Every product I recommend is something I genuinely use and love. No sponsored content that doesn&apos;t align with my values.",
+    description: "Every product I recommend is something I genuinely use and love. No sponsored content that doesn't align with my values.",
   },
   {
     title: "Cozy Aesthetics",
-    description: "Life should feel beautiful. I&apos;m drawn to warm, inviting spaces and timeless style that makes you feel at home.",
+    description: "Life should feel beautiful. I'm drawn to warm, inviting spaces and timeless style that makes you feel at home.",
   },
 ]
 
@@ -49,11 +49,11 @@ export default function AboutPage() {
                   About VelvetNest
                 </p>
                 <h1 className="mt-2 text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl">
-                  Hi, I&apos;m So Glad You Found Me
+                  Hi, I'm So Glad You Found Me
                 </h1>
                 <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
                   Welcome to VelvetNest—my cozy corner of the internet where I share everything 
-                  I&apos;m passionate about: timeless fashion, beautiful home spaces, and living 
+                  I'm passionate about: timeless fashion, beautiful home spaces, and living 
                   life with intention and style.
                 </p>
                 <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
@@ -112,8 +112,8 @@ export default function AboutPage() {
             <div className="mt-8 space-y-6 text-lg leading-relaxed text-muted-foreground">
               <p>
                 Growing up, I was always the friend people came to for outfit advice or home 
-                decor recommendations. There&apos;s something deeply satisfying about helping 
-                someone find the perfect piece—whether it&apos;s a dress that makes them feel 
+                decor recommendations. There's something deeply satisfying about helping 
+                someone find the perfect piece—whether it's a dress that makes them feel 
                 confident or a throw pillow that ties their living room together.
               </p>
               <p>
@@ -125,9 +125,9 @@ export default function AboutPage() {
               </p>
               <p>
                 Today, VelvetNest has grown into a thriving community of women who share my 
-                passion for thoughtful style and intentional living. Whether you&apos;re here 
+                passion for thoughtful style and intentional living. Whether you're here 
                 for outfit inspiration, home decor ideas, or just some cozy content to scroll 
-                through with your morning coffee, I&apos;m so happy you&apos;re here.
+                through with your morning coffee, I'm so happy you're here.
               </p>
             </div>
           </div>
@@ -156,91 +156,97 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* What You'll Find */}
-        <section className="py-16 md:py-24">
-          <div className="mx-auto max-w-7xl px-4">
-            <h2 className="text-center text-3xl font-semibold tracking-tight md:text-4xl">
-              What You&apos;ll Find Here
-            </h2>
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              <Link href="/blog?category=fashion" className="group">
-                <div className="group overflow-hidden rounded-2xl">
-                  <div className="relative aspect-[3/4] bg-card">
-                    <Image
-                      src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80"
-                      alt="Fashion content"
-                      fill
-                      className="
-                        object-cover
-                        transition-transform duration-500 ease-out
-                        group-hover:scale-110
-                      "
-                    />
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-2xl font-semibold text-primary-foreground">
-                    Fashion & Style
-                  </h3>
-                  <p className="mt-2 text-sm text-primary-foreground/80">
-                    Capsule wardrobe tips, outfit ideas, and style inspiration for every season.
-                  </p>
-                </div>
-              </Link>
-              <Link href="/blog?category=home-decor" className="group">
-                <div className="group overflow-hidden rounded-2xl">
-                  <div className="relative aspect-[3/4] bg-card">
-                    <Image
-                      src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=80"
-                      alt="Home decor content"
-                      fill
-                      className="
-                        object-cover
-                        transition-transform duration-500 ease-out
-                        group-hover:scale-110
-                      "
-                    />
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-2xl font-semibold text-primary-foreground">
-                    Home Decor
-                  </h3>
-                  <p className="mt-2 text-sm text-primary-foreground/80">
-                    Creating cozy, beautiful spaces that feel like home on any budget.
-                  </p>
-                </div>
-              </Link>
-              <Link href="/amazon-finds" className="group">
-                <div className="group overflow-hidden rounded-2xl">
-                  <div className="relative aspect-[3/4] bg-card">
-                    <Image
-                      src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&q=80"
-                      alt="Beauty content"
-                      fill
-                      className="
-                        object-cover
-                        transition-transform duration-500 ease-out
-                        group-hover:scale-110
-                      "
-                    />
-                  </div>
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-2xl font-semibold text-primary-foreground">
-                    Beauty & Self Care
-                  </h3>
-                  <p className="mt-2 text-sm text-primary-foreground/80">
-                    Skincare routines, wellness tips, and products that actually work.
-                  </p>
-                </div>
-              </Link>
-            </div>
+        
+                {/* What You'll Find */}
+<section className="py-16 md:py-24">
+  <div className="mx-auto max-w-7xl px-4">
+    <h2 className="text-center text-3xl font-semibold tracking-tight md:text-4xl">
+      What You'll Find Here
+    </h2>
+
+    <div className="mt-12 grid gap-6 md:grid-cols-3">
+
+      {/* Fashion */}
+      <Link
+        href="/blog?category=fashion"
+        className="group relative block overflow-hidden rounded-2xl"
+      >
+        <div className="relative aspect-[3/4]">
+          <Image
+            src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80"
+            alt="Fashion content"
+            fill
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+          />
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+          <div className="absolute bottom-0 left-0 right-0 p-6">
+            <h3 className="text-2xl font-semibold text-white">
+              Fashion & Style
+            </h3>
+            <p className="mt-2 text-sm text-white/80">
+              Capsule wardrobe tips, outfit ideas, and style inspiration for every season.
+            </p>
           </div>
-        </section>
+        </div>
+      </Link>
+
+      {/* Home Decor */}
+      <Link
+        href="/blog?category=home-decor"
+        className="group relative block overflow-hidden rounded-2xl"
+      >
+        <div className="relative aspect-[3/4]">
+          <Image
+            src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=80"
+            alt="Home decor content"
+            fill
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+          />
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+          <div className="absolute bottom-0 left-0 right-0 p-6">
+            <h3 className="text-2xl font-semibold text-white">
+              Home Decor
+            </h3>
+            <p className="mt-2 text-sm text-white/80">
+              Creating cozy, beautiful spaces that feel like home on any budget.
+            </p>
+          </div>
+        </div>
+      </Link>
+
+      {/* Beauty */}
+      <Link
+        href="/amazon-finds"
+        className="group relative block overflow-hidden rounded-2xl"
+      >
+        <div className="relative aspect-[3/4]">
+          <Image
+            src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&q=80"
+            alt="Beauty content"
+            fill
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+          />
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+
+          <div className="absolute bottom-0 left-0 right-0 p-6">
+            <h3 className="text-2xl font-semibold text-white">
+              Beauty & Self Care
+            </h3>
+            <p className="mt-2 text-sm text-white/80">
+              Skincare routines, wellness tips, and products that actually work.
+            </p>
+          </div>
+        </div>
+      </Link>
+
+    </div>
+  </div>
+</section>
 
         {/* Work With Me */}
         <section className="border-t border-border bg-secondary/30 py-16 md:py-24">
@@ -253,8 +259,8 @@ export default function AboutPage() {
                 Work With Me
               </h2>
               <p className="mt-4 text-lg text-muted-foreground">
-                I partner with brands that align with VelvetNest&apos;s values and aesthetic. 
-                If you&apos;re interested in collaborating, I&apos;d love to hear from you.
+                I partner with brands that align with VelvetNest's values and aesthetic. 
+                If you're interested in collaborating, I'd love to hear from you.
               </p>
               <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
                 <Button asChild size="lg">
