@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-
+import ReactMarkdown from "react-markdown"
 import {
   ArrowLeft,
   Clock,
@@ -47,6 +47,7 @@ async function getPost(slug: string) {
     featured,
     readingTime,
     tags,
+    markdownBody,
 
     "slug": slug.current,
 
