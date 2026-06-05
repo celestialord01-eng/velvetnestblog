@@ -12,7 +12,7 @@ import {
   FaTelegramPlane,
   FaInstagram,
 } from "react-icons/fa"
-
+import { useEffect, useState } from "react"
 import { useState } from "react"
 
 interface ShareButtonsProps {
@@ -26,7 +26,7 @@ export default function ShareButtons({
   const [copied, setCopied] =
     useState(false)
 
-  import { useEffect, useState } from "react"
+  
 
 const [url, setUrl] = useState("")
 
