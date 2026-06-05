@@ -594,7 +594,9 @@ export default async function BlogPostPage({
 
   const toc = getTableOfContents(post.body || [])
 
-  const plainText = getPlainText(post.body || [])
+  const plainText = post.markdownBody
+  ? post.markdownBody
+  : getPlainText(post.body || [])
 
   const stats = readingTime(plainText)
 
