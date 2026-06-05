@@ -10,10 +10,8 @@ import {
   FaFacebookF,
   FaWhatsapp,
   FaTelegramPlane,
-  FaInstagram,
 } from "react-icons/fa"
 import { useEffect, useState } from "react"
-import { useState } from "react"
 
 interface ShareButtonsProps {
   title: string
@@ -103,19 +101,24 @@ useEffect(() => {
         (item) => (
 
           <a
-            className="
-group
-flex
-h-10
-w-10
-items-center
-justify-center
-rounded-full
-transition-all
-duration-300
-hover:scale-110
-"
-          >
+  key={item.name}
+  href={item.href}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label={`Share on ${item.name}`}
+  className="
+    group
+    flex
+    h-10
+    w-10
+    items-center
+    justify-center
+    rounded-full
+    transition-all
+    duration-300
+    hover:scale-110
+  "
+>
 
             <span
   style={{
