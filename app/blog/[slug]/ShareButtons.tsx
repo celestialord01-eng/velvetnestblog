@@ -1,14 +1,17 @@
 "use client"
 
 import {
-  Pin,
-  Globe,
-  Send,
-  MessageCircle,
-  Camera,
   Link as LinkIcon,
   Check,
 } from "lucide-react"
+
+import {
+  FaPinterestP,
+  FaFacebookF,
+  FaWhatsapp,
+  FaTelegramPlane,
+  FaInstagram,
+} from "react-icons/fa"
 
 import { useState } from "react"
 
@@ -35,61 +38,36 @@ export default function ShareButtons({
     encodeURIComponent(title)
 
   const shareLinks = [
-    {
-      name: "Pinterest",
+  {
+    name: "Pinterest",
+    icon: <FaPinterestP size={18} />,
+    color: "#E60023",
+    href: `https://pinterest.com/pin/create/button/?url=${encodedUrl}&description=${encodedTitle}`,
+  },
 
-      icon: (
-        <Pin size={17} />
-      ),
+  {
+    name: "Facebook",
+    icon: <FaFacebookF size={18} />,
+    color: "#1877F2",
+    href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+  },
 
-      href:
-        `https://pinterest.com/pin/create/button/?url=${encodedUrl}&description=${encodedTitle}`,
-    },
+  {
+    name: "WhatsApp",
+    icon: <FaWhatsapp size={18} />,
+    color: "#25D366",
+    href: `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`,
+  },
 
-    {
-      name: "Facebook",
+  {
+    name: "Telegram",
+    icon: <FaTelegramPlane size={18} />,
+    color: "#0088cc",
+    href: `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`,
+  },
 
-      icon: (
-        <Globe size={17} />
-      ),
-
-      href:
-        `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-    },
-
-    {
-      name: "WhatsApp",
-
-      icon: (
-        <MessageCircle size={17} />
-      ),
-
-      href:
-        `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`,
-    },
-
-    {
-      name: "Telegram",
-
-      icon: (
-        <Send size={17} />
-      ),
-
-      href:
-        `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`,
-    },
-
-    {
-      name: "Instagram",
-
-      icon: (
-        <Camera size={17} />
-      ),
-
-      href:
-        "https://instagram.com",
-    },
-  ]
+  
+]
 
   async function handleCopy() {
 
@@ -122,42 +100,27 @@ export default function ShareButtons({
         (item) => (
 
           <a
-            key={item.name}
-            href={item.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Share on ${item.name}`}
             className="
-              group
-              flex
-              h-11
-              w-11
-              items-center
-              justify-center
-              rounded-full
-              border
-              border-[#e4ddd4]
-              bg-white
-              text-[#3d342f]
-              shadow-sm
-              transition-all
-              duration-300
-              hover:-translate-y-1
-              hover:border-[#cdb9a4]
-              hover:bg-[#f8f3ee]
-              hover:shadow-md
-            "
+group
+flex
+h-10
+w-10
+items-center
+justify-center
+rounded-full
+transition-all
+duration-300
+hover:scale-110
+"
           >
 
             <span
-              className="
-                transition-transform
-                duration-300
-                group-hover:scale-110
-              "
-            >
-              {item.icon}
-            </span>
+  style={{
+    color: item.color,
+  }}
+>
+  {item.icon}
+</span>
 
           </a>
         )
