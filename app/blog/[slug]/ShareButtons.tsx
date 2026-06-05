@@ -26,10 +26,13 @@ export default function ShareButtons({
   const [copied, setCopied] =
     useState(false)
 
-  const url =
-    typeof window !== "undefined"
-      ? window.location.href
-      : ""
+  import { useEffect, useState } from "react"
+
+const [url, setUrl] = useState("")
+
+useEffect(() => {
+  setUrl(window.location.href)
+}, [])
 
   const encodedUrl =
     encodeURIComponent(url)
