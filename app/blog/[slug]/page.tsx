@@ -747,11 +747,17 @@ export default async function BlogPostPage({
             </div>
 
             <article className="prose prose-neutral max-w-none">
-              <PortableText
-                value={post.body}
-                components={portableTextComponents}
-              />
-            </article>
+  {post.markdownBody ? (
+    <ReactMarkdown>
+      {post.markdownBody}
+    </ReactMarkdown>
+  ) : (
+    <PortableText
+      value={post.body}
+      components={portableTextComponents}
+    />
+  )}
+</article>
 
             {post.tags?.length > 0 && (
               <div className="mt-20">
