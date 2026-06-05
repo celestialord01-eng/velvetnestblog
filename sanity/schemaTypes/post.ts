@@ -6,6 +6,11 @@ export default defineType({
   type: "document",
 
   fields: [
+   defineField({
+  name: "markdownBody",
+  title: "Markdown Body",
+  type: "markdown",
+}),
     // TITLE
     defineField({
       name: "title",
