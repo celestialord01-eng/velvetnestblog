@@ -17,9 +17,13 @@ const components: PortableTextComponents = {
           : ""
 
       // Skip affiliate disclosures
-      const isAffiliateDisclosure =
-        text.includes("affiliate links") ||
-        text.includes("commission")
+      const lowerText = text.toLowerCase()
+
+const isAffiliateDisclosure =
+  lowerText.includes("affiliate") ||
+  lowerText.includes("commission") ||
+  lowerText.includes("amazon") ||
+  lowerText.includes("trusted partners")
 
       const applyDropCap =
         !hasDropCap &&
@@ -254,19 +258,14 @@ const components: PortableTextComponents = {
           href={value?.href || "#"}
           rel={rel}
           className="
-            inline-block
-            border-b
-            border-[#8d7b6a]
-            pb-[1px]
-            font-medium
-            text-stone-900
-            no-underline
-            transition-all
-            duration-300
-            hover:border-stone-900
-            hover:text-[#8d7b6a]
-            hover:opacity-90
-          "
+  font-medium
+  text-stone-900
+  no-underline
+  transition-all
+  duration-300
+  hover:text-[#8d7b6a]
+  hover:opacity-90
+"
         >
           {children}
         </Link>
@@ -280,20 +279,19 @@ const components: PortableTextComponents = {
 
       return (
         <figure
-          className="
-            group
-            relative
-            my-14 md:my-20
-            overflow-hidden
-            rounded-[30px]
-          "
-        >
-          <PinterestSaveButton
+  className="
+    group
+    my-14 md:my-20
+    rounded-[30px]
+  "
+>
+          
+
+          <div className="overflow-hidden rounded-[30px]">
+            <PinterestSaveButton
   imageUrl={value.asset.url}
   description={value.caption || ""}
 />
-
-          <div className="overflow-hidden rounded-[30px]">
             <Image
               src={value.asset.url}
               alt={value.alt || "VelvetNest blog image"}
