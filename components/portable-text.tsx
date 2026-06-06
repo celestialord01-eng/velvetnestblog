@@ -6,30 +6,14 @@ import { PinterestSaveButton } from "@/components/pinterest-save-button"
 import { headingToId } from "@/lib/heading"
 
 // Controls drop cap so it only appears once
-let hasDropCap = false
+let paragraphCount = 0
 
 const components: PortableTextComponents = {
   block: {
     normal: ({ children }: any) => {
-      const text = String(children ?? "")
-      console.log("Paragraph text:", text)
+      paragraphCount++
 
-      // Skip affiliate disclosures
-      const lowerText = text.toLowerCase()
-
-const isAffiliateDisclosure =
-  lowerText.includes("affiliate") ||
-  lowerText.includes("commission") ||
-  lowerText.includes("amazon") ||
-  lowerText.includes("trusted partners")
-
-      const applyDropCap =
-        !hasDropCap &&
-        !isAffiliateDisclosure
-
-      if (applyDropCap) {
-        hasDropCap = true
-      }
+const applyDropCap = paragraphCount === 2
 
       return (
         <p
@@ -286,9 +270,7 @@ const isAffiliateDisclosure =
           
 
           <div className="relative overflow-hidden rounded-[30px]">
-            <div className="absolute top-4 left-4 z-[9999] bg-red-500 p-3 text-white">
-  PIN
-</div>
+            
             <PinterestSaveButton
   imageUrl={value.asset.url}
   description={value.caption || ""}
@@ -403,7 +385,7 @@ const isAffiliateDisclosure =
 
 export function CustomPortableText({ value }: any) {
   // Reset drop cap for every article
-  hasDropCap = false
+  paragraphCount = 0
 
   return (
     <div
