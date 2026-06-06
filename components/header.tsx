@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-
+import { FaPinterestP } from "react-icons/fa"
 import {
   usePathname,
 } from "next/navigation"
@@ -387,32 +387,22 @@ export function Header({
               {/* PINTEREST */}
 
               <Link
-                href="https://pinterest.com/velvetnestworld/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Pinterest"
-                className="
-                  hidden
-                  text-muted-foreground
-                  transition-all
-                  duration-300
-                  hover:scale-110
-                  hover:text-foreground
-                  md:block
-                "
-              >
-
-                <svg
-                  className="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-
-                  <path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.012 0 1.502.759 1.502 1.667 0 1.016-.646 2.533-.646 3.833 0 1.704.986 3.104 2.777 3.104 3.332 0 5.556-3.521 5.556-8.701 0-3.845-2.695-6.646-6.887-6.646-5.062 0-8.061 3.829-8.061 7.701 0 1.506.389 2.766 1.083 3.646.12.167.137.253.091.412-.1.417-.323 1.31-.467 1.694-.078.259-.237.757-.432.757-.732 0-2.306-1.036-3.145-2.806-.524-1.063-.893-2.665-.893-4.315 0-5.277 3.934-10.128 10.348-10.128 5.432 0 9.154 3.888 9.154 9.048 0 5.917-3.327 10.702-7.982 10.702-1.666 0-3.234-.745-3.772-1.74l-1.023 3.868c-.369 1.43-1.412 3.212-2.105 4.302.63.194 1.297.3 1.995.3 6.627 0 12-5.373 12-12S18.627 0 12 0z" />
-
-                </svg>
-
-              </Link>
+  href="https://pinterest.com/velvetnestworld/"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Pinterest"
+  className="
+    hidden
+    text-muted-foreground
+    transition-all
+    duration-300
+    hover:scale-110
+    hover:text-foreground
+    md:block
+  "
+>
+  <FaPinterestP className="h-5 w-5" />
+</Link>
 
             </div>
 
