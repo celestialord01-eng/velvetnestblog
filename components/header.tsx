@@ -293,65 +293,61 @@ export function Header({
                     link.href
 
                   return link.external ? (
-  <a
-    key={link.href}
-    href={link.href}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="
-      relative
-      text-[12px]
-      font-medium
-      uppercase
-      tracking-[0.22em]
-      text-muted-foreground
-      transition-all
-      duration-300
-      hover:text-foreground
-    "
-  >
-    {link.label}
-  </a>
-) : (
-  <Link
-    key={link.href}
-    href={link.href}
-    className={`
-      relative
-      text-[12px]
-      font-medium
-      uppercase
-      tracking-[0.22em]
-      transition-all
-      duration-300
-      hover:opacity-70
-      ${
-        pathname === link.href
-          ? "text-foreground"
-          : "text-muted-foreground hover:text-foreground"
-      }
-    `}
-  >
-    {link.label}
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="
+                        relative
+                        text-[12px]
+                        font-medium
+                        uppercase
+                        tracking-[0.22em]
+                        text-muted-foreground
+                        transition-all
+                        duration-300
+                        hover:text-foreground
+                      "
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`
+                        relative
+                        text-[12px]
+                        font-medium
+                        uppercase
+                        tracking-[0.22em]
+                        transition-all
+                        duration-300
+                        hover:opacity-70
+                        ${
+                          pathname === link.href
+                            ? "text-foreground"
+                            : "text-muted-foreground hover:text-foreground"
+                        }
+                      `}
+                    >
+                      {link.label}
 
-    {pathname === link.href && (
-      <motion.span
-        layoutId="header-active"
-        className="
-          absolute
-          -bottom-2
-          left-0
-          h-[1px]
-          w-full
-          bg-foreground
-        "
-      />
-    )}
-  </Link>
-)}
-
-                      
-
+                      {pathname === link.href && (
+                        <motion.span
+                          layoutId="header-active"
+                          className="
+                            absolute
+                            -bottom-2
+                            left-0
+                            h-[1px]
+                            w-full
+                            bg-foreground
+                          "
+                        />
+                      )}
+                    </Link>
                   )
                 }
               )}
@@ -412,7 +408,7 @@ export function Header({
                   fill="currentColor"
                 >
 
-                  <path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z" />
+                  <path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.012 0 1.502.759 1.502 1.667 0 1.016-.646 2.533-.646 3.833 0 1.704.986 3.104 2.777 3.104 3.332 0 5.556-3.521 5.556-8.701 0-3.845-2.695-6.646-6.887-6.646-5.062 0-8.061 3.829-8.061 7.701 0 1.506.389 2.766 1.083 3.646.12.167.137.253.091.412-.1.417-.323 1.31-.467 1.694-.078.259-.237.757-.432.757-.732 0-2.306-1.036-3.145-2.806-.524-1.063-.893-2.665-.893-4.315 0-5.277 3.934-10.128 10.348-10.128 5.432 0 9.154 3.888 9.154 9.048 0 5.917-3.327 10.702-7.982 10.702-1.666 0-3.234-.745-3.772-1.74l-1.023 3.868c-.369 1.43-1.412 3.212-2.105 4.302.63.194 1.297.3 1.995.3 6.627 0 12-5.373 12-12S18.627 0 12 0z" />
 
                 </svg>
 
@@ -425,147 +421,145 @@ export function Header({
         </div>
 
       </motion.header>
+
       {/* MOBILE MENU PANEL */}
 
-{isMenuOpen && (
+      {isMenuOpen && (
 
-  <motion.div
-    initial={{
-      opacity: 0,
-      y: -20,
-    }}
-    animate={{
-      opacity: 1,
-      y: 0,
-    }}
-    exit={{
-      opacity: 0,
-      y: -20,
-    }}
-    transition={{
-      duration: 0.3,
-    }}
-    className="
-      fixed
-      top-[88px]
-      left-0
-      z-40
-      w-full
-      border-b
-      border-border
-      bg-background
-      px-6
-      py-8
-      shadow-2xl
-      md:hidden
-    "
-  >
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: -20,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          exit={{
+            opacity: 0,
+            y: -20,
+          }}
+          transition={{
+            duration: 0.3,
+          }}
+          className="
+            fixed
+            top-[88px]
+            left-0
+            z-40
+            w-full
+            border-b
+            border-border
+            bg-background
+            px-6
+            py-8
+            shadow-2xl
+            md:hidden
+          "
+        >
 
-    <nav
-      className="
-        flex
-        flex-col
-        gap-6
-      "
-    >
-
-      {navLinks.map((link) => {
-
-        const isActive =
-          pathname === link.href
-
-        return link.external ? (
-  <a
-    key={link.href}
-    href={link.href}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-lg font-medium text-muted-foreground"
-  >
-    {link.label}
-  </a>
-) : (
-  <Link
-    key={link.href}
-    href={link.href}
-    className={`
-      text-lg
-      font-medium
-      ${
-        pathname === link.href
-          ? "text-foreground"
-          : "text-muted-foreground"
-      }
-    `}
-    onClick={() => setIsMenuOpen(false)}
-  >
-    {link.label}
-  </Link>
-)}
-          
-)
-
-      })}
-
-    </nav>
-
-    {/* CATEGORIES */}
-
-    <div
-      className="
-        mt-8
-        border-t
-        border-border
-        pt-6
-      "
-    >
-
-      <p
-        className="
-          mb-4
-          text-xs
-          uppercase
-          tracking-[0.25em]
-          text-muted-foreground
-        "
-      >
-        Categories
-      </p>
-
-      <div
-        className="
-          flex
-          flex-wrap
-          gap-3
-        "
-      >
-
-        {categories.map((category) => (
-
-          <span
-            key={category}
+          <nav
             className="
-              rounded-full
-              border
-              border-border
-              px-4
-              py-2
-              text-sm
-              text-muted-foreground
+              flex
+              flex-col
+              gap-6
             "
           >
-            {category}
-          </span>
 
-        ))}
+            {navLinks.map((link) => {
 
-      </div>
+              const isActive =
+                pathname === link.href
 
-    </div>
+              return link.external ? (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-lg font-medium text-muted-foreground"
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`
+                    text-lg
+                    font-medium
+                    ${
+                      pathname === link.href
+                        ? "text-foreground"
+                        : "text-muted-foreground"
+                    }
+                  `}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              )
+            })}
 
-  </motion.div>
+          </nav>
 
-)}
+          {/* CATEGORIES */}
+
+          <div
+            className="
+              mt-8
+              border-t
+              border-border
+              pt-6
+            "
+          >
+
+            <p
+              className="
+                mb-4
+                text-xs
+                uppercase
+                tracking-[0.25em]
+                text-muted-foreground
+              "
+            >
+              Categories
+            </p>
+
+            <div
+              className="
+                flex
+                flex-wrap
+                gap-3
+              "
+            >
+
+              {categories.map((category) => (
+
+                <span
+                  key={category}
+                  className="
+                    rounded-full
+                    border
+                    border-border
+                    px-4
+                    py-2
+                    text-sm
+                    text-muted-foreground
+                  "
+                >
+                  {category}
+                </span>
+
+              ))}
+
+            </div>
+
+          </div>
+
+        </motion.div>
+
+      )}
 
       {/* SEARCH DIALOG */}
 
@@ -583,4 +577,4 @@ export function Header({
 
     </>
   )
-  }
+}
