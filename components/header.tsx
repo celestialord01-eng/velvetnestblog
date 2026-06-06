@@ -350,25 +350,7 @@ export function Header({
   </Link>
 )}
 
-                      {link.label}
-
-                      {isActive && (
-
-                        <motion.span
-                          layoutId="header-active"
-                          className="
-                            absolute
-                            -bottom-2
-                            left-0
-                            h-[1px]
-                            w-full
-                            bg-foreground
-                          "
-                        />
-
-                      )}
-
-                    </Link>
+                      
 
                   )
                 }
