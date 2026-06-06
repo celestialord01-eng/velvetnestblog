@@ -25,7 +25,25 @@ export function PinterestSaveButton({
     <button
       onClick={handleSave}
       aria-label="Save to Pinterest"
-      className="absolute top-3 left-3 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-[#E60023] text-white shadow-lg transition hover:scale-110"
+      className="
+absolute
+top-4
+left-4
+z-30
+flex
+h-9
+w-9
+items-center
+justify-center
+rounded-full
+bg-[#E60023]
+text-white
+border
+border-white/80
+shadow-lg
+transition
+hover:scale-110
+"
     >
       <FaPinterestP size={18} />
     </button>
