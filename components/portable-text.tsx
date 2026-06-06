@@ -288,10 +288,9 @@ const components: PortableTextComponents = {
             rounded-[30px]
           "
         >
-          <PinterestSaveButton
-            imageUrl={value.asset.url}
-            description={value.caption || ""}
-          />
+          <div className="absolute top-3 left-3 z-[9999] bg-red-500 p-3 text-white">
+  PIN
+</div>
 
           <div className="overflow-hidden rounded-[30px]">
             <Image
