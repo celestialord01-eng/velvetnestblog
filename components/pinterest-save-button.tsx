@@ -27,20 +27,19 @@ export function PinterestSaveButton({
       aria-label="Save to Pinterest"
       className="
 absolute
-top-3
-right-3
-z-[9999]
+top-6
+right-6
+z-50
 flex
-h-9
-w-9
+h-10
+w-10
 items-center
 justify-center
 rounded-full
 bg-[#E60023]
 text-white
-border
-border-white/80
 shadow-lg
+pointer-events-auto
 transition
 hover:scale-110
 "
