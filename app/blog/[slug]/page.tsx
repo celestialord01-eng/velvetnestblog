@@ -10,7 +10,7 @@ import {
 } from "lucide-react"
 
 import { PortableText } from "@portabletext/react"
-import { CustomPortableText } from "@/components/PortableText"
+import { CustomPortableText } from "@/components/portable-text"
 import slugify from "slugify"
 import readingTime from "reading-time"
 
