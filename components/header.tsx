@@ -44,8 +44,9 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/blog", label: "Blog" },
   {
-    href: "/amazon-finds",
-    label: "Amazon Finds",
+    href: "https://a.co/d/0i54mdf3",
+    label: "Storefront",
+    external: true,
   },
   { href: "/about", label: "About" },
   {
@@ -296,25 +297,49 @@ export function Header({
 
                   return (
 
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={`
-                        relative
-                        text-[12px]
-                        font-medium
-                        uppercase
-                        tracking-[0.22em]
-                        transition-all
-                        duration-300
-                        hover:opacity-70
-                        ${
-                          isActive
-                            ? "text-foreground"
-                            : "text-muted-foreground hover:text-foreground"
-                        }
-                      `}
-                    >
+                    {link.external ? (
+  <a
+    key={link.href}
+    href={link.href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="
+      relative
+      text-[12px]
+      font-medium
+      uppercase
+      tracking-[0.22em]
+      text-muted-foreground
+      transition-all
+      duration-300
+      hover:text-foreground
+    "
+  >
+    {link.label}
+  </a>
+) : (
+  <Link
+    key={link.href}
+    href={link.href}
+    className={`
+      relative
+      text-[12px]
+      font-medium
+      uppercase
+      tracking-[0.22em]
+      transition-all
+      duration-300
+      hover:opacity-70
+      ${
+        pathname === link.href
+          ? "text-foreground"
+          : "text-muted-foreground hover:text-foreground"
+      }
+    `}
+  >
+    {link.label}
+  </Link>
+)}
 
                       {link.label}
 
@@ -460,27 +485,35 @@ export function Header({
 
         return (
 
-          <Link
-            key={link.href}
-            href={link.href}
-            className={`
-              text-lg
-              font-medium
-              transition
-              ${
-                isActive
-                  ? "text-foreground"
-                  : "text-muted-foreground"
-              }
-            `}
-            onClick={() =>
-              setIsMenuOpen(false)
-            }
-          >
-            {link.label}
-          </Link>
-
-        )
+          {link.external ? (
+  <a
+    key={link.href}
+    href={link.href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-lg font-medium text-muted-foreground"
+  >
+    {link.label}
+  </a>
+) : (
+  <Link
+    key={link.href}
+    href={link.href}
+    className={`
+      text-lg
+      font-medium
+      ${
+        pathname === link.href
+          ? "text-foreground"
+          : "text-muted-foreground"
+      }
+    `}
+  >
+    {link.label}
+  </Link>
+)}
+          
+)
 
       })}
 
