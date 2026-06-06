@@ -13,8 +13,9 @@ const components: PortableTextComponents = {
     normal: ({ children }: any) => {
       paragraphCount++
 
-const applyDropCap = paragraphCount === 2
-
+const applyDropCap =
+  paragraphCount === 2 &&
+  typeof children?.[0] === "string"
       return (
         <p
           className={`
@@ -263,35 +264,34 @@ const applyDropCap = paragraphCount === 2
         <figure
   className="
     group
+    relative
     my-14 md:my-20
     rounded-[30px]
   "
 >
-          
+  <PinterestSaveButton
+    imageUrl={value.asset.url}
+    description={value.caption || ""}
+  />
 
-          <div className="relative overflow-hidden rounded-[30px]">
-            
-            <PinterestSaveButton
-  imageUrl={value.asset.url}
-  description={value.caption || ""}
-/>
-            <Image
-              src={value.asset.url}
-              alt={value.alt || "VelvetNest blog image"}
-              width={1400}
-              height={1800}
-              className="
-                h-auto
-                w-full
-                rounded-[30px]
-                object-cover
-                shadow-[0_10px_40px_rgba(0,0,0,0.06)]
-                transition-transform
-                duration-700
-                group-hover:scale-[1.02]
-              "
-            />
-          </div>
+  <div className="overflow-hidden rounded-[30px]">
+    <Image
+      src={value.asset.url}
+      alt={value.alt || "VelvetNest blog image"}
+      width={1400}
+      height={1800}
+      className="
+        h-auto
+        w-full
+        rounded-[30px]
+        object-cover
+        shadow-[0_10px_40px_rgba(0,0,0,0.06)]
+        transition-transform
+        duration-700
+        group-hover:scale-[1.02]
+      "
+    />
+  </div>
 
           {value.caption && (
             <figcaption
