@@ -22,7 +22,8 @@ import { Input } from "@/components/ui/input"
 ========================================================= */
 
 export function NewsletterPopup() {
-
+const [loading, setLoading] =
+  useState(false)
   const [isOpen, setIsOpen] =
     useState(false)
 
@@ -35,24 +36,33 @@ export function NewsletterPopup() {
   /* SHOW POPUP */
 
   useEffect(() => {
+  const seen =
+    localStorage.getItem(
+      "velvetnest-popup-seen"
+    )
 
-    const hasSeenPopup =
-      localStorage.getItem(
-        "velvetnest-popup-seen"
-      )
+  if (!seen) {
+    const timer =
+      setTimeout(() => {
+        setIsOpen(true)
+      }, 30000)
 
-    if (!hasSeenPopup) {
+    return () =>
+      clearTimeout(timer)
+  }
 
-      const timer =
-        setTimeout(() => {
-          setIsOpen(true)
-        }, 5000)
+  const thirtyDays =
+    30 * 24 * 60 * 60 * 1000
 
-      return () =>
-        clearTimeout(timer)
-    }
-
-  }, [])
+  if (
+    Date.now() - Number(seen) >
+    thirtyDays
+  ) {
+    localStorage.removeItem(
+      "velvetnest-popup-seen"
+    )
+  }
+}, [])
 
   /* CLOSE */
 
@@ -61,24 +71,48 @@ export function NewsletterPopup() {
     setIsOpen(false)
 
     localStorage.setItem(
-      "velvetnest-popup-seen",
-      "true"
-    )
+  "velvetnest-popup-seen",
+  Date.now().toString()
+)
   }
 
   /* SUBMIT */
 
-  const handleSubmit = (
-    e: React.FormEvent
-  ) => {
+  const handleSubmit = async (
+  e: React.FormEvent
+) => {
+  e.preventDefault()
 
-    e.preventDefault()
+  setLoading(true)
 
-    setIsSubmitted(true)
+  try {
+    const response =
+      await fetch(
+        "https://app.kit.com/forms/9530025/subscriptions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            email_address: email,
+          }),
+        }
+      )
 
-    setTimeout(() => {
-      handleClose()
-    }, 2200)
+    if (response.ok) {
+      setIsSubmitted(true)
+
+      setTimeout(() => {
+        handleClose()
+      }, 2500)
+    }
+  } catch (error) {
+    console.error(error)
+  }
+
+  setLoading(false)
   }
 
   return (
