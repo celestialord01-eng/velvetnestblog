@@ -283,14 +283,15 @@ const components: PortableTextComponents = {
   if (!value?.asset?.url) return null
 
   return (
-    <figure
-      className="
-        group
-        relative
-        my-14 md:my-20
-        overflow-hidden
-        rounded-[30px]
-      "
+  <figure
+    className="
+      group
+      relative
+      my-14 md:my-20
+      overflow-hidden
+      rounded-[30px]
+    "
+  >
     >
       <PinterestSaveButton
         imageUrl={value.asset.url}
