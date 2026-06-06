@@ -1,5 +1,6 @@
 import Link from "next/link"
-
+import { NewsletterForm }
+from "@/components/newsletter-form"
 import {
   Mail,
 } from "lucide-react"
@@ -138,53 +139,7 @@ export function Footer() {
             and elevated lifestyle finds directly in your inbox.
           </p>
 
-          <form
-            className="
-              mx-auto
-              mt-10
-              flex
-              max-w-xl
-              flex-col
-              gap-4
-              sm:flex-row
-            "
-          >
-
-            <Input
-              type="email"
-              required
-              placeholder="Enter your email"
-              className="
-                h-14
-                rounded-full
-                border-border
-                bg-card
-                px-6
-                text-base
-                shadow-none
-                focus-visible:ring-1
-                focus-visible:ring-[#b89c83]
-              "
-            />
-
-            <Button
-              type="submit"
-              className="
-                h-14
-                rounded-full
-                bg-[#2c2623]
-                px-8
-                text-[12px]
-                uppercase
-                tracking-[0.18em]
-                text-white
-                hover:bg-black
-              "
-            >
-              Subscribe
-            </Button>
-
-          </form>
+          <NewsletterForm />
 
           <p
             className="
