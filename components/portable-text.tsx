@@ -26,7 +26,9 @@ const isAffiliateDisclosure =
   lowerText.includes("trusted partners")
 
 const applyDropCap =
-  !hasDropCap && !isAffiliateDisclosure
+  !hasDropCap &&
+  !isAffiliateDisclosure &&
+  text.trim().length > 20
 
 if (applyDropCap) {
   hasDropCap = true
