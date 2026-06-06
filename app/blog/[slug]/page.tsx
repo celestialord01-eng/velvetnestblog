@@ -10,7 +10,7 @@ import {
 } from "lucide-react"
 
 import { PortableText } from "@portabletext/react"
-
+import { CustomPortableText } from "@/components/PortableText"
 import slugify from "slugify"
 import readingTime from "reading-time"
 
@@ -754,10 +754,7 @@ export default async function BlogPostPage({
       {post.markdownBody}
     </ReactMarkdown>
   ) : (
-    <PortableText
-      value={post.body}
-      components={portableTextComponents}
-    />
+    <CustomPortableText value={post.body} />
   )}
 </article>
 
