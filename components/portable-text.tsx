@@ -2,7 +2,7 @@ import { PortableText } from "@portabletext/react"
 import type { PortableTextComponents } from "@portabletext/react"
 import Image from "next/image"
 import Link from "next/link"
-
+import { PinterestSaveButton } from "@/components/pinterest-save-button"
 import { headingToId } from "@/lib/heading"
 
 // Controls drop cap so it only appears once
@@ -279,14 +279,60 @@ const components: PortableTextComponents = {
     if (!value?.asset?.url) return null
 
     return (
-      <figure
-        className="
-          group
-          my-14 md:my-20
-          overflow-hidden
-          rounded-[30px]
-        "
-      >
+      image: ({ value }: any) => {
+  if (!value?.asset?.url) return null
+
+  return (
+    <figure
+      className="
+        group
+        relative
+        my-14 md:my-20
+        overflow-hidden
+        rounded-[30px]
+      "
+    >
+      <PinterestSaveButton
+        imageUrl={value.asset.url}
+        description={value.caption || ""}
+      />
+
+      <div className="overflow-hidden rounded-[30px]">
+        <Image
+          src={value.asset.url}
+          alt={value.alt || "VelvetNest blog image"}
+          width={1400}
+          height={1800}
+          className="
+            h-auto
+            w-full
+            rounded-[30px]
+            object-cover
+            shadow-[0_10px_40px_rgba(0,0,0,0.06)]
+            transition-transform
+            duration-700
+            group-hover:scale-[1.02]
+          "
+        />
+      </div>
+
+      {value.caption && (
+        <figcaption
+          className="
+            mt-5
+            text-center
+            text-sm
+            italic
+            tracking-wide
+            text-stone-500
+          "
+        >
+          {value.caption}
+        </figcaption>
+      )}
+    </figure>
+  )
+},
         <div className="overflow-hidden rounded-[30px]">
           <Image
             src={value.asset.url}
