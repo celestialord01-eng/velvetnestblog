@@ -6,15 +6,34 @@ import { PinterestSaveButton } from "@/components/pinterest-save-button"
 import { headingToId } from "@/lib/heading"
 
 // Controls drop cap so it only appears once
-let paragraphCount = 0
+let hasDropCap = false
 
 const components: PortableTextComponents = {
   block: {
     normal: ({ children }: any) => {
       paragraphCount++
 
+const text =
+  children
+    ?.map?.((child: any) =>
+      typeof child === "string"
+        ? child
+        : child?.props?.children || ""
+    )
+    .join(" ") || ""
+
+const lowerText = text.toLowerCase()
+
+const isAffiliateDisclosure =
+  lowerText.includes("affiliate")
+
 const applyDropCap =
-  paragraphCount === 2 &&
+  !hasDropCap &&
+  !isAffiliateDisclosure
+
+if (applyDropCap) {
+  hasDropCap = true
+} &&
   typeof children?.[0] === "string"
       return (
         <p
@@ -264,17 +283,17 @@ const applyDropCap =
         <figure
   className="
     group
-    relative
     my-14 md:my-20
     rounded-[30px]
   "
 >
-  <PinterestSaveButton
-    imageUrl={value.asset.url}
-    description={value.caption || ""}
-  />
+  <div className="relative overflow-hidden rounded-[30px]">
 
-  <div className="overflow-hidden rounded-[30px]">
+    <PinterestSaveButton
+      imageUrl={value.asset.url}
+      description={value.caption || ""}
+    />
+
     <Image
       src={value.asset.url}
       alt={value.alt || "VelvetNest blog image"}
@@ -292,22 +311,7 @@ const applyDropCap =
       "
     />
   </div>
-
-          {value.caption && (
-            <figcaption
-              className="
-                mt-5
-                text-center
-                text-sm
-                italic
-                tracking-wide
-                text-stone-500
-              "
-            >
-              {value.caption}
-            </figcaption>
-          )}
-        </figure>
+</figure>
       )
     },
 
@@ -385,7 +389,7 @@ const applyDropCap =
 
 export function CustomPortableText({ value }: any) {
   // Reset drop cap for every article
-  paragraphCount = 0
+  hasDropCap = false
 
   return (
     <div
