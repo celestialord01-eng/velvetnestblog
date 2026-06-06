@@ -27,8 +27,8 @@ export function PinterestSaveButton({
       aria-label="Save to Pinterest"
       className="
 absolute
-top-6
-right-6
+top-8
+right-8
 z-50
 flex
 h-10
