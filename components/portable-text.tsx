@@ -11,8 +11,7 @@ let hasDropCap = false
 const components: PortableTextComponents = {
   block: {
     normal: ({ children }: any) => {
-      paragraphCount++
-
+      
 const text =
   children
     ?.map?.((child: any) =>
@@ -33,8 +32,7 @@ const applyDropCap =
 
 if (applyDropCap) {
   hasDropCap = true
-} &&
-  typeof children?.[0] === "string"
+}
       return (
         <p
           className={`
@@ -311,6 +309,20 @@ if (applyDropCap) {
       "
     />
   </div>
+          {value.caption && (
+  <figcaption
+    className="
+      mt-5
+      text-center
+      text-sm
+      italic
+      tracking-wide
+      text-stone-500
+    "
+  >
+    {value.caption}
+  </figcaption>
+)}
 </figure>
       )
     },
