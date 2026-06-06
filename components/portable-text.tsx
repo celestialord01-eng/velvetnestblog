@@ -10,25 +10,23 @@ let hasDropCap = false
 
 const components: PortableTextComponents = {
   block: {
-    normal: ({ children }: any) => {
+normal: ({ children, value }: any) => {
       
 const text =
-  children
-    ?.map?.((child: any) =>
-      typeof child === "string"
-        ? child
-        : child?.props?.children || ""
-    )
+  value?.children
+    ?.map((child: any) => child.text)
     .join(" ") || ""
 
 const lowerText = text.toLowerCase()
 
 const isAffiliateDisclosure =
-  lowerText.includes("affiliate")
+  lowerText.includes("affiliate") ||
+  lowerText.includes("commission") ||
+  lowerText.includes("amazon") ||
+  lowerText.includes("trusted partners")
 
 const applyDropCap =
-  !hasDropCap &&
-  !isAffiliateDisclosure
+  !hasDropCap && !isAffiliateDisclosure
 
 if (applyDropCap) {
   hasDropCap = true
