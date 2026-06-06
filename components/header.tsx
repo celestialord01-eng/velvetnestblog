@@ -41,18 +41,15 @@ interface HeaderProps {
 ========================================================= */
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/blog", label: "Blog" },
+  { href: "/", label: "Home", external: false },
+  { href: "/blog", label: "Blog", external: false },
   {
     href: "https://a.co/d/0i54mdf3",
     label: "Storefront",
     external: true,
   },
-  { href: "/about", label: "About" },
-  {
-    href: "/contact",
-    label: "Contact",
-  },
+  { href: "/about", label: "About", external: false },
+  { href: "/contact", label: "Contact", external: false },
 ]
 
 const categories = [
@@ -295,9 +292,7 @@ export function Header({
                     pathname ===
                     link.href
 
-                  return (
-
-                    {link.external ? (
+                  return link.external ? (
   <a
     key={link.href}
     href={link.href}
@@ -338,6 +333,20 @@ export function Header({
     `}
   >
     {link.label}
+
+    {pathname === link.href && (
+      <motion.span
+        layoutId="header-active"
+        className="
+          absolute
+          -bottom-2
+          left-0
+          h-[1px]
+          w-full
+          bg-foreground
+        "
+      />
+    )}
   </Link>
 )}
 
@@ -483,9 +492,7 @@ export function Header({
         const isActive =
           pathname === link.href
 
-        return (
-
-          {link.external ? (
+        return link.external ? (
   <a
     key={link.href}
     href={link.href}
@@ -508,6 +515,7 @@ export function Header({
           : "text-muted-foreground"
       }
     `}
+    onClick={() => setIsMenuOpen(false)}
   >
     {link.label}
   </Link>
