@@ -55,12 +55,20 @@ const [loading, setLoading] =
     30 * 24 * 60 * 60 * 1000
 
   if (
-    Date.now() - Number(seen) >
-    thirtyDays
-  ) {
-    localStorage.removeItem(
-      "velvetnest-popup-seen"
-    )
+  Date.now() - Number(seen) >
+  thirtyDays
+) {
+  localStorage.removeItem(
+    "velvetnest-popup-seen"
+  )
+
+  const timer =
+    setTimeout(() => {
+      setIsOpen(true)
+    }, 30000)
+
+  return () =>
+    clearTimeout(timer)
   }
 }, [])
 
@@ -314,21 +322,24 @@ const [loading, setLoading] =
                     />
 
                     <Button
-                      type="submit"
-                      className="
-                        h-14
-                        w-full
-                        rounded-full
-                        bg-[#2c2623]
-                        text-[12px]
-                        uppercase
-                        tracking-[0.18em]
-                        text-white
-                        hover:bg-black
-                      "
-                    >
-                      Subscribe Now
-                    </Button>
+  type="submit"
+  disabled={loading}
+  className="
+    h-14
+    w-full
+    rounded-full
+    bg-[#2c2623]
+    text-[12px]
+    uppercase
+    tracking-[0.18em]
+    text-white
+    hover:bg-black
+  "
+>
+  {loading
+    ? "Joining..."
+    : "Subscribe Now"}
+</Button>
 
                   </form>
 
@@ -446,8 +457,11 @@ const [loading, setLoading] =
                     text-[#685d55]
                   "
                 >
-                  Your first curated inspiration email
-                  will arrive soon.
+                  ✨ Welcome to VelvetNest.
+
+Fashion inspiration, cozy home decor ideas,
+beauty favorites, and curated lifestyle finds
+are on their way to your inbox.
                 </p>
 
               </div>
