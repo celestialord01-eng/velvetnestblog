@@ -11,10 +11,8 @@ let hasDropCap = false
 const components: PortableTextComponents = {
   block: {
     normal: ({ children }: any) => {
-      const text =
-        typeof children?.[0] === "string"
-          ? children[0]
-          : ""
+      const text = String(children ?? "")
+      console.log("Paragraph text:", text)
 
       // Skip affiliate disclosures
       const lowerText = text.toLowerCase()
@@ -287,7 +285,10 @@ const isAffiliateDisclosure =
 >
           
 
-          <div className="overflow-hidden rounded-[30px]">
+          <div className="relative overflow-hidden rounded-[30px]">
+            <div className="absolute top-4 left-4 z-[9999] bg-red-500 p-3 text-white">
+  PIN
+</div>
             <PinterestSaveButton
   imageUrl={value.asset.url}
   description={value.caption || ""}
