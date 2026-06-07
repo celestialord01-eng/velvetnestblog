@@ -7,7 +7,19 @@ import { headingToId } from "@/lib/heading"
 
 // Controls drop cap so it only appears once
 let hasDropCap = false
+function safeHeadingId(children: any) {
+  const text = Array.isArray(children)
+    ? children
+        .map((child) =>
+          typeof child === "string"
+            ? child
+            : child?.props?.children || ""
+        )
+        .join("")
+    : String(children || "")
 
+  return headingToId(text)
+}
 const components: PortableTextComponents = {
   block: {
 normal: ({ children, value }: any) => {
@@ -53,9 +65,7 @@ if (applyDropCap) {
     },
 
     h1: ({ children }: any) => {
-      const text = children?.[0]
-      const id = headingToId(text)
-
+      const id = safeHeadingId(children)
       return (
         <h1
           id={id}
@@ -78,8 +88,7 @@ if (applyDropCap) {
     },
 
     h2: ({ children }: any) => {
-      const text = children?.[0]
-      const id = headingToId(text)
+      const id = safeHeadingId(children)
 
       return (
         <h2
@@ -103,8 +112,7 @@ if (applyDropCap) {
     },
 
     h3: ({ children }: any) => {
-      const text = children?.[0]
-      const id = headingToId(text)
+      const id = safeHeadingId(children)
 
       return (
         <h3
@@ -128,9 +136,7 @@ if (applyDropCap) {
     },
 
     h4: ({ children }: any) => {
-      const text = children?.[0]
-      const id = headingToId(text)
-
+      const id = safeHeadingId(children)
       return (
         <h4
           id={id}
