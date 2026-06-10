@@ -149,7 +149,15 @@ defineField({
         type: "text",
           rows: 25,
           }),
-
+    
+defineField({
+  name: "markdownConvert",
+  title: "Convert Markdown",
+  type: "string",
+  components: {
+    input: MarkdownImportButton,
+  },
+}),
     // BODY
     defineField({
       name: "body",
