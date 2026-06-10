@@ -144,11 +144,12 @@ export default defineType({
       type: "number",
     }),
 defineField({
-  name: "markdownImport",
-  title: "Markdown Import",
-  type: "text",
-  rows: 25,
-}),
+    name: "markdownImport",
+      title: "Markdown Import",
+        type: "text",
+          rows: 25,
+          }),
+
     // BODY
     defineField({
       name: "body",
