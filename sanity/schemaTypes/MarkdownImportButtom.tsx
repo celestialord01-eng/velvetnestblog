@@ -19,9 +19,9 @@ export default function MarkdownImportButton() {
     const body = await markdownToPortableText(markdown)
 
     await client
-      .patch(documentId.replace(/^drafts\./, ""))
-      .set({ body })
-      .commit()
+  .patch(documentId)
+  .set({ body })
+  .commit()
 
     alert("Markdown converted successfully")
   }
