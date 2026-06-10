@@ -1,104 +1,149 @@
 import { remark } from "remark"
 import remarkParse from "remark-parse"
 
+function parseChildren(children: any[] = []) {
+  const spans: any[] = []
+
+  for (const child of children) {
+    // Plain text
+    if (child.type === "text") {
+      spans.push({
+        _type: "span",
+        text: child.value,
+      })
+    }
+
+    // Bold
+    if (child.type === "strong") {
+      const text = child.children
+        ?.map((c: any) => c.value || "")
+        .join("")
+
+      spans.push({
+        _type: "span",
+        text,
+        marks: ["strong"],
+      })
+    }
+
+    // Italic
+    if (child.type === "emphasis") {
+      const text = child.children
+        ?.map((c: any) => c.value || "")
+        .join("")
+
+      spans.push({
+        _type: "span",
+        text,
+        marks: ["em"],
+      })
+    }
+
+    // Links
+    if (child.type === "link") {
+      const text = child.children
+        ?.map((c: any) => c.value || "")
+        .join("")
+
+      const markKey = crypto.randomUUID()
+
+      spans.push({
+        _type: "span",
+        text,
+        marks: [markKey],
+      })
+
+      spans._markDefs = spans._markDefs || []
+
+      spans._markDefs.push({
+        _key: markKey,
+        _type: "link",
+        href: child.url,
+      })
+    }
+  }
+
+  return spans
+}
+
 export async function markdownToPortableText(
   markdown: string
-  ) {
-    const tree = remark()
-        .use(remarkParse)
-            .parse(markdown)
+) {
+  const tree = remark()
+    .use(remarkParse)
+    .parse(markdown)
 
-              const blocks: any[] = []
+  const blocks: any[] = []
 
-                for (const node of tree.children) {
-                    if (node.type === "heading") {
-                          const text = node.children
-                                  ?.map((c: any) => c.value || "")
-                                          .join("")
+  for (const node of tree.children) {
+    // Headings
+    if (node.type === "heading") {
+      const children = parseChildren(node.children)
 
-                                                blocks.push({
-                                                        _type: "block",
-                                                                style:
-                                                                          node.depth === 2
-                                                                                      ? "h2"
-                                                                                                  : node.depth === 3
-                                                                                                              ? "h3"
-                                                                                                                          : node.depth === 4
-                                                                                                                                      ? "h4"
-                                                                                                                                                  : "normal",
+      blocks.push({
+        _type: "block",
+        style:
+          node.depth === 2
+            ? "h2"
+            : node.depth === 3
+            ? "h3"
+            : node.depth === 4
+            ? "h4"
+            : "normal",
+        children,
+        markDefs: children._markDefs || [],
+      })
+    }
 
-                                                                                                                                                          children: [
-                                                                                                                                                                    {
-                                                                                                                                                                                _type: "span",
-                                                                                                                                                                                            text,
-                                                                                                                                                                                                      },
-                                                                                                                                                                                                              ],
-                                                                                                                                                                                                                    })
-                                                                                                                                                                                                                        }
+    // Paragraphs
+    if (node.type === "paragraph") {
+      const children = parseChildren(node.children)
 
-                                                                                                                                                                                                                            if (node.type === "paragraph") {
-                                                                                                                                                                                                                                  const text = node.children
-                                                                                                                                                                                                                                          ?.map((c: any) => c.value || "")
-                                                                                                                                                                                                                                                  .join("")
+      blocks.push({
+        _type: "block",
+        style: "normal",
+        children,
+        markDefs: children._markDefs || [],
+      })
+    }
 
-                                                                                                                                                                                                                                                        blocks.push({
-                                                                                                                                                                                                                                                                _type: "block",
-                                                                                                                                                                                                                                                                        style: "normal",
+    // Quotes
+    if (node.type === "blockquote") {
+      const paragraph = node.children?.[0]
 
-                                                                                                                                                                                                                                                                                children: [
-                                                                                                                                                                                                                                                                                          {
-                                                                                                                                                                                                                                                                                                      _type: "span",
-                                                                                                                                                                                                                                                                                                                  text,
-                                                                                                                                                                                                                                                                                                                            },
-                                                                                                                                                                                                                                                                                                                                    ],
-                                                                                                                                                                                                                                                                                                                                          })
-                                                                                                                                                                                                                                                                                                                                              }
+      const children = parseChildren(
+        paragraph?.children || []
+      )
 
-                                                                                                                                                                                                                                                                                                                                                  if (node.type === "blockquote") {
-                                                                                                                                                                                                                                                                                                                                                        const text =
-                                                                                                                                                                                                                                                                                                                                                                node.children?.[0]?.children
-                                                                                                                                                                                                                                                                                                                                                                          ?.map((c: any) => c.value || "")
-                                                                                                                                                                                                                                                                                                                                                                                    .join("") || ""
+      blocks.push({
+        _type: "block",
+        style: "blockquote",
+        children,
+        markDefs: children._markDefs || [],
+      })
+    }
 
-                                                                                                                                                                                                                                                                                                                                                                                          blocks.push({
-                                                                                                                                                                                                                                                                                                                                                                                                  _type: "block",
-                                                                                                                                                                                                                                                                                                                                                                                                          style: "blockquote",
+    // Lists
+    if (node.type === "list") {
+      for (const item of node.children) {
+        const paragraph = item.children?.[0]
 
-                                                                                                                                                                                                                                                                                                                                                                                                                  children: [
-                                                                                                                                                                                                                                                                                                                                                                                                                            {
-                                                                                                                                                                                                                                                                                                                                                                                                                                        _type: "span",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                    text,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                              },
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ],
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            })
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+        const children = parseChildren(
+          paragraph?.children || []
+        )
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    if (node.type === "list") {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          for (const item of node.children) {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  const text =
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            item.children?.[0]?.children
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ?.map((c: any) => c.value || "")
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    .join("") || ""
+        blocks.push({
+          _type: "block",
+          listItem: node.ordered
+            ? "number"
+            : "bullet",
+          level: 1,
+          children,
+          markDefs: children._markDefs || [],
+        })
+      }
+    }
+  }
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            blocks.push({
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      _type: "block",
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                listItem: node.ordered
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ? "number"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        : "bullet",
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  level: 1,
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            children: [
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      _type: "span",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    text,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                },
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ],
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  })
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              }
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                return blocks
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
+  return blocks
+}
