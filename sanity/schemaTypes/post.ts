@@ -1,5 +1,5 @@
 import { defineField, defineType } from "sanity"
-
+import MarkdownImportButton from "../components/MarkdownImportButton"
 export default defineType({
   name: "post",
   title: "Post",
