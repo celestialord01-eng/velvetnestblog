@@ -2,7 +2,7 @@ import { remark } from "remark"
 import remarkParse from "remark-parse"
 
 function parseChildren(children: any[] = []) {
-  const spans: any[] = []
+  const spans: any = []
 
   for (const child of children) {
     // Plain text
@@ -109,7 +109,7 @@ export async function markdownToPortableText(
 
     // Quotes
     if (node.type === "blockquote") {
-      const paragraph = node.children?.[0]
+      const paragraph: any = node.children?.[0]
 
       const children = parseChildren(
         paragraph?.children || []
@@ -126,7 +126,7 @@ export async function markdownToPortableText(
     // Lists
     if (node.type === "list") {
       for (const item of node.children) {
-        const paragraph = item.children?.[0]
+        const paragraph: any = item.children?.[0]
 
         const children = parseChildren(
           paragraph?.children || []

@@ -40,6 +40,7 @@
     "@radix-ui/react-tooltip": "1.2.8",
     "@sanity/icons": "^3.7.4",
     "@sanity/image-url": "^2.1.1",
+    "@sanity/ui": "^3.2.0",
     "@sanity/vision": "^5.26.0",
     "@vercel/analytics": "^1.6.1",
     "autoprefixer": "^10.4.20",
