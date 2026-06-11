@@ -197,6 +197,18 @@ defineField({
   options: {
     hotspot: true,
   },
+  fields: [
+    {
+      name: "alt",
+      title: "Alt Text",
+      type: "string",
+    },
+    {
+      name: "caption",
+      title: "Caption",
+      type: "string",
+    },
+  ],
 },
         // LINK BLOCK
         {
