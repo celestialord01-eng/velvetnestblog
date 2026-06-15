@@ -89,7 +89,10 @@ export const metadata: Metadata = {
       "69d7bd25e2bed4760b6ebd58e1dee5ff",
   },
 },
-
+other: {
+  "google-adsense-account":
+    "ca-pub-4903290054540457",
+},
   alternates: {
     canonical:
       "https://velvetnestblog.vercel.app",
