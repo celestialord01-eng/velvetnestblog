@@ -91,7 +91,7 @@ export const metadata: Metadata = {
 },
 other: {
   "google-adsense-account":
-    "ca-pub-4903290054540457",
+    "ca-pub-4903920054540457",
 },
   alternates: {
     canonical:
