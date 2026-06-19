@@ -2,7 +2,7 @@ import { PageTransition } from "@/components/page-transition"
 import GoogleAnalytics from "@/components/GoogleAnalytics"
 import Clarity from "@/components/Clarity"
 import type { Metadata } from "next"
-
+import AnalyticsWrapper from "@/components/AnalyticsWrapper"
 import {
   Cormorant_Garamond,
   Inter,
@@ -206,11 +206,7 @@ export default function RootLayout({
         "
       >
 
-        {/* GOOGLE ANALYTICS */}
-
-        <GoogleAnalytics />
-        {/* MICROSOFT CLARITY */}
-        <Clarity />  
+        <AnalyticsWrapper />
 
         {/* PAGE TRANSITION */}
 
