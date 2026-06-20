@@ -128,7 +128,8 @@ export default defineType({
     defineField({
   name: "tags",
   title: "Tags",
-  type: "string",
+  type: "array",
+  of: [{ type: "string" }],
 }),
 
     // READING TIME
