@@ -126,16 +126,10 @@ export default defineType({
 
     // TAGS
     defineField({
-      name: "tags",
-      title: "Tags",
-      type: "array",
-
-      of: [{ type: "string" }],
-
-      options: {
-        layout: "tags",
-      },
-    }),
+  name: "tags",
+  title: "Tags",
+  type: "string",
+}),
 
     // READING TIME
     defineField({
