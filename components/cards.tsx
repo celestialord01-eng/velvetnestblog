@@ -123,12 +123,12 @@ export function BlogCard({
         >
 
           <div
-            className="
-              relative
-              aspect-[4/5]
-              overflow-hidden
-            "
-          >
+  className="
+    relative
+    aspect-[3/2]
+    overflow-hidden
+  "
+>
 
             <Image
               src={imageSrc}
@@ -245,7 +245,7 @@ export function BlogCard({
 
         <div className="px-2 pb-2 pt-6">
 
-          {/* META */}
+          {/* META REMOVED FROM CATEGORY DESIGN 
 
           <div
             className="
@@ -283,15 +283,15 @@ export function BlogCard({
 
             )}
 
-          </div>
+          </div> */}
 
           {/* TITLE */}
 
           <h3
             className="
               font-serif
-              text-[1.75rem]
-              md:text-[1.9rem]
+              text-[1.5rem]
+              md:text-[1.65rem]
               leading-[0.95]
               tracking-[-0.04em]
               text-foreground
@@ -309,10 +309,10 @@ export function BlogCard({
 
             <p
               className="
-                mt-5
+                mt-3
                 line-clamp-2
-                text-[1rem]
-                leading-8
+                text-[0.95rem]
+                leading-7
                 text-[#685d55]
               "
             >
