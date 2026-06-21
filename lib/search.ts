@@ -1,25 +1,55 @@
-import { client } from "@/sanity/lib/client"
+export function extractPortableText(blocks: any[] = []) {
+  return blocks
+    .filter((block) => block._type === "block")
+    .map((block) =>
+      block.children
+        ?.map((child: any) => child.text)
+        .join(" ")
+    )
+    .join(" ")
+}
 
-export async function searchPosts(query: string) {
-  if (!query) return []
+export function calculateSearchScore(
+  post: any,
+  query: string
+) {
+  const terms = query
+    .toLowerCase()
+    .trim()
+    .split(/\s+/)
 
-  const searchQuery = `
-    *[
-      _type == "post" &&
-      (
-        title match $search + "*" ||
-        excerpt match $search + "*" ||
-        pt::text(body) match $search + "*"
+  let score = 0
+
+  for (const term of terms) {
+    if (
+      post.title?.toLowerCase().includes(term)
+    )
+      score += 100
+
+    if (
+      post.tags?.some((tag: string) =>
+        tag.toLowerCase().includes(term)
       )
-    ][0...8]{
-      _id,
-      title,
-      "slug": slug.current,
-      excerpt
-    }
-  `
+    )
+      score += 75
 
-  return client.fetch(searchQuery, {
-    search: query,
-  })
+    if (
+      post.category?.toLowerCase().includes(term)
+    )
+      score += 50
+
+    if (
+      post.excerpt?.toLowerCase().includes(term)
+    )
+      score += 25
+
+    if (
+      post.searchContent
+        ?.toLowerCase()
+        .includes(term)
+    )
+      score += 10
+  }
+
+  return score
 }
