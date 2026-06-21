@@ -157,6 +157,28 @@ export async function generateMetadata({
       title: "Post Not Found | VelvetNest",
     }
   }
+  const relatedPosts =
+  await client.fetch(
+`
+*[
+  _type == "post" &&
+  slug.current != $slug &&
+  category->title == $category
+]
+| order(publishedAt desc)
+[0...3]{
+  _id,
+  title,
+  excerpt,
+  mainImage,
+  "slug": slug.current
+}
+`,
+{
+  slug,
+  category: post.category?.title,
+}
+)
 
   return {
     title:
@@ -798,6 +820,134 @@ export default async function BlogPostPage({
           </div>
         </section>
       </main>
+
+      {relatedPosts.length > 0 && (
+
+        <section
+          className="
+            mx-auto
+            max-w-7xl
+            px-6
+            py-24
+            md:px-10
+          "
+        >
+
+          <div
+            className="
+              mb-12
+              text-center
+            "
+          >
+
+            <p
+              className="
+                text-xs
+                uppercase
+                tracking-[0.3em]
+                text-[#8b7d6b]
+              "
+            >
+              Continue Reading
+            </p>
+
+            <h2
+              className="
+                mt-4
+                font-serif
+                text-4xl
+                md:text-5xl
+                tracking-[-0.04em]
+              "
+            >
+              Related Articles
+            </h2>
+
+          </div>
+
+          <div
+            className="
+              grid
+              gap-8
+              md:grid-cols-3
+            "
+          >
+
+            {relatedPosts.map(
+              (related: any) => (
+
+                <Link
+                  key={related._id}
+                  href={`/blog/${related.slug}`}
+                  className="
+                    group
+                    block
+                  "
+                >
+
+                  <div
+                    className="
+                      relative
+                      aspect-[4/3]
+                      overflow-hidden
+                      rounded-[2rem]
+                    "
+                  >
+
+                    <Image
+                      src={
+                        related.mainImage
+                          ? urlFor(
+                              related.mainImage
+                            )
+                              .width(800)
+                              .url()
+                          : "/placeholder.jpg"
+                      }
+                      alt={related.title}
+                      fill
+                      className="
+                        object-cover
+                        transition-transform
+                        duration-700
+                        group-hover:scale-105
+                      "
+                    />
+
+                  </div>
+
+                  <h3
+                    className="
+                      mt-5
+                      font-serif
+                      text-2xl
+                      tracking-[-0.03em]
+                    "
+                  >
+                    {related.title}
+                  </h3>
+
+                  <p
+                    className="
+                      mt-3
+                      line-clamp-3
+                      text-sm
+                      text-muted-foreground
+                    "
+                  >
+                    {related.excerpt}
+                  </p>
+
+                </Link>
+
+              )
+            )}
+
+          </div>
+
+        </section>
+
+      )}
 
       <Footer />
     </>
