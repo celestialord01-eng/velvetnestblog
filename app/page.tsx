@@ -13,7 +13,9 @@ import { NewsletterPopup } from "@/components/newsletter-popup"
 import { Reveal } from "@/components/reveal"
 
 import { Button } from "@/components/ui/button"
-
+import {
+  extractPortableText
+} from "@/lib/search"
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 
@@ -52,7 +54,23 @@ const hero =
     `)
 
   /* POSTS */
-
+const searchPosts =
+  await client.fetch(`
+  *[_type == "post"]{
+    title,
+    excerpt,
+    "slug": slug.current,
+    "category": category->title,
+    tags,
+    body
+  }
+`)
+  const processedSearchPosts =
+  searchPosts.map((post: any) => ({
+    ...post,
+    searchContent:
+      extractPortableText(post.body),
+  }))
   const blogPosts =
     await client.fetch(`
       *[_type == "post"]
@@ -101,7 +119,7 @@ const regularPosts =
 
     <div className="min-h-screen bg-background text-foreground">
 
-      <Header posts={blogPosts} />
+      <Header posts={processedSearchPosts} />
 
       <main>
 
