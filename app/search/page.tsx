@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
-
+import { SearchPageBar }
+from "@/components/search-page-bar"
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
 
@@ -86,6 +87,9 @@ export default async function SearchPage({
           "
         >
           Search Results for:
+          <SearchPageBar
+  initialQuery={query}
+/>
           {" "}
           "{query}"
         </h1>
