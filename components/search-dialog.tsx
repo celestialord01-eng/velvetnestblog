@@ -57,25 +57,24 @@ const filteredPosts =
   useMemo(() => {
 
     if (!query.trim()) {
-      return posts.slice(0, 8)
+      return posts.slice(0, 4)
     }
 
     return posts
-      .map((post) => ({
-        ...post,
-        score:
-          calculateSearchScore(
-            post,
-            query
-          ),
-      }))
-      .filter(
-        (post) => post.score > 0
-      )
-      .sort(
-        (a, b) =>
-          b.score - a.score
-      )
+  .map((post) => ({
+    ...post,
+    score: calculateSearchScore(
+      post,
+      query
+    ),
+  }))
+  .filter(
+    (post) => post.score > 0
+  )
+  .sort(
+    (a, b) => b.score - a.score
+  )
+  .slice(0, 4)
 
   }, [query, posts])
 
@@ -265,18 +264,6 @@ const filteredPosts =
                       {post.category ||
                         "Lifestyle"}
                     </p>
-                    {post.excerpt && (
-  <p
-    className="
-      mt-2
-      text-sm
-      text-[#6d6259]
-      line-clamp-2
-    "
-  >
-    {post.excerpt}
-  </p>
-)}
 
                     <h3
                       className="
@@ -290,6 +277,21 @@ const filteredPosts =
                     >
                       {post.title}
                     </h3>
+                    
+                    {post.excerpt && (
+  <p
+    className="
+      mt-2
+      text-sm
+      text-[#6d6259]
+      line-clamp-2
+    "
+  >
+    {post.excerpt}
+  </p>
+)}
+
+                    
 
                   </Link>
 
