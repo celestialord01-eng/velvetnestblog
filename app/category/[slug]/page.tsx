@@ -29,6 +29,22 @@ const categories = [
   "outfit-ideas",
   "self-care",
 ]
+const categoryDescriptions = {
+  fashion:
+    "Timeless style inspiration and fashion trends.",
+
+  beauty:
+    "Skincare, makeup and beauty inspiration.",
+
+  "home-decor":
+    "Elegant ideas to create a beautiful home.",
+
+  "outfit-ideas":
+    "Stylish looks for every occasion.",
+
+  "self-care":
+    "Simple habits for a better lifestyle.",
+}
 
 /* =========================================================
    TYPES
@@ -318,16 +334,29 @@ export default async function CategoryPage({
                     </p>
 
                     <h2
-                      className="
-                        mt-4
-                        font-serif
-                        text-[3rem]
-                        tracking-[-0.05em]
-                        md:text-[5rem]
-                      "
-                    >
-                      Explore Stories
-                    </h2>
+  className="
+    mt-4
+    font-serif
+    text-[3rem]
+    tracking-[-0.05em]
+    md:text-[5rem]
+  "
+>
+  {categoryTitle}
+</h2>
+                    <p
+  className="
+    mt-4
+    max-w-xl
+    text-muted-foreground
+  "
+>
+  {
+    categoryDescriptions[
+      slug as keyof typeof categoryDescriptions
+    ]
+  }
+</p>
 
                   </div>
 
@@ -346,7 +375,13 @@ export default async function CategoryPage({
 
                 {/* GRID */}
 
-                <div className="masonry-grid">
+                <div
+  className="
+    grid
+    gap-12
+    md:grid-cols-2
+  "
+>
 
                   {posts.map(
                     (post: any) => (
