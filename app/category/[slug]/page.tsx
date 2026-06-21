@@ -16,6 +16,7 @@ import { client } from "@/sanity/lib/client"
 
 import {
   categoryPostsQuery,
+  categoryCountQuery,
 } from "@/lib/queries"
 
 /* =========================================================
@@ -54,6 +55,9 @@ type Props = {
   params: Promise<{
     slug: string
   }>
+  searchParams: Promise<{
+    page?: string
+  }>
 }
 
 /* =========================================================
@@ -91,10 +95,22 @@ export async function generateMetadata({
 
 export default async function CategoryPage({
   params,
+  searchParams,
 }: Props) {
 
   const { slug } =
     await params
+  const { page = "1" } =
+  await searchParams
+
+const currentPage =
+  Number(page)
+
+const POSTS_PER_PAGE = 10
+
+const start =
+  (currentPage - 1) *
+  POSTS_PER_PAGE
 
   if (
     !categories.includes(slug)
@@ -103,10 +119,27 @@ export default async function CategoryPage({
   }
 
   const posts =
-    await client.fetch(
-      categoryPostsQuery,
-      { slug }
-    )
+  await client.fetch(
+    categoryPostsQuery,
+    {
+      slug,
+      start,
+      end:
+        start +
+        POSTS_PER_PAGE,
+    }
+  )
+  const totalPosts =
+  await client.fetch(
+    categoryCountQuery,
+    { slug }
+  )
+
+const totalPages =
+  Math.ceil(
+    totalPosts /
+    POSTS_PER_PAGE
+  )
 
   const categoryTitle =
     slug
@@ -420,6 +453,49 @@ export default async function CategoryPage({
                   )}
 
                 </div>
+                {/* PAGINATION */}
+                {
+  totalPages > 1 && (
+    <div
+      className="
+        mt-20
+        flex
+        justify-center
+        gap-3
+      "
+    >
+      {Array.from(
+        {
+          length:
+            totalPages,
+        },
+        (_, i) => (
+          <Link
+            key={i}
+            href={`/category/${slug}?page=${i + 1}`}
+            className={`
+              flex
+              h-10
+              w-10
+              items-center
+              justify-center
+              border
+
+              ${
+                currentPage ===
+                i + 1
+                  ? "bg-black text-white"
+                  : ""
+              }
+            `}
+          >
+            {i + 1}
+          </Link>
+        )
+      )}
+    </div>
+  )
+                }
               </>
 
             )}
