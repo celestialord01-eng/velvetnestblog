@@ -157,28 +157,7 @@ export async function generateMetadata({
       title: "Post Not Found | VelvetNest",
     }
   }
-  const relatedPosts =
-  await client.fetch(
-`
-*[
-  _type == "post" &&
-  slug.current != $slug &&
-  category->title == $category
-]
-| order(publishedAt desc)
-[0...3]{
-  _id,
-  title,
-  excerpt,
-  mainImage,
-  "slug": slug.current
-}
-`,
-{
-  slug,
-  category: post.category?.title,
-}
-)
+  
 
   return {
     title:
