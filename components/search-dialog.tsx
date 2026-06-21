@@ -186,6 +186,21 @@ const filteredPosts =
         <div className="px-6 py-5">
 
           <input
+            onKeyDown={(e) => {
+
+  if (
+    e.key === "Enter" &&
+    query.trim()
+  ) {
+
+    window.location.href =
+      `/search?q=${encodeURIComponent(
+        query
+      )}`
+
+  }
+
+}}
             autoFocus
             type="text"
             placeholder="Search fashion, beauty, decor..."
@@ -294,6 +309,24 @@ const filteredPosts =
                     
 
                   </Link>
+                  <Link
+  href={`/search?q=${encodeURIComponent(
+    query
+  )}`}
+  onClick={onClose}
+  className="
+    block
+    px-5
+    py-4
+    text-center
+    text-sm
+    uppercase
+    tracking-[0.2em]
+    text-[#8b7d6b]
+  "
+>
+  View All Results →
+</Link>
 
                 )
               )}
