@@ -32,7 +32,29 @@ export const categoryPostsQuery = `
   category->slug.current == $slug
 ]
 | order(publishedAt desc)
-[$start...$end]
+[$start...$end]{
+
+  _id,
+  title,
+  slug,
+  excerpt,
+  publishedAt,
+  featured,
+  readingTime,
+
+  category->{
+    title,
+    slug
+  },
+
+  mainImage{
+    asset->{
+      url
+    },
+    alt,
+    caption
+  }
+}
 `
 export const categoryCountQuery = `
 count(
