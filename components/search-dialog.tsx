@@ -1,5 +1,7 @@
 "use client"
-
+import {
+  calculateSearchScore
+} from "@/lib/search"
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { Search, X } from "lucide-react"
@@ -8,6 +10,9 @@ interface SearchItem {
   title: string
   slug: string
   category?: string
+  excerpt?: string
+  tags?: string[]
+  searchContent?: string
 }
 
 interface SearchDialogProps {
@@ -48,23 +53,31 @@ export function SearchDialog({
       )
 
   }, [onClose])
+const filteredPosts =
+  useMemo(() => {
 
-  const filteredPosts =
-    useMemo(() => {
+    if (!query.trim()) {
+      return posts.slice(0, 8)
+    }
 
-      if (!query.trim()) {
-        return posts.slice(0, 6)
-      }
-
-      return posts.filter((post) =>
-        post.title
-          .toLowerCase()
-          .includes(
-            query.toLowerCase()
-          )
+    return posts
+      .map((post) => ({
+        ...post,
+        score:
+          calculateSearchScore(
+            post,
+            query
+          ),
+      }))
+      .filter(
+        (post) => post.score > 0
+      )
+      .sort(
+        (a, b) =>
+          b.score - a.score
       )
 
-    }, [query, posts])
+  }, [query, posts])
 
   if (!open) {
     return null
@@ -206,7 +219,19 @@ export function SearchDialog({
             pb-5
           "
         >
-
+          
+<p
+  className="
+    px-5
+    pb-3
+    text-xs
+    uppercase
+    tracking-[0.22em]
+    text-[#8b7d6b]
+  "
+>
+  {filteredPosts.length} Results
+</p>
           {filteredPosts.length > 0 ? (
 
             <div className="space-y-2">
@@ -240,6 +265,18 @@ export function SearchDialog({
                       {post.category ||
                         "Lifestyle"}
                     </p>
+                    {post.excerpt && (
+  <p
+    className="
+      mt-2
+      text-sm
+      text-[#6d6259]
+      line-clamp-2
+    "
+  >
+    {post.excerpt}
+  </p>
+)}
 
                     <h3
                       className="
