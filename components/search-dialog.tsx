@@ -5,7 +5,7 @@ import {
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { Search, X } from "lucide-react"
-
+import { useRouter } from "next/navigation"
 interface SearchItem {
   title: string
   slug: string
@@ -53,8 +53,40 @@ export function SearchDialog({
       )
 
   }, [onClose])
-const filteredPosts =
+const rankedPosts =
   useMemo(() => {
+
+    if (!query.trim()) {
+      return posts
+    }
+
+    return posts
+      .map((post) => ({
+        ...post,
+        score: calculateSearchScore(
+          post,
+          query
+        ),
+      }))
+      .filter(
+        (post) => post.score > 0
+      )
+      .sort(
+        (a, b) =>
+          b.score - a.score
+      )
+
+  }, [query, posts])
+
+const filteredPosts =
+  query.trim()
+    ? rankedPosts.slice(0, 4)
+    : posts.slice(0, 4)
+
+const totalResults =
+  query.trim()
+    ? rankedPosts.length
+    : posts.length
 
     if (!query.trim()) {
       return posts.slice(0, 4)
@@ -193,10 +225,11 @@ const filteredPosts =
     query.trim()
   ) {
 
-    window.location.href =
-      `/search?q=${encodeURIComponent(
-        query
-      )}`
+    router.push(
+  `/search?q=${encodeURIComponent(
+    query
+  )}`
+)
 
   }
 
@@ -244,7 +277,7 @@ const filteredPosts =
     text-[#8b7d6b]
   "
 >
-  {filteredPosts.length} Results
+  {totalResults} Results
 </p>
           {filteredPosts.length > 0 ? (
 
@@ -309,27 +342,32 @@ const filteredPosts =
                     
 
                   </Link>
-                  <Link
-  href={`/search?q=${encodeURIComponent(
-    query
-  )}`}
-  onClick={onClose}
-  className="
-    block
-    px-5
-    py-4
-    text-center
-    text-sm
-    uppercase
-    tracking-[0.2em]
-    text-[#8b7d6b]
-  "
->
-  View All Results →
-</Link>
+                  
 
                 )
               )}
+              {query.trim() && (
+  <Link
+    href={`/search?q=${encodeURIComponent(
+      query
+    )}`}
+    onClick={onClose}
+    className="
+      block
+      rounded-2xl
+      px-5
+      py-4
+      text-center
+      text-sm
+      uppercase
+      tracking-[0.2em]
+      text-[#8b7d6b]
+      hover:bg-[#efe7de]
+    "
+  >
+    View All Results →
+  </Link>
+)}
 
             </div>
 
@@ -350,7 +388,7 @@ const filteredPosts =
                   text-[#8b7d6b]
                 "
               >
-                No articles found
+                No articles found for "{query}"
               </p>
 
             </div>
