@@ -118,7 +118,7 @@ export function BlogCard({
           className="
             relative
             overflow-hidden
-            rounded-[2rem]
+            rounded-xl
           "
         >
 
@@ -415,7 +415,7 @@ export function ProductCard({
           className="
             relative
             overflow-hidden
-            rounded-[2rem]
+            rounded-xl
           "
         >
 
