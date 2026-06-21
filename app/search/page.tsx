@@ -18,11 +18,15 @@ export const revalidate = 60
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>
+  searchParams: Promise<{
+  q?: string
+  category?: string
+}>
 }) {
 
   const params = await searchParams
-
+const selectedCategory =
+  params.category || "All"
   const query = params.q || ""
 
   const posts = await client.fetch(`
@@ -45,8 +49,24 @@ export default async function SearchPage({
       searchContent:
         extractPortableText(post.body),
     }))
+  const categories = [
+  "All",
+  "Fashion",
+  "Outfit Ideas",
+  "Home Decor",
+  "Beauty",
+  "Self Care",
+]
 
   const results =
+    const filteredResults =
+  selectedCategory === "All"
+    ? results
+    : results.filter(
+        (post: any) =>
+          post.category ===
+          selectedCategory
+      )
     query.trim()
       ? processedPosts
           .map((post: any) => ({
@@ -90,6 +110,50 @@ export default async function SearchPage({
           <SearchPageBar
   initialQuery={query}
 />
+          <div
+  className="
+    mt-8
+    flex
+    flex-wrap
+    gap-3
+  "
+>
+
+  {categories.map((category) => (
+
+    <Link
+      key={category}
+      href={`/search?q=${encodeURIComponent(
+        query
+      )}&category=${encodeURIComponent(
+        category
+      )}`}
+      className={`
+        rounded-full
+        px-5
+        py-2
+        text-sm
+        transition
+        ${
+          selectedCategory === category
+            ? `
+              bg-[#1f1a17]
+              text-white
+            `
+            : `
+              border
+              border-[#d6b06f]
+              hover:bg-[#f4efe8]
+            `
+        }
+      `}
+    >
+      {category}
+    </Link>
+
+  ))}
+
+</div>
           {" "}
           "{query}"
         </h1>
@@ -100,7 +164,7 @@ export default async function SearchPage({
             text-muted-foreground
           "
         >
-          {results.length} articles found
+          {filteredResults.length} articles found
         </p>
 
         <div
@@ -111,7 +175,7 @@ export default async function SearchPage({
     md:grid-cols-2
   "
 >
-  {results.map((post: any) => (
+{filteredResults.map((post: any) => (
 
     <Link
       key={post._id}
@@ -183,6 +247,36 @@ export default async function SearchPage({
 
   ))}
 </div>
+        {filteredResults.length === 0 && (
+
+  <div
+    className="
+      py-20
+      text-center
+    "
+  >
+
+    <h2
+      className="
+        font-serif
+        text-3xl
+      "
+    >
+      No articles found
+    </h2>
+
+    <p
+      className="
+        mt-4
+        text-muted-foreground
+      "
+    >
+      Try another category or search term.
+    </p>
+
+  </div>
+
+)}
       </main>
 
       <Footer />
