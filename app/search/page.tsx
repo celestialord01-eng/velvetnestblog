@@ -59,7 +59,26 @@ const selectedCategory =
 ]
 
   const results =
-    const filteredResults =
+  query.trim()
+    ? processedPosts
+        .map((post: any) => ({
+          ...post,
+          score: calculateSearchScore(
+            post,
+            query
+          ),
+        }))
+        .filter(
+          (post: any) =>
+            post.score > 0
+        )
+        .sort(
+          (a: any, b: any) =>
+            b.score - a.score
+        )
+    : []
+
+const filteredResults =
   selectedCategory === "All"
     ? results
     : results.filter(
@@ -67,25 +86,6 @@ const selectedCategory =
           post.category ===
           selectedCategory
       )
-    query.trim()
-      ? processedPosts
-          .map((post: any) => ({
-            ...post,
-            score:
-              calculateSearchScore(
-                post,
-                query
-              ),
-          }))
-          .filter(
-            (post: any) =>
-              post.score > 0
-          )
-          .sort(
-            (a: any, b: any) =>
-              b.score - a.score
-          )
-      : []
 
   return (
     <div>
@@ -100,17 +100,20 @@ const selectedCategory =
         "
       >
         <h1
-          className="
-            font-serif
-            text-5xl
-            tracking-[-0.04em]
-          "
-        >
-          Search Results for:
-          <SearchPageBar
+  className="
+    font-serif
+    text-5xl
+    tracking-[-0.04em]
+  "
+>
+  Search Results for "{query}"
+</h1>
+
+<SearchPageBar
   initialQuery={query}
 />
-          <div
+
+<div
   className="
     mt-8
     flex
@@ -118,7 +121,6 @@ const selectedCategory =
     gap-3
   "
 >
-
   {categories.map((category) => (
 
     <Link
@@ -136,15 +138,8 @@ const selectedCategory =
         transition
         ${
           selectedCategory === category
-            ? `
-              bg-[#1f1a17]
-              text-white
-            `
-            : `
-              border
-              border-[#d6b06f]
-              hover:bg-[#f4efe8]
-            `
+            ? "bg-[#1f1a17] text-white"
+            : "border border-[#d6b06f] hover:bg-[#f4efe8]"
         }
       `}
     >
@@ -152,11 +147,7 @@ const selectedCategory =
     </Link>
 
   ))}
-
 </div>
-          {" "}
-          "{query}"
-        </h1>
 
         <p
           className="
