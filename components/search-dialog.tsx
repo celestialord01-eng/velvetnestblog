@@ -29,7 +29,7 @@ export function SearchDialog({
 
   const [query, setQuery] =
     useState("")
-
+const router = useRouter()
   useEffect(() => {
 
     function handleKey(
@@ -88,27 +88,7 @@ const totalResults =
     ? rankedPosts.length
     : posts.length
 
-    if (!query.trim()) {
-      return posts.slice(0, 4)
-    }
-
-    return posts
-  .map((post) => ({
-    ...post,
-    score: calculateSearchScore(
-      post,
-      query
-    ),
-  }))
-  .filter(
-    (post) => post.score > 0
-  )
-  .sort(
-    (a, b) => b.score - a.score
-  )
-  .slice(0, 4)
-
-  }, [query, posts])
+    
 
   if (!open) {
     return null
