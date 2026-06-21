@@ -31,32 +31,17 @@ export const categoryPostsQuery = `
   _type == "post" &&
   category->slug.current == $slug
 ]
-| order(featured desc, publishedAt desc){
-
-  _id,
-  title,
-  slug,
-  excerpt,
-  publishedAt,
-  featured,
-  readingTime,
-  tags,
-
-  category->{
-    title,
-    slug
-  },
-
-  mainImage{
-    asset->{
-      url
-    },
-    alt,
-    caption
-  }
-}
+| order(publishedAt desc)
+[$start...$end]
 `
-
+export const categoryCountQuery = `
+count(
+  *[
+    _type == "post" &&
+    category->slug.current == $slug
+  ]
+)
+`
 export const singlePostQuery = `
 *[
   _type == "post" &&
