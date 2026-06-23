@@ -781,43 +781,7 @@ export default async function BlogPostPage({
   )}
 </article>
 
-            {post.tags?.length > 0 && (
-              <div className="mt-20">
-                <h3
-                  className="
-                    mb-5
-                    font-serif
-                    text-2xl
-                  "
-                >
-                  Tags
-                </h3>
-
-                <div className="flex flex-wrap gap-3">
-                  {post.tags.map(
-                    (
-                      tag: string,
-                      index: number
-                    ) => (
-                      <span
-                        key={index}
-                        className="
-                          rounded-full
-                          border
-                          border-border
-                          bg-white
-                          px-4
-                          py-2
-                          text-sm
-                        "
-                      >
-                        #{tag}
-                      </span>
-                    )
-                  )}
-                </div>
-              </div>
-            )}
+            
           </div>
         </section>
       </main>
