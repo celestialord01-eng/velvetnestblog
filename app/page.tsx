@@ -806,7 +806,7 @@ text-[#f7f3ee]
       text-muted-foreground
     "
   >
-    {new Date(post.publishedAt).toDateString()} • 6 min read
+    {new Date(post.publishedAt).toDateString()} • {post.readingTime} 
   </p>
 
 </div>
