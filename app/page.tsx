@@ -392,9 +392,11 @@ md:min-h-[650px]">
                     {category?.image && (
 
                       <Image
+                    
                         src={urlFor(category.image).width(1200).url()}
                         alt={category.title}
                         fill
+                        sizes="(max-width:768px)100vw,50vw"
                         className="
                           object-cover
                           transition-transform
@@ -519,8 +521,10 @@ md:p-10
                     Trending on VelvetNest
                   </h2>
 <div className="mt-10 flex flex-wrap gap-4">
+<div className="mt-10 flex flex-wrap gap-4">
 
-  <button
+  <Link
+    href="/blog"
     className="
       bg-[#1f1a17]
       px-8
@@ -532,9 +536,10 @@ md:p-10
     "
   >
     All
-  </button>
+  </Link>
 
-  <button
+  <Link
+    href="/category/fashion"
     className="
       border
       border-[#d6b06f]
@@ -546,9 +551,10 @@ md:p-10
     "
   >
     Fashion
-  </button>
+  </Link>
 
-  <button
+  <Link
+    href="/category/home-decor"
     className="
       border
       border-[#d6b06f]
@@ -560,9 +566,24 @@ md:p-10
     "
   >
     Home Decor
-  </button>
+  </Link>
+  <Link
+    href="/category/outfit-ideas"
+    className="
+      border
+      border-[#d6b06f]
+      px-8
+      py-4
+      text-sm
+      uppercase
+      tracking-[0.2em]
+    "
+  >
+    Outfit Ideas
+  </Link>
 
-  <button
+  <Link
+    href="/category/beauty"
     className="
       border
       border-[#d6b06f]
@@ -574,7 +595,23 @@ md:p-10
     "
   >
     Beauty
-  </button>
+  </Link>
+  <Link
+    href="/category/self-care"
+    className="
+      border
+      border-[#d6b06f]
+      px-8
+      py-4
+      text-sm
+      uppercase
+      tracking-[0.2em]
+    "
+  >
+    Self Care
+  </Link>
+
+</div>
 
 </div>
                 </div>
@@ -609,6 +646,7 @@ text-[#f7f3ee]
         }
         alt={featuredPost.title}
         fill
+        sizes="(max-width:768px)100vw,50vw"
         className="
           object-cover
           opacity-70
@@ -707,6 +745,7 @@ text-[#f7f3ee]
   }
   alt={post.title}
   fill
+    sizes="(max-width:768px)100vw,50vw"      
   className="
     object-cover
     rounded-[1rem]
@@ -983,6 +1022,7 @@ to make everyday living more beautiful.
             src={urlFor(about.image).width(1200).url()}
             alt="About VelvetNest"
             fill
+            sizes="(max-width:768px)100vw,50vw"
             className="object-cover"
           />
 
