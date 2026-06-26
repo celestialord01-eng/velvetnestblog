@@ -260,6 +260,53 @@ md:min-h-[650px]">
   </div>
 
 </section>
+        {/* =========================================================
+    INTRODUCTION
+========================================================= */}
+
+<section
+  className="
+    mx-auto
+    max-w-5xl
+    px-5
+    py-20
+    text-center
+  "
+>
+  <Reveal>
+
+    <h2
+      className="
+        font-serif
+        text-4xl
+        md:text-6xl
+      "
+    >
+      Luxury Fashion, Home Decor & Lifestyle Inspiration
+    </h2>
+
+    <p
+      className="
+        mt-8
+        text-lg
+        leading-8
+        text-muted-foreground
+      "
+    >
+      Welcome to VelvetNest—your destination for timeless fashion,
+      elegant home decor, beauty inspiration, self-care ideas,
+      and carefully curated Amazon finds.
+      Whether you're creating a capsule wardrobe,
+      decorating your dream bedroom,
+      refreshing your living room,
+      or discovering affordable luxury,
+      VelvetNest helps you elevate everyday living with stylish,
+      practical inspiration.
+    </p>
+
+  </Reveal>
+
+</section>
   
                 
                   
@@ -810,16 +857,7 @@ text-[#f7f3ee]
 >
   {storefrontCTA?.title}
 </h2>
-        <p
-  className="
-    mt-6
-    max-w-lg
-    text-white/70
-    leading-relaxed
-  "
->
-  {storefrontCTA?.description}
-</p>
+        
         <p
   className="
     mt-6
