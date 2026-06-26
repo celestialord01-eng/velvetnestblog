@@ -1,7 +1,7 @@
 import { PageTransition } from "@/components/page-transition"
 import GoogleAnalytics from "@/components/GoogleAnalytics"
 import Clarity from "@/components/Clarity"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import AnalyticsWrapper from "@/components/AnalyticsWrapper"
 import {
   Cormorant_Garamond,
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     "https://velvetnestblog.vercel.app"
   ),
-  themeColor: "#1f1a17",
+  
 
   title: {
     default:
@@ -195,6 +195,9 @@ other: {
     shortcut: "/favicon.ico",
   },
 }
+export const viewport: Viewport = {
+  themeColor: "#1f1a17",
+}
 
 /* ===================================================
    ROOT LAYOUT
@@ -266,19 +269,7 @@ export default function RootLayout({
     }),
   }}
 />
-        <script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "SearchAction",
-      target:
-        "https://velvetnestblog.vercel.app/search?q={search_term_string}",
-      "query-input":
-        "required name=search_term_string",
-    }),
-  }}
-/>
+        
 
         {/* PAGE TRANSITION */}
 
