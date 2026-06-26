@@ -241,7 +241,7 @@ export default function RootLayout({
       name: "VelvetNest",
       url: "https://velvetnestblog.vercel.app",
       logo:
-        "https://velvetnestblog.vercel.app/logo-512.png",
+        "https://velvetnestblog.vercel.app/logo.png",
       sameAs: [
         "https://www.pinterest.com/velvetnestworld"
       ]
