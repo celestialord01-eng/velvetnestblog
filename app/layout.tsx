@@ -37,6 +37,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     "https://velvetnestblog.vercel.app"
   ),
+  themeColor: "#1f1a17",
 
   title: {
     default:
@@ -48,22 +49,30 @@ export const metadata: Metadata = {
     "Discover elevated fashion inspiration, cozy home decor ideas, curated Amazon finds, beauty rituals, and elegant self-care living.",
 
   keywords: [
-    "fashion blog",
-    "luxury lifestyle blog",
-    "home decor ideas",
-    "amazon finds",
-    "outfit ideas",
-    "beauty tips",
-    "self care",
-    "minimal fashion",
-    "cozy home decor",
-    "capsule wardrobe",
-    "quiet luxury",
-    "feminine lifestyle",
-    "street style",
-    "beauty products",
-    "self care routine",
-  ],
+  "fashion blog",
+  "fashion trends",
+  "outfit ideas",
+  "capsule wardrobe",
+  "street style",
+  "summer outfits",
+  "winter outfits",
+  "home decor",
+  "living room decor",
+  "bedroom decor",
+  "small room decor",
+  "luxury home decor",
+  "amazon finds",
+  "amazon fashion finds",
+  "amazon home finds",
+  "beauty tips",
+  "skincare routine",
+  "self care",
+  "cozy home",
+  "minimalist home",
+  "lifestyle blog",
+  "Pinterest fashion",
+  "Pinterest home decor",
+],
 
   authors: [
     {
@@ -79,6 +88,16 @@ export const metadata: Metadata = {
   category: "Lifestyle",
 
   applicationName: "VelvetNest",
+  formatDetection: {
+  telephone: false,
+  email: false,
+  address: false,
+},
+  appleWebApp: {
+  capable: true,
+  statusBarStyle: "black-translucent",
+  title: "VelvetNest",
+},
 
   verification: {
   google:
@@ -149,6 +168,7 @@ other: {
       "max-snippet": -1,
     },
   },
+  referrer: "origin-when-cross-origin",
 
   icons: {
     icon: [
@@ -189,14 +209,14 @@ export default function RootLayout({
   return (
 
     <html
-      lang="en"
-      suppressHydrationWarning
-      className={`
-        ${cormorant.variable}
-        ${inter.variable}
-      `}
-    >
-
+  lang="en"
+  suppressHydrationWarning
+  style={{ colorScheme: "light" }}
+  className={`
+    ${cormorant.variable}
+    ${inter.variable}
+  `}
+>
       <body
         className="
           bg-background
@@ -206,7 +226,59 @@ export default function RootLayout({
         "
       >
 
+        
         <AnalyticsWrapper />
+
+<GoogleAnalytics />
+
+<Clarity />
+        <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "VelvetNest",
+      url: "https://velvetnestblog.vercel.app",
+      logo:
+        "https://velvetnestblog.vercel.app/logo-512.png",
+      sameAs: [
+        "https://www.pinterest.com/velvetnestworld"
+      ]
+    }),
+  }}
+/>
+        <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "VelvetNest",
+      url: "https://velvetnestblog.vercel.app",
+      potentialAction: {
+        "@type": "SearchAction",
+        target:
+          "https://velvetnestblog.vercel.app/search?q={search_term_string}",
+        "query-input":
+          "required name=search_term_string",
+      },
+    }),
+  }}
+/>
+        <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SearchAction",
+      target:
+        "https://velvetnestblog.vercel.app/search?q={search_term_string}",
+      "query-input":
+        "required name=search_term_string",
+    }),
+  }}
+/>
 
         {/* PAGE TRANSITION */}
 
