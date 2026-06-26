@@ -4,7 +4,7 @@ export const revalidate = 60
 import {
   ArrowRight,
 } from "lucide-react"
-
+import readingTime from "reading-time"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
@@ -72,9 +72,9 @@ const searchPosts =
       extractPortableText(post.body),
   }))
   const blogPosts =
-    await client.fetch(`
-      *[_type == "post"]
-| order(featured desc, publishedAt desc)[0...6]{
+await client.fetch(`
+*[_type=="post"]
+|order(featured desc,publishedAt desc)[0...6]{
   _id,
   title,
   excerpt,
@@ -82,9 +82,27 @@ const searchPosts =
   "slug": slug.current,
   mainImage,
   featured,
+  markdownBody,
+  body,
   "category": category->title
 }
-    `)
+`)
+  const processedBlogPosts =
+  blogPosts.map((post: any) => {
+
+    const plainText =
+      post.markdownBody
+        ? post.markdownBody
+        : extractPortableText(post.body)
+
+    const stats = readingTime(plainText)
+
+    return {
+      ...post,
+      readingTime:
+        `${Math.ceil(stats.minutes)} min read`,
+    }
+  })
 
   const storefrontCTA =
   await client.fetch(`
@@ -108,11 +126,12 @@ const searchPosts =
   `)
 
 const featuredPost =
-  blogPosts.find((post: any) => post.featured) ||
-  blogPosts[0]
+processedBlogPosts.find(
+  (post: any) => post.featured
+) || processedBlogPosts[0]
 
 const regularPosts =
-  blogPosts
+processedBlogPosts
     .filter((post: any) => post._id !== featuredPost._id)
     .slice(0, 3)
   return (
