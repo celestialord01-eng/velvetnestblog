@@ -748,7 +748,7 @@ text-[#f7f3ee]
       text-muted-foreground
     "
   >
-    {new Date(post.publishedAt).toDateString()}
+    {new Date(post.publishedAt).toDateString()} • 6 min read
   </p>
 
 </div>
@@ -831,6 +831,51 @@ text-[#f7f3ee]
   )}
 
 </div>
+      <section
+className="
+mx-auto
+max-w-6xl
+px-5
+py-24
+"
+>
+
+<div className="text-center">
+
+<h2
+className="
+font-serif
+text-5xl
+"
+>
+Why Readers Love VelvetNest
+</h2>
+
+<p
+className="
+mt-8
+max-w-3xl
+mx-auto
+text-lg
+leading-8
+text-muted-foreground
+"
+>
+
+Discover fashion inspiration,
+Pinterest-worthy home decor,
+beauty routines,
+seasonal outfit ideas,
+small room makeovers,
+organization tips,
+and curated Amazon finds designed
+to make everyday living more beautiful.
+
+</p>
+
+</div>
+
+</section>
 
       {/* CONTENT */}
 
@@ -1020,6 +1065,116 @@ text-[#f7f3ee]
 
 </section>
       </main>
+      <section
+className="
+mx-auto
+max-w-5xl
+px-5
+py-24
+"
+>
+
+<h2
+className="
+font-serif
+text-5xl
+text-center
+"
+>
+Frequently Asked Questions
+</h2>
+
+<div className="mt-12 space-y-10">
+
+<div>
+
+<h3 className="text-2xl font-semibold">
+What is VelvetNest?
+</h3>
+
+<p className="mt-3 text-muted-foreground">
+VelvetNest is a lifestyle blog featuring fashion inspiration,
+home decor ideas,
+beauty tips,
+self-care guides,
+and curated Amazon finds.
+</p>
+
+</div>
+
+<div>
+
+<h3 className="text-2xl font-semibold">
+How often are new articles published?
+</h3>
+
+<p className="mt-3 text-muted-foreground">
+New fashion and home decor inspiration
+is published regularly.
+</p>
+
+</div>
+
+<div>
+
+<h3 className="text-2xl font-semibold">
+Do you recommend products?
+</h3>
+
+<p className="mt-3 text-muted-foreground">
+Yes. We carefully curate stylish Amazon finds
+that complement our fashion and home decor guides.
+</p>
+
+</div>
+
+</div>
+
+</section>
+      <section
+className="
+mx-auto
+max-w-7xl
+px-5
+pb-24
+"
+>
+
+<h2
+className="
+font-serif
+text-5xl
+text-center
+"
+>
+Popular Topics
+</h2>
+
+<div
+className="
+mt-12
+flex
+flex-wrap
+justify-center
+gap-4
+"
+>
+
+<Link href="/category/fashion">Fashion</Link>
+
+<Link href="/category/home-decor">Home Decor</Link>
+
+<Link href="/category/beauty">Beauty</Link>
+
+<Link href="/category/self-care">Self Care</Link>
+
+<Link href="/amazon-finds">Amazon Finds</Link>
+
+<Link href="/blog">Latest Articles</Link>
+
+</div>
+
+</section>
 
       <Footer />
       <NewsletterPopup />
