@@ -9,6 +9,7 @@ import table from './table'
 import tableRow from './tableRow'
 import tableCell from './tableCell'
 import messageBox from "./messageBox"
+import comparison from "./comparison"
 export const schemaTypes = [
   post,
   category,
@@ -17,8 +18,9 @@ export const schemaTypes = [
   table,
 tableRow,
 tableCell,
-  messageBox
+  messageBox,
   storefrontCTA,
+  comparison,
   callout,
   aboutPage,
 ]
