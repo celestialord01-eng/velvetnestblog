@@ -1,5 +1,6 @@
 import { remark } from "remark"
 import remarkParse from "remark-parse"
+import remarkGfm from "remark-gfm"
 
 function parseChildren(children: any[] = []) {
   const spans: any = []
@@ -70,8 +71,9 @@ export async function markdownToPortableText(
   markdown: string
 ) {
   const tree = remark()
-    .use(remarkParse)
-    .parse(markdown)
+  .use(remarkParse)
+  .use(remarkGfm)
+  .parse(markdown)
 
   const blocks: any[] = []
 
@@ -94,6 +96,31 @@ export async function markdownToPortableText(
         markDefs: children._markDefs || [],
       })
     }
+    // Tables
+if (node.type === "table") {
+  blocks.push({
+    _type: "table",
+    caption: "",
+    hasHeader: true,
+    rows: node.children.map((row: any) => ({
+      _type: "tableRow",
+      cells: row.children.map((cell: any) => ({
+        _type: "tableCell",
+        align: "left",
+        content: [
+          {
+            _type: "block",
+            style: "normal",
+            markDefs: [],
+            children: parseChildren(cell.children),
+          },
+        ],
+      })),
+    })),
+  })
+
+  continue
+}
 
     // Paragraphs
     if (node.type === "paragraph") {
