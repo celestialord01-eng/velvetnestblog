@@ -10,6 +10,9 @@ import { convertTable } from "./converters/table"
 import { convertImage } from "./converters/image"
 import { markdownRegistry } from "./helpers/markdownRegistry"
 import { convertMarkdownNode } from "./helpers/convertMarkdownNode"
+import { extractText } from "./helpers/extractText"
+import { parseCustomBlock } from "./helpers/parseCustomBlock"
+import { convertCustomBlock } from "./helpers/convertCustomBlock"
 export async function markdownToPortableText(
   markdown: string
 ) {
@@ -21,6 +24,28 @@ export async function markdownToPortableText(
   const blocks: any[] = []
 
   for (const node of tree.children) {
+
+  // Handle Velvet Nest custom blocks
+  if (node.type === "paragraph") {
+
+    const text = extractText(node).trim()
+
+    if (text.startsWith(":::")) {
+
+      const parsed = parseCustomBlock(text)
+
+      const converted =
+        convertCustomBlock(parsed)
+
+      if (converted) {
+        blocks.push(converted)
+      }
+
+      continue
+    }
+  }
+
+  // Standard Markdown
   const converted =
     convertMarkdownNode(node)
 
