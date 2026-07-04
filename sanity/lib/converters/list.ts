@@ -1,1 +1,30 @@
+import { createBlock } from "../helpers/createBlock"
+import { parseChildren } from "../helpers/parseChildren"
 
+export function convertList(node: any) {
+  const blocks = []
+
+  for (const item of node.children) {
+    const paragraph = item.children?.[0]
+
+    const parsed = parseChildren(
+      paragraph?.children || []
+    )
+
+    blocks.push({
+      ...createBlock(
+        "normal",
+        parsed.children,
+        parsed.markDefs
+      ),
+
+      listItem: node.ordered
+        ? "number"
+        : "bullet",
+
+      level: 1,
+    })
+  }
+
+  return blocks
+}
