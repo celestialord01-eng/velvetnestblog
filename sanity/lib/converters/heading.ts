@@ -2,7 +2,11 @@
 import { createBlock } from "../helpers/createBlock"
 import { parseChildren } from "../helpers/parseChildren"
 
-export function convertHeading(node: any) {
+import type { Heading } from "../types"
+
+export function convertHeading(
+  node: Heading
+) {
   const parsed = parseChildren(node.children)
 
   let style = "normal"
