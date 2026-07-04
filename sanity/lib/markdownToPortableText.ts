@@ -46,6 +46,7 @@ const tree = remark()
 
     continue
   }
+}
   
 
   // Standard Markdown
