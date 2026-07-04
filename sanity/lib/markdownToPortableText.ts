@@ -2,6 +2,7 @@ import { remark } from "remark"
 import remarkParse from "remark-parse"
 import remarkGfm from "remark-gfm"
 import { parseChildren } from "./helpers/parseChildren"
+import { convertHeading } from "./converters/heading"
 
 export async function markdownToPortableText(
   markdown: string
@@ -14,23 +15,9 @@ export async function markdownToPortableText(
   const blocks: any[] = []
 
   for (const node of tree.children) {
-    // Headings
     if (node.type === "heading") {
-      const children = parseChildren(node.children)
-
-      blocks.push({
-        _type: "block",
-        style:
-          node.depth === 2
-            ? "h2"
-            : node.depth === 3
-            ? "h3"
-            : node.depth === 4
-            ? "h4"
-            : "normal",
-        children,
-        markDefs: children._markDefs || [],
-      })
+  blocks.push(convertHeading(node))
+  continue
     }
     // Tables
 if (node.type === "table") {
