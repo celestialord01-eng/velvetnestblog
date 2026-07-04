@@ -96,7 +96,9 @@ function visit(
 }
 
 export function parseChildren(
-  children: any[] = []
+  import type { PhrasingContent } from "../types"
+
+children: PhrasingContent[] = []
 ) {
   const spans: any[] = []
 
