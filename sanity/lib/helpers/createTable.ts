@@ -1,11 +1,20 @@
 import { key } from "./key"
 
-export function createTable(rows: any[]) {
+export function createTable(
+  rows: any[],
+  options?: {
+    caption?: string
+    hasHeader?: boolean
+  }
+) {
   return {
     _key: key(),
     _type: "table",
-    caption: "",
-    hasHeader: true,
+
+    caption: options?.caption ?? "",
+
+    hasHeader: options?.hasHeader ?? true,
+
     rows,
   }
 }
