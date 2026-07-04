@@ -1,6 +1,6 @@
 import { key } from "./key"
 import { createSpan } from "./createSpan"
-
+import type { PhrasingContent } from "../types"
 function visit(
   node: any,
   marks: string[],
@@ -96,8 +96,6 @@ function visit(
 }
 
 export function parseChildren(
-  import type { PhrasingContent } from "../types"
-
 children: PhrasingContent[] = []
 ) {
   const spans: any[] = []
