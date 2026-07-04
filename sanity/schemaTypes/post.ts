@@ -205,6 +205,10 @@ defineField({
     },
   ],
 },
+        // TABLE
+        {
+    type: "table",
+  },
         // LINK BLOCK
         {
           name: "linkBlock",
