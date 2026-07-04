@@ -4,6 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { PinterestSaveButton } from "@/components/pinterest-save-button"
 import { headingToId } from "@/lib/heading"
+import Table from "@/components/portable-text/Table"
 
 // Controls drop cap so it only appears once
 let hasDropCap = false
