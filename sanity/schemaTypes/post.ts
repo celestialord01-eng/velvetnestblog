@@ -209,6 +209,9 @@ defineField({
         {
     type: "table",
   },
+        {
+  type: "comparison",
+},
         // LINK BLOCK
         {
           name: "linkBlock",
