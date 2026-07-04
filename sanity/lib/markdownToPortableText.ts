@@ -7,6 +7,7 @@ import { convertParagraph } from "./converters/paragraph"
 import { convertQuote } from "./converters/quote"
 import { convertList } from "./converters/list"
 import { convertTable } from "./converters/table"
+import { convertImage } from "./converters/image"
 export async function markdownToPortableText(
   markdown: string
 ) {
@@ -24,6 +25,10 @@ export async function markdownToPortableText(
     }
     if (node.type === "table") {
   blocks.push(convertTable(node))
+  continue
+    }
+    if (node.type === "image") {
+  blocks.push(convertImage(node))
   continue
     }
     if (node.type === "paragraph") {
