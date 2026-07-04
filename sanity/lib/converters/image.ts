@@ -1,6 +1,10 @@
 import { key } from "../helpers/key"
 
-export function convertImage(node: any) {
+import type { Image } from "../types"
+
+export function convertImage(
+  node: Image
+) {
   return {
     _key: key(),
     _type: "image",
