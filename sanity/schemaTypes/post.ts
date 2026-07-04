@@ -241,6 +241,9 @@ defineField({
         {
           type: "callout",
         },
+        {
+  type: "messageBox",
+},
       ],
     }),
   ],
