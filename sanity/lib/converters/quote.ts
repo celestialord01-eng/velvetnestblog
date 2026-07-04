@@ -9,9 +9,11 @@ export function convertQuote(
 ) {
   const paragraph = node.children?.[0]
 
-  const parsed = parseChildren(
-    paragraph?.children || []
-  )
+if (!paragraph || paragraph.type !== "paragraph") {
+  return createBlock("blockquote", [], [])
+}
+
+const parsed = parseChildren(paragraph.children)
 
   return createBlock(
     "blockquote",
