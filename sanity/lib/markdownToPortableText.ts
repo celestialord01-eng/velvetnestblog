@@ -3,7 +3,8 @@ import remarkParse from "remark-parse"
 import remarkGfm from "remark-gfm"
 import { parseChildren } from "./helpers/parseChildren"
 import { convertHeading } from "./converters/heading"
-
+import { convertParagraph } from "./converters/paragraph"
+import { convertQuote } from "./converters/quote"
 export async function markdownToPortableText(
   markdown: string
 ) {
@@ -45,32 +46,14 @@ if (node.type === "table") {
   continue
 }
 
-    // Paragraphs
     if (node.type === "paragraph") {
-      const children = parseChildren(node.children)
-
-      blocks.push({
-        _type: "block",
-        style: "normal",
-        children,
-        markDefs: children._markDefs || [],
-      })
+  blocks.push(convertParagraph(node))
+  continue
     }
 
-    // Quotes
     if (node.type === "blockquote") {
-      const paragraph: any = node.children?.[0]
-
-      const children = parseChildren(
-        paragraph?.children || []
-      )
-
-      blocks.push({
-        _type: "block",
-        style: "blockquote",
-        children,
-        markDefs: children._markDefs || [],
-      })
+  blocks.push(convertQuote(node))
+  continue
     }
 
     // Lists
