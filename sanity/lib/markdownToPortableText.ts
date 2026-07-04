@@ -6,6 +6,7 @@ import { convertHeading } from "./converters/heading"
 import { convertParagraph } from "./converters/paragraph"
 import { convertQuote } from "./converters/quote"
 import { convertList } from "./converters/list"
+import { convertTable } from "./converters/table"
 export async function markdownToPortableText(
   markdown: string
 ) {
@@ -21,32 +22,10 @@ export async function markdownToPortableText(
   blocks.push(convertHeading(node))
   continue
     }
-    // Tables
-if (node.type === "table") {
-  blocks.push({
-    _type: "table",
-    caption: "",
-    hasHeader: true,
-    rows: node.children.map((row: any) => ({
-      _type: "tableRow",
-      cells: row.children.map((cell: any) => ({
-        _type: "tableCell",
-        align: "left",
-        content: [
-          {
-            _type: "block",
-            style: "normal",
-            markDefs: [],
-            children: parseChildren(cell.children),
-          },
-        ],
-      })),
-    })),
-  })
-
+    if (node.type === "table") {
+  blocks.push(convertTable(node))
   continue
-}
-
+    }
     if (node.type === "paragraph") {
   blocks.push(convertParagraph(node))
   continue
