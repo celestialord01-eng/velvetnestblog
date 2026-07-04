@@ -2,7 +2,11 @@ import { key } from "../helpers/key"
 import { createTable } from "../helpers/createTable"
 import { parseChildren } from "../helpers/parseChildren"
 
-export function convertTable(node: any) {
+import type { Table } from "../types"
+
+export function convertTable(
+  node: Table
+) {
   const rows = node.children.map((row: any) => ({
     _key: key(),
     _type: "tableRow",
