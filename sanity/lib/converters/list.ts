@@ -1,7 +1,11 @@
 import { createBlock } from "../helpers/createBlock"
 import { parseChildren } from "../helpers/parseChildren"
 
-export function convertList(node: any) {
+import type { List } from "../types"
+
+export function convertList(
+  node: List
+) {
   const blocks = []
 
   for (const item of node.children) {
