@@ -8,6 +8,7 @@ import { callout } from "./objects/callout"
 import table from './table'
 import tableRow from './tableRow'
 import tableCell from './tableCell'
+import messageBox from "./messageBox"
 export const schemaTypes = [
   post,
   category,
@@ -16,6 +17,7 @@ export const schemaTypes = [
   table,
 tableRow,
 tableCell,
+  messageBox
   storefrontCTA,
   callout,
   aboutPage,
