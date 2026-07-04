@@ -8,6 +8,8 @@ import { convertQuote } from "./converters/quote"
 import { convertList } from "./converters/list"
 import { convertTable } from "./converters/table"
 import { convertImage } from "./converters/image"
+import { markdownRegistry } from "./helpers/markdownRegistry"
+import { convertMarkdownNode } from "./helpers/convertMarkdownNode"
 export async function markdownToPortableText(
   markdown: string
 ) {
@@ -19,35 +21,16 @@ export async function markdownToPortableText(
   const blocks: any[] = []
 
   for (const node of tree.children) {
-    if (node.type === "heading") {
-  blocks.push(convertHeading(node))
-  continue
-    }
-    if (node.type === "table") {
-  blocks.push(convertTable(node))
-  continue
-    }
-    if (node.type === "image") {
-  blocks.push(convertImage(node))
-  continue
-    }
-    if (node.type === "paragraph") {
-  blocks.push(convertParagraph(node))
-  continue
-    }
+  const converted =
+    convertMarkdownNode(node)
 
-    if (node.type === "blockquote") {
-  blocks.push(convertQuote(node))
-  continue
-    }
+  if (!converted) continue
 
-    if (node.type === "list") {
-  blocks.push(
-    ...convertList(node)
-  )
-
-  continue
-    }
+  if (Array.isArray(converted)) {
+    blocks.push(...converted)
+  } else {
+    blocks.push(converted)
+  }
   }
 
   return blocks
