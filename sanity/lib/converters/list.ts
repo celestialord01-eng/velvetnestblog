@@ -9,11 +9,11 @@ export function convertList(
   const blocks = []
 
   for (const item of node.children) {
-    const paragraph = item.children?.[0]
+    const paragraph: any = item.children?.[0]
 
-    const parsed = parseChildren(
-      paragraph?.children || []
-    )
+const parsed = parseChildren(
+  paragraph?.children ?? []
+)
 
     blocks.push({
       ...createBlock(
