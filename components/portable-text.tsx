@@ -333,6 +333,9 @@ if (applyDropCap) {
 </figure>
       )
     },
+    table: ({ value }: any) => {
+  return <Table value={value} />
+},
 
     callout: ({ value }: any) => {
       return (
