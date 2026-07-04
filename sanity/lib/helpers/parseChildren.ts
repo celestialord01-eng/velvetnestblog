@@ -1,64 +1,118 @@
-export function parseChildren(children: any[] = []) {
-  const spans: any = []
+import { key } from "./key"
+import { createSpan } from "./createSpan"
 
-  for (const child of children) {
-    // Plain text
-    if (child.type === "text") {
-      spans.push({
-        _type: "span",
-        text: child.value,
-      })
-    }
+function visit(
+  node: any,
+  marks: string[],
+  spans: any[],
+  markDefs: any[]
+) {
+  switch (node.type) {
+    case "text":
+      spans.push(
+        createSpan(node.value, marks)
+      )
+      return
 
-    // Bold
-    if (child.type === "strong") {
-      const text = child.children
-        ?.map((c: any) => c.value || "")
-        .join("")
+    case "strong":
+      node.children?.forEach((child: any) =>
+        visit(
+          child,
+          [...marks, "strong"],
+          spans,
+          markDefs
+        )
+      )
+      return
 
-      spans.push({
-        _type: "span",
-        text,
-        marks: ["strong"],
-      })
-    }
+    case "emphasis":
+      node.children?.forEach((child: any) =>
+        visit(
+          child,
+          [...marks, "em"],
+          spans,
+          markDefs
+        )
+      )
+      return
 
-    // Italic
-    if (child.type === "emphasis") {
-      const text = child.children
-        ?.map((c: any) => c.value || "")
-        .join("")
+    case "delete":
+      node.children?.forEach((child: any) =>
+        visit(
+          child,
+          [...marks, "strike"],
+          spans,
+          markDefs
+        )
+      )
+      return
 
-      spans.push({
-        _type: "span",
-        text,
-        marks: ["em"],
-      })
-    }
+    case "inlineCode":
+      spans.push(
+        createSpan(
+          node.value,
+          [...marks, "code"]
+        )
+      )
+      return
 
-    // Links
-    if (child.type === "link") {
-      const text = child.children
-        ?.map((c: any) => c.value || "")
-        .join("")
+    case "link": {
+      const markKey = key()
 
-      const markKey = crypto.randomUUID()
-
-      spans.push({
-        _type: "span",
-        text,
-        marks: [markKey],
-      })
-
-      spans._markDefs = spans._markDefs || []
-
-      spans._markDefs.push({
+      markDefs.push({
         _key: markKey,
         _type: "link",
-        href: child.url,
+        href: node.url,
       })
-    }
-  }
 
-  return spans
+      node.children?.forEach((child: any) =>
+        visit(
+          child,
+          [...marks, markKey],
+          spans,
+          markDefs
+        )
+      )
+
+      return
+    }
+
+    case "break":
+      spans.push(
+        createSpan("\n", marks)
+      )
+      return
+
+    default:
+      node.children?.forEach((child: any) =>
+        visit(
+          child,
+          marks,
+          spans,
+          markDefs
+        )
+      )
+  }
+}
+
+export function parseChildren(
+  children: any[] = []
+) {
+  const spans: any[] = []
+
+  const markDefs: any[] = []
+
+  children.forEach((child) =>
+    visit(
+      child,
+      [],
+      spans,
+      markDefs
+    )
+  )
+
+  return {
+    children: spans,
+    markDefs,
+  }
 }
