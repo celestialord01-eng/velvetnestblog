@@ -5,6 +5,7 @@ import Link from "next/link"
 import { PinterestSaveButton } from "@/components/pinterest-save-button"
 import { headingToId } from "@/lib/heading"
 import Table from "@/components/portable-text/Table"
+import MessageBox from "@/components/portable-text/MessageBox"
 
 // Controls drop cap so it only appears once
 let hasDropCap = false
@@ -336,6 +337,9 @@ if (applyDropCap) {
     table: ({ value }: any) => {
   return <Table value={value} />
 },
+    messageBox: ({ value }: any) => (
+  <MessageBox value={value} />
+),
 
     callout: ({ value }: any) => {
       return (
