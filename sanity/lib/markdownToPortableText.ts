@@ -5,6 +5,7 @@ import { parseChildren } from "./helpers/parseChildren"
 import { convertHeading } from "./converters/heading"
 import { convertParagraph } from "./converters/paragraph"
 import { convertQuote } from "./converters/quote"
+import { convertList } from "./converters/list"
 export async function markdownToPortableText(
   markdown: string
 ) {
@@ -56,25 +57,12 @@ if (node.type === "table") {
   continue
     }
 
-    // Lists
     if (node.type === "list") {
-      for (const item of node.children) {
-        const paragraph: any = item.children?.[0]
+  blocks.push(
+    ...convertList(node)
+  )
 
-        const children = parseChildren(
-          paragraph?.children || []
-        )
-
-        blocks.push({
-          _type: "block",
-          listItem: node.ordered
-            ? "number"
-            : "bullet",
-          level: 1,
-          children,
-          markDefs: children._markDefs || [],
-        })
-      }
+  continue
     }
   }
 
