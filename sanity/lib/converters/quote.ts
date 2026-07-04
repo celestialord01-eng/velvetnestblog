@@ -2,7 +2,11 @@
 import { createBlock } from "../helpers/createBlock"
 import { parseChildren } from "../helpers/parseChildren"
 
-export function convertQuote(node: any) {
+import type { Blockquote } from "../types"
+
+export function convertQuote(
+  node: Blockquote
+) {
   const paragraph = node.children?.[0]
 
   const parsed = parseChildren(
