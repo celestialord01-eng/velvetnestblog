@@ -366,23 +366,94 @@ if (applyDropCap) {
   </div>
 ),
     comparison: ({ value }: any) => (
-  <div className="my-12 grid gap-6 md:grid-cols-2">
-    <div className="rounded-3xl border p-6">
-      <h3 className="mb-3 text-xl font-semibold">
-        {value.leftTitle}
+  <section className="my-14">
+    {value.title && (
+      <h3
+        className="
+          mb-8
+          text-center
+          font-serif
+          text-[2rem]
+          font-semibold
+          tracking-tight
+          text-stone-900
+          md:text-[2.4rem]
+        "
+      >
+        {value.title}
       </h3>
+    )}
 
-      <p>{value.leftText}</p>
+    <div className="grid gap-6 md:grid-cols-2">
+      {/* Left Card */}
+      <div
+        className="
+          rounded-[28px]
+          border
+          border-[#e7ddd0]
+          bg-[#faf8f5]
+          p-8
+          shadow-[0_8px_24px_rgba(0,0,0,0.04)]
+        "
+      >
+        <h4
+          className="
+            mb-4
+            font-serif
+            text-[1.5rem]
+            font-semibold
+            text-stone-900
+          "
+        >
+          {value.leftTitle}
+        </h4>
+
+        <p
+          className="
+            text-[1.05rem]
+            leading-8
+            text-stone-700
+          "
+        >
+          {value.leftText}
+        </p>
+      </div>
+
+      {/* Right Card */}
+      <div
+        className="
+          rounded-[28px]
+          border
+          border-[#e7ddd0]
+          bg-[#faf8f5]
+          p-8
+          shadow-[0_8px_24px_rgba(0,0,0,0.04)]
+        "
+      >
+        <h4
+          className="
+            mb-4
+            font-serif
+            text-[1.5rem]
+            font-semibold
+            text-stone-900
+          "
+        >
+          {value.rightTitle}
+        </h4>
+
+        <p
+          className="
+            text-[1.05rem]
+            leading-8
+            text-stone-700
+          "
+        >
+          {value.rightText}
+        </p>
+      </div>
     </div>
-
-    <div className="rounded-3xl border p-6">
-      <h3 className="mb-3 text-xl font-semibold">
-        {value.rightTitle}
-      </h3>
-
-      <p>{value.rightText}</p>
-    </div>
-  </div>
+  </section>
 ),
 
     callout: ({ value }: any) => {
