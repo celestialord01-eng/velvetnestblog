@@ -18,8 +18,13 @@ export function convertCustomBlock(block: {
     return null
   }
 
-  return converter({
+  const data = {
     ...block.properties,
-    text: block.body,
-  })
+  }
+
+  if (block.body) {
+    data.text = block.body
+  }
+
+  return converter(data)
 }
