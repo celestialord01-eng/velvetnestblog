@@ -29,6 +29,8 @@ const tree = remark()
   // Handle Velvet Nest custom blocks
   if (node.type === "paragraph") {
   const text = extractText(node).trim()
+    console.log("Paragraph:", text)
+  }
 
   const raw =
     customBlocks.get(text)
