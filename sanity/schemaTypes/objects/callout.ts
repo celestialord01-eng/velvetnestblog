@@ -31,6 +31,17 @@ export const callout = defineType({
       title: "Button Link",
       type: "url",
     }),
+    defineField({
+  name: "products",
+  title: "Products",
+  type: "array",
+  of: [
+    {
+      type: "reference",
+      to: [{ type: "amazonFind" }],
+    },
+  ],
+}),
   ],
 
   preview: {
