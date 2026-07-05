@@ -18,7 +18,7 @@ export function extractCustomBlocks(markdown: string) {
         raw: match,
       })
 
-      return `__VELVET_BLOCK_${id}__`
+      return `@@VELVET_BLOCK:${id}@@`
     }
   )
 
