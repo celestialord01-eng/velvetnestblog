@@ -340,6 +340,50 @@ if (applyDropCap) {
     messageBox: ({ value }: any) => (
   <MessageBox value={value} />
 ),
+    linkBlock: ({ value }: any) => (
+  <div className="my-10 flex justify-center">
+    <a
+      href={value.url}
+      target="_blank"
+      rel="noopener noreferrer sponsored"
+      className="
+        inline-flex
+        items-center
+        justify-center
+        rounded-full
+        bg-stone-900
+        px-8
+        py-4
+        text-base
+        font-medium
+        text-white
+        transition
+        hover:opacity-90
+      "
+    >
+      {value.text}
+    </a>
+  </div>
+),
+    comparison: ({ value }: any) => (
+  <div className="my-12 grid gap-6 md:grid-cols-2">
+    <div className="rounded-3xl border p-6">
+      <h3 className="mb-3 text-xl font-semibold">
+        {value.leftTitle}
+      </h3>
+
+      <p>{value.leftText}</p>
+    </div>
+
+    <div className="rounded-3xl border p-6">
+      <h3 className="mb-3 text-xl font-semibold">
+        {value.rightTitle}
+      </h3>
+
+      <p>{value.rightText}</p>
+    </div>
+  </div>
+),
 
     callout: ({ value }: any) => {
       return (
