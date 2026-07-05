@@ -18,7 +18,7 @@ const tree = remark()
   .parse(extracted.markdown)
   const customBlocks = new Map(
   extracted.blocks.map((block) => [
-    `__VELVET_BLOCK_${block.id}__`,
+    `@@VELVET_BLOCK:${block.id}@@`,
     block.raw,
   ])
 )
@@ -29,8 +29,7 @@ const tree = remark()
   // Handle Velvet Nest custom blocks
   if (node.type === "paragraph") {
   const text = extractText(node).trim()
-    console.log("Paragraph:", text)
-  }
+    
 
   const raw =
     customBlocks.get(text)
