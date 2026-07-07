@@ -402,12 +402,14 @@ const portableTextComponents = {
           id={id}
           className="
             scroll-mt-32
-            mt-24
-            mb-8
+            mt-16
+            mb-6
             font-serif
-            text-[2.6rem]
-            leading-[0.98]
+            text-[2.45rem]
+            leading-[1.02]
             tracking-[-0.04em]
+            md:mt-24
+            md:mb-8
             text-foreground
             md:text-[4.5rem]
           "
@@ -421,8 +423,10 @@ const portableTextComponents = {
       return (
         <h3
           className="
-            mt-16
-            mb-6
+            mt-12
+            mb-4
+            md:mt-16
+            md:mb-6
             font-serif
             text-[1.8rem]
             leading-[1]
@@ -437,16 +441,18 @@ const portableTextComponents = {
     },
 
     normal: ({ children }: any) => (
-      <p
-        className="
-          mb-9
-          text-[1.12rem]
-          leading-[2.05]
-          tracking-[-0.01em]
-          text-[#4d433d]
-          md:text-[1.2rem]
-        "
-      >
+  <p
+    className="
+      mb-6
+      text-[1.06rem]
+      leading-[1.75]
+      tracking-[-0.01em]
+      text-[#4d433d]
+      md:mb-9
+      md:text-[1.2rem]
+      md:leading-[2.05]
+    "
+  >
         {children}
       </p>
     ),
@@ -456,13 +462,15 @@ const portableTextComponents = {
     }: any) => (
       <blockquote
         className="
-          my-14
+          my-10
           border-l-[3px]
           border-[#cbb29a]
           pl-6
           text-[1.3rem]
           italic
-          leading-[2]
+          leading-[1.75]
+          md:my-14
+          md:leading-[2]
           text-[#5d5148]
         "
       >
@@ -480,7 +488,8 @@ const portableTextComponents = {
           mb-12
           ml-6
           list-disc
-          space-y-5
+          space-y-3
+          md:space-y-5
           text-[#4d433d]
         "
       >
@@ -512,7 +521,8 @@ const portableTextComponents = {
       <li
         className="
           text-[1.1rem]
-          leading-[2]
+          leading-[1.75]
+          md:leading-[2]
         "
       >
         {children}
@@ -525,7 +535,8 @@ const portableTextComponents = {
       <li
         className="
           text-[1.1rem]
-          leading-[2]
+          leading-[1.75]
+          md:leading-[2]
         "
       >
         {children}
@@ -675,7 +686,9 @@ export default async function BlogPostPage({
                   className="
                     max-w-4xl
                     font-serif
-                    text-[3.5rem]
+                    text-[3.2rem]
+                    leading-[0.95]
+                    md:text-[6rem]
                     leading-[0.95]
                     tracking-[-0.06em]
                     text-foreground
@@ -691,7 +704,8 @@ export default async function BlogPostPage({
                       mt-8
                       max-w-3xl
                       text-[1.2rem]
-                      leading-[2]
+                      leading-[1.7]
+                      md:leading-[2]
                       text-[#5f554d]
                       md:text-[1.35rem]
                     "
@@ -718,7 +732,7 @@ export default async function BlogPostPage({
                       post.publishedAt
                     ).toLocaleDateString()}
                   </div>
-                  <div className="mt-8">
+                  <div>
   <ShareButtons title={post.title} />
 </div>
 
@@ -740,7 +754,7 @@ export default async function BlogPostPage({
         </section>
 
         {post.mainImage?.asset?.url && (
-          <section className="py-12">
+          <section className="py-8 md:py-12">
             <div className="mx-auto max-w-7xl px-6 md:px-10">
               <div
                 className="
@@ -766,7 +780,7 @@ export default async function BlogPostPage({
         )}
 
         <section className="pb-24 pt-8">
-          <div className="mx-auto max-w-4xl px-6 md:px-10">
+          <div className="mx-auto max-w-4xl px-4 md:px-10">
             <div className="mb-14 lg:hidden">
               <MobileTOC items={toc} />
             </div>
