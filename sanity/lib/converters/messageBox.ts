@@ -1,3 +1,5 @@
+import { randomUUID } from "crypto"
+
 export function convertMessageBox(data: {
   title?: string
   type?: string
@@ -13,11 +15,16 @@ export function convertMessageBox(data: {
     content: [
       {
         _type: "block",
+        _key: randomUUID(),
+
         style: "normal",
         markDefs: [],
+
         children: [
           {
             _type: "span",
+            _key: randomUUID(),
+
             text: data.text || "",
             marks: [],
           },
@@ -25,4 +32,4 @@ export function convertMessageBox(data: {
       },
     ],
   }
-    }
+}
