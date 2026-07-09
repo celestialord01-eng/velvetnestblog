@@ -1,37 +1,52 @@
 import { parseYaml } from "./parseYaml"
 
-export function parseCustomBlock(markdown: string) {
-  const lines = markdown
-    .split("\n")
-    .map((line) => line.trimEnd())
+export interface ParsedCustomBlock {
+  type: string
+  props: Record<string, any>
+  body: string
+}
 
-  const firstLine = lines.shift() || ""
+export function parseCustomBlock(text: string): ParsedCustomBlock {
+  const lines = text.trim().split(/\r?\n/)
 
-  const type = firstLine.replace(":::", "").trim()
+  const firstLine = lines.shift() ?? ""
 
-  const end = lines.lastIndexOf(":::")
-  if (end !== -1) {
-    lines.splice(end, 1)
-  }
+  // Supports:
+  // :::comparison
+  // :::comparison title: Something
+  const match = firstLine.match(/^:::([a-zA-Z0-9_-]+)\s*(.*)$/)
 
-  const separator = lines.indexOf("---")
+  const type = match?.[1] ?? ""
+  const inlineMeta = (match?.[2] ?? "").trim()
 
   let yamlText = ""
   let body = ""
 
+  const separator = lines.indexOf("---")
+
   if (separator >= 0) {
-    // YAML + Body
     yamlText = lines.slice(0, separator).join("\n")
     body = lines.slice(separator + 1).join("\n").trim()
   } else {
-    // YAML only
     yamlText = lines.join("\n")
-    body = ""
   }
+
+  // Merge inline metadata with multiline metadata
+  if (inlineMeta) {
+    yamlText = inlineMeta + "\n" + yamlText
+  }
+
+  // Normalize "key:value" → "key: value"
+  yamlText = yamlText.replace(
+    /^([A-Za-z0-9_-]+):(?!\s)(.+)$/gm,
+    "$1: $2"
+  )
+
+  const props = parseYaml(yamlText)
 
   return {
     type,
-    properties: parseYaml(yamlText),
+    props,
     body,
   }
 }
