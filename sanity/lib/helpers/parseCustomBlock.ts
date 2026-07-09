@@ -2,7 +2,7 @@ import { parseYaml } from "./parseYaml"
 
 export interface ParsedCustomBlock {
   type: string
-  props: Record<string, any>
+  properties: Record<string, any>
   body: string
 }
 
@@ -65,8 +65,8 @@ export function parseCustomBlock(text: string): ParsedCustomBlock {
   )
 
   return {
-    type,
-    props: parseYaml(yamlText),
-    body: body.join("\n").trim(),
-  }
+  type,
+  properties: parseYaml(yamlText),
+  body: body.join("\n").trim(),
+}
 }
