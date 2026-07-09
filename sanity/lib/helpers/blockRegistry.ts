@@ -2,6 +2,7 @@ import { convertCallout } from "../converters/callout"
 import { convertImage } from "../converters/image"
 import { convertButton } from "../converters/button"
 import { convertComparison } from "../converters/comparison"
+import { convertMessageBox } from "../converters/messageBox"
 
 export const blockRegistry = {
 
@@ -11,5 +12,6 @@ export const blockRegistry = {
 
   button: convertButton,
   comparison: convertComparison,
+  messageBox: convertMessageBox,
 
 }
