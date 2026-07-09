@@ -6,47 +6,67 @@ export interface ParsedCustomBlock {
   body: string
 }
 
+const YAML_LINE = /^[A-Za-z0-9_-]+\s*:\s*.*$/
+
 export function parseCustomBlock(text: string): ParsedCustomBlock {
   const lines = text.trim().split(/\r?\n/)
 
   const firstLine = lines.shift() ?? ""
 
-  // Supports:
-  // :::comparison
-  // :::comparison title: Something
-  const match = firstLine.match(/^:::([a-zA-Z0-9_-]+)\s*(.*)$/)
+  const match = firstLine.match(/^:::([A-Za-z0-9_-]+)\s*(.*)$/)
 
   const type = match?.[1] ?? ""
   const inlineMeta = (match?.[2] ?? "").trim()
 
-  let yamlText = ""
-  let body = ""
+  const metadata: string[] = []
+  const body: string[] = []
 
-  const separator = lines.indexOf("---")
+  let readingBody = false
 
-  if (separator >= 0) {
-    yamlText = lines.slice(0, separator).join("\n")
-    body = lines.slice(separator + 1).join("\n").trim()
-  } else {
-    yamlText = lines.join("\n")
+  for (const raw of lines) {
+    const line = raw.trimEnd()
+
+    // Old separator still supported
+    if (!readingBody && line === "---") {
+      readingBody = true
+      continue
+    }
+
+    if (!readingBody) {
+      // Blank line switches to body
+      if (line.trim() === "") {
+        readingBody = true
+        continue
+      }
+
+      // YAML property
+      if (YAML_LINE.test(line)) {
+        metadata.push(line)
+        continue
+      }
+
+      // Anything else starts body
+      readingBody = true
+    }
+
+    body.push(raw)
   }
 
-  // Merge inline metadata with multiline metadata
+  let yamlText = metadata.join("\n")
+
   if (inlineMeta) {
     yamlText = inlineMeta + "\n" + yamlText
   }
 
-  // Normalize "key:value" → "key: value"
+  // Accept both key:value and key: value
   yamlText = yamlText.replace(
     /^([A-Za-z0-9_-]+):(?!\s)(.+)$/gm,
     "$1: $2"
   )
 
-  const props = parseYaml(yamlText)
-
   return {
     type,
-    props,
-    body,
+    props: parseYaml(yamlText),
+    body: body.join("\n").trim(),
   }
 }
